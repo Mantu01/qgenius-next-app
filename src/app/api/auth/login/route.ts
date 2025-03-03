@@ -6,10 +6,10 @@ import { NextRequest,NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const {email,userName,password} =await req.json();
-    if(!userName || !email){
+    if(!userName && !email){
       return NextResponse.json({ message: "Please provide email or username", },{ status: 400 });
     }
-    const user = await prisma.user.findUnique({ where: { email: email || userName } });
+    const user = await prisma.user.findFirst({ where:{OR:[{email},{userName}]} });
     if (!user) {
       return NextResponse.json({ message: "User not found", },{ status: 404 });
     }

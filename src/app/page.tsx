@@ -4,7 +4,10 @@ import axios from "axios";
 
 export default function Home() {
   async function a(){
-    await axios.post('/api/auth/signup',{fullName:"Mantu Kumar",email:"mantu1@gmail.com",password:"11111111",userName:"mantu02"})
+    await axios.post('/api/auth/login',{fullName:"Mantu Kumar",email:"mantu11@gmail.com",password:"11111111",userName:"mantu11"})
+  }
+  async function b(){
+    await axios.get(`/api/auth/resetpassword?userId=4f3dd4a0-470c-4462-af01-2c8138c2f410`)
   }
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-600 to-blue-500 text-white px-6">
@@ -27,9 +30,12 @@ export default function Home() {
         </p>
 
         {/* CTA Button */}
-        <div className="mt-6">
+        <div className="mt-6 flex gap-10">
           <button onClick={a} className="px-6 py-3 bg-green-500 text-white font-semibold rounded-full shadow-lg hover:bg-green-600 transition">
             Start Making Money
+          </button>
+          <button onClick={b} className="px-6 py-3 bg-green-500 text-white font-semibold rounded-full shadow-lg hover:bg-green-600 transition">
+            Start Losing Money
           </button>
         </div>
       </div>

@@ -13,8 +13,8 @@ type mailInput={
 
 export const sendEmail=async({email,emailType,userId}:mailInput)=>{
   try {
-
-    const hashedToken = await bcrypt.hash(userId.toString(), 10)
+    const hashedToken = await bcrypt.hash(userId.toString(), 10);
+    const expiry= new Date(Date.now()+3600000);
     const transport = nodemailer.createTransport({
       host: process.env.EMAIL_PROVIDER,
       port: 2525,
@@ -23,14 +23,21 @@ export const sendEmail=async({email,emailType,userId}:mailInput)=>{
         pass:process.env.EMAIL_PASSWORD
       }
     });
-    await prisma.user.update({
-      where: { id: userId },
-      data: { verifyToken: hashedToken,verifyTokenExpiry:new Date(Date.now() + 360000)}
-    });
+    if(emailType === 'VERIFY'){
+      await prisma.user.update({
+        where: { id: userId },
+        data: { verifyToken: hashedToken,verifyTokenExpiry:expiry}
+      });
+    }else{
+      await prisma.user.update({
+        where: { id: userId },
+        data:{forgotPasswordToken:hashedToken,forgotPasswordTokenExpiry:expiry}
+      });
+    }
     const messageOptions = {
       title:emailType==="VERIFY"?"Verify your email":"Reset your password",
       message:emailType==="VERIFY"?verifyMessage:forgotPassword,
-      link:`${process.env.APP_URL}/emailverification?token=${hashedToken}`,
+      link:`${process.env.APP_URL}/verification/${emailType==='VERIFY'?"email":"password"}?token=${hashedToken}`,
       buttonText: emailType === "VERIFY" ? "Verify Email Address" : "Reset Password"
     }
     const templateMsg=generateEmailHTML(messageOptions);

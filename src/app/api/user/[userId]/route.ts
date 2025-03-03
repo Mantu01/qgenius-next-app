@@ -1,0 +1,2 @@
+// GET -> get user detail
+// 

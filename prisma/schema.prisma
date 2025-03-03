@@ -14,31 +14,30 @@ datasource db {
 }
 
 model User {
-  id           String      @id @default(uuid())
-  fullName     String
-  userName     String      @unique
-  email        String      @unique
-  password     String      
-  avatar       String?
-  coverImage   String?
-  creaditsLeft Int         @default(1)
-  Apis         APIsTokens? 
-  askedHistory QnA[]
-  forgotPasswordToken       String? 
-  forgotPasswordTokenExpiry DateTime? 
-  verifyToken              String?  
-  verifyTokenExpiry        DateTime?
-  isVerified    Boolean   @default(false)
-  createdAt     DateTime  @default(now())
+  id                        String      @id @default(uuid())
+  fullName                  String
+  userName                  String      @unique
+  email                     String      @unique
+  password                  String
+  avatar                    String?
+  coverImage                String?
+  creaditsLeft              Int         @default(1)
+  Apis                      APIsTokens?
+  askedHistory              QnA[]
+  forgotPasswordToken       String?
+  forgotPasswordTokenExpiry DateTime?
+  verifyToken               String?
+  verifyTokenExpiry         DateTime?
+  isVerified                Boolean     @default(false)
+  createdAt                 DateTime    @default(now())
 }
-
 
 model APIsTokens {
   id        String  @id @default(uuid())
   user      User    @relation(fields: [userId], references: [id])
   userId    String  @unique
   gemini    String?
-  opeinAi   String?
+  openAi    String?
   anthropic String?
   grok      String?
 }

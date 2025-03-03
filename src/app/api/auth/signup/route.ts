@@ -32,6 +32,13 @@ export async function POST(req: NextRequest) {
         email,
         password: hashedPassword,
       },
+      omit:{
+        password: true,
+        verifyToken: true,
+        verifyTokenExpiry: true,
+        forgotPasswordToken: true,
+        forgotPasswordTokenExpiry: true,
+      }
     });
     await sendEmail({email,emailType:"VERIFY",userId:newUser.id});
     return NextResponse.json({ message: "User registered successfully", data:newUser },{ status: 201 });
