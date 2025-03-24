@@ -1,35 +1,35 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 
-const NotFound = () => {
-  const router = useRouter();
-
+export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-center px-6">
-      <h1 className="text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-        Oops!
-      </h1>
-      <h2 className="text-2xl font-semibold text-gray-800 mt-4">404 - Page Not Found</h2>
-      <p className="text-gray-600 mt-2 max-w-lg">
-        The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
-      </p>
-      <div className="mt-6 flex space-x-4">
-        <button
-          onClick={() => router.push('/')}
-          className="px-6 py-2 text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition shadow-lg"
-        >
-          Go to Homepage
-        </button>
-        <button
-          onClick={() => router.back()}
-          className="px-6 py-2 text-lg font-semibold text-gray-800 bg-gray-200 hover:bg-gray-300 rounded-lg transition shadow-lg"
-        >
-          Go Back
-        </button>
+    <div className="min-h-screen flex flex-col items-center justify-center px-4">
+      <div className="text-center">
+        <h1 className="text-9xl font-bold text-red-500 animate-bounce">404</h1>
+        <h2 className="text-6xl font-bold text-gray-900 mt-4">Are sir, kahan jaa rhe ho? 🤔</h2>
+        <p className="text-xl text-gray-600 mt-6 max-w-md mx-auto">
+          Lagta hai aapne galat mod le liya! Koi na, wapas ghar chalte hain. 🏡
+        </p>
+        <div className="mt-10">
+          <Link
+            href="/"
+            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400"
+          >
+            Wapas ghar chalo 🚀
+          </Link>
+        </div>
+        <div className="mt-16 flex flex-col items-center">
+          <Image 
+            src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1740554497/image-removebg-preview_nerxe2.png"
+            alt="QGenius Logo"
+            width={100}
+            height={100}
+            className="opacity-80"
+          />
+        </div>
       </div>
     </div>
   );
-};
-
-export default NotFound;
+}

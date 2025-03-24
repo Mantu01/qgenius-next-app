@@ -21,7 +21,7 @@ model User {
   password                  String
   avatar                    String?
   coverImage                String?
-  creaditsLeft              Int         @default(1)
+  creaditsLeft              Int         @default(3)
   Apis                      APIsTokens?
   askedHistory              QnA[]
   forgotPasswordToken       String?
@@ -38,7 +38,7 @@ model APIsTokens {
   userId    String  @unique
   gemini    String?
   openAi    String?
-  anthropic String?
+  claude    String?
   grok      String?
 }
 

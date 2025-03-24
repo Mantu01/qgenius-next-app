@@ -1,7 +1,7 @@
 import prisma from "@/DB/dbConfig";
 import { NextRequest,NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import { sendEmail } from "@/helper/mailer";
+import { sendEmail } from "@/helper/mail/mailer";
 
 export async function GET(req: NextRequest) {
   try {

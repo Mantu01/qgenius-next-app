@@ -6,7 +6,7 @@ type templateParameters={
 }
 
 export function generateEmailHTML(params: templateParameters) {
-    const mailTemplate = `
+    const mailTemplate:string = `
   <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -347,7 +347,7 @@ export function generateEmailHTML(params: templateParameters) {
   `;
   
     // Replace all template placeholders with actual values
-    let html = mailTemplate
+    let html:string = mailTemplate
       .replace('{{title}}', params.title || '')
       .replace('{{message}}', params.message || '')
       .replace('{{link}}', params.link || '')

@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer';
 import bcrypt from 'bcrypt';
 import prisma from '@/DB/dbConfig';
 import { generateEmailHTML } from './mailTemplate';
-import { verifyMessage,forgotPassword } from './constants/messages';
+import { verifyMessage,forgotPassword } from '../constants/messages';
 
 
 type mailInput={
@@ -40,7 +40,7 @@ export const sendEmail=async({email,emailType,userId}:mailInput)=>{
       link:`${process.env.APP_URL}/verification/${emailType==='VERIFY'?"email":"password"}?token=${hashedToken}`,
       buttonText: emailType === "VERIFY" ? "Verify Email Address" : "Reset Password"
     }
-    const templateMsg=generateEmailHTML(messageOptions);
+    const templateMsg:string=generateEmailHTML(messageOptions);
 
     const info = await transport.sendMail({
       from: "mantu1@gmail.com",
