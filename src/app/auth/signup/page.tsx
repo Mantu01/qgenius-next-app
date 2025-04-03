@@ -1,117 +1,212 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import { Eye, EyeOff, Mail, KeyRound } from 'lucide-react';
+import { FcGoogle } from 'react-icons/fc';
+import { FaGithub } from 'react-icons/fa';
 import Link from 'next/link';
+import { useForm } from 'react-hook-form';
 
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const {register,handleSubmit,formState}=useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    mode: 'onBlur',
+  });
 
-  const handleSignup =async(data)=>{
-    console.log(formState)
-  }
+  const handleSignup = async (data:any) => {
+    console.log('Submitting data:', data);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    console.log('Signup successful (simulated)');
+  };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-indigo-200 via-purple-100 to-pink-50 flex items-center justify-center p-6">
-      <div className="relative bg-white/95 backdrop-blur-xl rounded-3xl shadow-[0_8px_32px_rgba(31,38,135,0.2)] w-2/3 overflow-hidden transform hover:scale-[1.03] transition-all duration-500 ease-out border border-gray-100/50">
-        <div className="p-8 flex justify-center bg-gradient-to-br from-indigo-600 to-purple-700 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.2),transparent)] animate-pulse-slow"></div>
-          <img 
-            src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1740554497/image-removebg-preview_nerxe2.png" 
-            alt="QGeninus Logo" 
-            className="h-20 w-auto relative z-10 animate-[float_3s_ease-in-out_infinite]"
+    <div className="min-h-screen bg-gray-100 dark:bg-black flex items-center justify-center p-4 transition-colors duration-300">
+      <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl w-full max-w-md overflow-hidden border border-gray-200 dark:border-gray-700">
+        <div className="p-6 flex justify-center border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+          <img
+            src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1740554497/image-removebg-preview_nerxe2.png"
+            alt="QGenius Logo"
+            className="h-16 w-auto"
           />
         </div>
-        <div className="p-10">
-          <h2 className="text-4xl font-extrabold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 animate-text-gradient">
-            Join QGeninus
-          </h2>
-          
-          <form onSubmit={handleSubmit(handleSignup)} className="space-y-7">
-          <div className="relative group">
-              <label className="block text-gray-600 text-sm font-medium mb-2 transition-colors group-hover:text-indigo-600" htmlFor="username">
-                Full Name
-              </label>
-              <input
-                {...register('name',{required:'required',})}
-                type="text"
-                id="name"
-                className="w-full px-5 py-4 rounded-xl bg-gray-50/50 border border-gray-200/50 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-200/50 transition-all duration-300 text-gray-700 placeholder-gray-400 shadow-sm"
-                placeholder="Enter Your Name"
-              />
-            </div>
-            <div className="relative group">
-              <label className="block text-gray-600 text-sm font-medium mb-2 transition-colors group-hover:text-indigo-600" htmlFor="username">
-                Username
-              </label>
-              <input
-                {...register('username')}
-                type="text"
-                id="username"
-                className="w-full px-5 py-4 rounded-xl bg-gray-50/50 border border-gray-200/50 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-200/50 transition-all duration-300 text-gray-700 placeholder-gray-400 shadow-sm"
-                placeholder="Choose a username"
-              />
-            </div>
 
-            <div className="relative group">
-              <label className="block text-gray-600 text-sm font-medium mb-2 transition-colors group-hover:text-indigo-600" htmlFor="email">
+        <div className="p-8 md:p-10">
+          <h2 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-white">
+            Create Your Account
+          </h2>
+
+          {/* Social Signup Buttons */}
+          <div className="flex justify-center gap-4 mb-6">
+            <button
+              type="button"
+              className="p-3 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+              aria-label="Sign up with Google"
+            >
+              <FcGoogle className="h-6 w-6" />
+            </button>
+            <button
+              type="button"
+              className="p-3 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+              aria-label="Sign up with GitHub"
+            >
+              <FaGithub className="h-6 w-6 text-gray-800 dark:text-gray-200" />
+            </button>
+          </div>
+
+          {/* Divider */}
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">
+                Or sign up with email
+              </span>
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit(handleSignup)} className="space-y-6">
+            {/* Email Input */}
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
+              >
                 Email Address
               </label>
-              <input
-                {...register('email',{
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/,
-                    message: 'Please enter a valid email address'
-                  }
-                })}
-                type="email"
-                id="email"
-                className="w-full px-5 py-4 rounded-xl bg-gray-50/50 border border-gray-200/50 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-200/50 transition-all duration-300 peer text-gray-700 placeholder-gray-400 shadow-sm"
-                placeholder="Enter your email"
-              />
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                </span>
+                <input
+                  type="email"
+                  id="email"
+                  {...register('email', {
+                    required: 'Email is required',
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: 'Please enter a valid email address',
+                    },
+                  })}
+                  className={`w-full pl-10 pr-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-800 border ${
+                    errors.email
+                      ? 'border-red-500 dark:border-red-400'
+                      : 'border-gray-300 dark:border-gray-600'
+                  } focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 dark:focus:border-blue-400 dark:focus:ring-blue-400/30 transition duration-200 ease-in-out text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400`}
+                  placeholder="you@example.com"
+                  aria-invalid={errors.email ? 'true' : 'false'}
+                />
+              </div>
+              {errors.email && (
+                <p
+                  className="mt-1 text-xs text-red-600 dark:text-red-400"
+                  role="alert"
+                >
+                  {errors.email.message}
+                </p>
+              )}
             </div>
-            <div className="relative group">
-              <label className="block text-gray-600 text-sm font-medium mb-2 transition-colors group-hover:text-indigo-600" htmlFor="password">
+
+            {/* Password Input */}
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
+              >
                 Password
               </label>
               <div className="relative">
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <KeyRound className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                </span>
                 <input
-                  {...register('password')}
                   type={showPassword ? 'text' : 'password'}
                   id="password"
-                  className="w-full px-5 py-4 rounded-xl bg-gray-50/50 border border-gray-200/50 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-200/50 transition-all duration-300 text-gray-700 placeholder-gray-400 shadow-sm pr-12"
-                  placeholder="Create a password"
+                  {...register('password', {
+                    required: 'Password is required',
+                    minLength: {
+                      value: 8,
+                      message: 'Password must be at least 8 characters',
+                    },
+                  })}
+                  className={`w-full pl-10 pr-12 py-3 rounded-lg bg-gray-50 dark:bg-gray-800 border ${
+                    errors.password
+                      ? 'border-red-500 dark:border-red-400'
+                      : 'border-gray-300 dark:border-gray-600'
+                  } focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 dark:focus:border-blue-400 dark:focus:ring-blue-400/30 transition duration-200 ease-in-out text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400`}
+                  placeholder="Create a strong password"
+                  aria-invalid={errors.password ? 'true' : 'false'}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-indigo-600 transition-colors duration-200"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
+              {errors.password && (
+                <p
+                  className="mt-1 text-xs text-red-600 dark:text-red-400"
+                  role="alert"
+                >
+                  {errors.password.message}
+                </p>
+              )}
             </div>
+
+            {/* Submit Button */}
             <button
               type="submit"
-              onClick={()=>console.log(formState.errors.name)}
-              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-indigo-300/50 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-indigo-500/20"
+              disabled={isSubmitting}
+              className={`w-full bg-red-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 dark:focus:ring-offset-gray-900 transition-all duration-300 ease-in-out shadow-md hover:shadow-lg ${
+                isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+              }`}
             >
-              Sign Up
+              {isSubmitting ? (
+                <>
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Creating Account...
+                </>
+              ) : (
+                'Create Account'
+              )}
             </button>
           </form>
 
-          <div className="mt-8 text-center">
-            <p className="text-gray-600 text-sm">
+          {/* Sign In Link */}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               Already have an account?{' '}
-              <Link
-                href="/auth/login"
-                className="text-indigo-600 hover:text-indigo-800 font-medium transition-colors duration-200 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-indigo-600 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
-              >
-                Sign In
+              <Link href="/auth/login">
+                <span className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline transition-colors duration-200">
+                  Sign In
+                </span>
               </Link>
             </p>
           </div>
