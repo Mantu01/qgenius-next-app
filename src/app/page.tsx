@@ -3,26 +3,23 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from "next/image";
-import PageLayout from '@/components/layout/PageLayout'; // Assuming this provides basic layout structure
 
 // Import Lucid React icons
 import { 
-  NotebookText,     // For Start Taking Notes button
-  ArrowRight,       // For navigation buttons/links
-  FileText,         // For Smart Summaries feature
-  Search,           // For Intelligent Search feature
-  FolderOpen,       // For Automatic Organization feature
-  Sparkles,         // For AI emphasis / decorative in Testimonials & CTA
-  CheckCircle,      // Alternative for features if needed
-  Users             // Alternative for Testimonials if needed
+  NotebookText,
+  ArrowRight,
+  FileText,
+  Search, 
+  FolderOpen,
+  Sparkles,
 } from 'lucide-react'; 
 
 export default function Home() {
   return (
     // Assuming PageLayout sets the base font and handles overall structure
-    <PageLayout>
+    <>
       {/* Hero Section */}
-      <section className="bg-white dark:bg-black text-gray-900 dark:text-white py-24 md:py-32 lg:py-40 transition-colors duration-300 ease-in-out">
+      <section className="bg-white dark:bg-black text-gray-900 dark:text-white py-10 transition-colors duration-300 ease-in-out">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             {/* Text Content */}
@@ -178,17 +175,17 @@ export default function Home() {
       <section className="py-20 md:py-24 lg:py-32 bg-gray-50 dark:bg-gray-900 transition-colors duration-300 ease-in-out">
         <div className="max-w-5xl mx-auto px-6 lg:px-8">
           {/* Using gradient for a subtle depth effect */}
-          <div className="bg-gradient-to-br from-gray-900 to-black dark:from-black dark:to-gray-800 rounded-2xl shadow-2xl overflow-hidden p-12 md:p-16 lg:p-20 text-center">
+          <div className="bg-gradient-to-br from-gray-100 to-white dark:from-black dark:to-gray-800 rounded-2xl shadow-2xl overflow-hidden p-12 md:p-16 lg:p-20 text-center">
               {/* Use Lucid Icon - Sparkles */}
               <Sparkles 
                 className="w-12 h-12 mx-auto mb-6 text-blue-400" // Slightly brighter blue on dark bg
                 strokeWidth={1.5}
                 aria-hidden="true" 
               />
-              <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+              <h2 className="text-3xl font-extrabold tracking-tight dark:text-white sm:text-4xl">
                 Ready to revolutionize your notes?
               </h2>
-              <p className="mt-4 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+              <p className="mt-4 text-lg md:text-xl dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
                 Experience the future of note-taking. Get started with AI-powered assistance today and unlock your full potential.
               </p>
               <div className="mt-10">
@@ -204,6 +201,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </PageLayout>
+    </>
   );
 }

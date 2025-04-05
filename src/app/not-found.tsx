@@ -2,22 +2,42 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { ArrowLeft, Home } from 'lucide-react';
 
 export default function NotFound() {
+  const router = useRouter();
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4">
-      <div className="text-center">
-        <h1 className="text-9xl font-bold text-red-500 animate-bounce">404</h1>
-        <h2 className="text-6xl font-bold text-gray-900 mt-4">Are sir, kahan jaa rhe ho? 🤔</h2>
-        <div className="mt-10">
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-gray-50 dark:bg-gray-900 transition-colors">
+      <div className="text-center max-w-xl">
+        <h1 className="text-9xl font-extrabold text-red-600 drop-shadow-lg">404</h1>
+        <h2 className="text-4xl md:text-5xl font-semibold mt-4 text-gray-800 dark:text-white">
+          Are sir, kahan jaa rhe ho? 🤔
+        </h2>
+        <p className="text-gray-600 dark:text-gray-300 mt-4 text-base">
+          The page you're looking for doesn't exist or has been moved.
+        </p>
+
+        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
             href="/"
-            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400"
+            className="inline-flex items-center gap-2 px-6 py-3 text-white bg-red-600 hover:bg-red-700 transition rounded-md font-medium shadow-md"
           >
-            Home
+            <Home size={20} />
+            Go Home
           </Link>
+
+          <button
+            onClick={() => router.back()}
+            className="inline-flex items-center gap-2 px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 transition rounded-md font-medium shadow-md"
+          >
+            <ArrowLeft size={20} />
+            Go Back
+          </button>
         </div>
-        <div className="mt-16 flex flex-col items-center">
+
+        <div className="mt-16 flex justify-center">
           <Image 
             src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1740554497/image-removebg-preview_nerxe2.png"
             alt="QGenius Logo"

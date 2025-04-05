@@ -31,7 +31,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <PageLayout>
+    <>
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-indigo-500 to-blue-600 py-20 text-white rounded-lg shadow-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -109,6 +109,6 @@ export default function AboutPage() {
           </p>
         </div>
       </div>
-    </PageLayout>
+    </>
   );
 }

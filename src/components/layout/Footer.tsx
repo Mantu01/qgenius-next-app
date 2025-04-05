@@ -8,7 +8,7 @@ import {usePathname} from 'next/navigation';
 export default function Footer() {
 
   const pathname = usePathname();
-  const isLoginPage = pathname === "/auth/login" || pathname === "/auth/signup";
+  const isLoginPage = pathname === "/auth/login" || pathname === "/auth/signup" || pathname === "/chat";
   
   return (
     <footer className={`bg-gray-50 dark:bg-black border-t border-gray-200 dark:border-gray-700 transition-colors duration-300 ${isLoginPage ? "hidden" : "block"}`}>
@@ -95,7 +95,7 @@ export default function Footer() {
         
         <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
           <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-            &copy; {new Date().getFullYear()} QGenius. All rights reserved.
+            &copy; {new Date().getFullYear()} QGenius. No rights reserved, You can do whatever you want.
           </p>
         </div>
       </div>

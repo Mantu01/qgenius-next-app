@@ -41,8 +41,8 @@ export default function Navbar() {
 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Features', path: '/features' },
     { name: 'Chat', path: '/chat' },
+    { name: 'Features', path: '/features' },
     { name: 'Pricing', path: '/pricing' },
     { name: 'About', path: '/about' },
   ];
@@ -68,7 +68,7 @@ export default function Navbar() {
                 key={item.path}
                 href={item.path}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  pathname === item.path
+                  pathname === item.path || (item.path !=='/' && pathname.startsWith(item.path))
                     ? 'bg-blue-50 dark:bg-gray-800 text-red-600 dark:text-red-400'
                     : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400'
                 }`}
