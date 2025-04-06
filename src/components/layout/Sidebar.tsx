@@ -57,7 +57,7 @@ export default function Sidebar() {
   const navItems = [
     { name: 'Chats', path: '/chat', icon: <MessageSquare className="w-5 h-5" /> },
     { name: 'Chat History', path: '/chat/history', icon: <History className="w-5 h-5" /> },
-    { name: 'Saved Responses', path: '/chat/saved', icon: <Star className="w-5 h-5" /> },
+    { name: 'Favourite', path: '/chat/favourite', icon: <Star className="w-5 h-5" /> },
     { name: 'Templates', path: '/chat/templates', icon: <FileText className="w-5 h-5" /> },
   ];
 

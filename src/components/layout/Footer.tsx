@@ -8,7 +8,7 @@ import {usePathname} from 'next/navigation';
 export default function Footer() {
 
   const pathname = usePathname();
-  const isLoginPage = pathname === "/auth/login" || pathname === "/auth/signup" || pathname === "/chat";
+  const isLoginPage = pathname === "/auth/login" || pathname === "/auth/signup" || pathname.startsWith('/chat');
   
   return (
     <footer className={`bg-gray-50 dark:bg-black border-t border-gray-200 dark:border-gray-700 transition-colors duration-300 ${isLoginPage ? "hidden" : "block"}`}>

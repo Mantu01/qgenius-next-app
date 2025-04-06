@@ -35,7 +35,92 @@ export default function ChatHistoryPage() {
       answer: 'React Fiber is a complete rewrite of React\'s core algorithm. It enables:\n\n1. Incremental rendering: splitting rendering work into chunks\n2. Better prioritization of updates\n3. Support for features like suspense and concurrent mode\n4. The ability to pause, abort, or reuse work as needed\n\nFiber makes React more flexible and capable of handling complex animations and gestures while keeping the app responsive.',
       difficulty: 'hard',
       timestamp: Date.now() - 3600000 // 1 hour ago
-    }
+    },
+    {
+      id: 4,
+      question: 'What are hooks in React?',
+      answer: 'Hooks are functions that let you use state and other React features without writing a class. They allow you to manage state, side effects, context, refs, and more in functional components. Common hooks include useState, useEffect, and useContext.',
+      difficulty: 'easy',
+      timestamp: Date.now() - 7200000 // 2 hours ago
+    },
+    {
+      id: 5,
+      question: 'What is the purpose of useEffect?',
+      answer: 'useEffect is a hook that lets you perform side effects in function components. It runs after the render phase and can be used for data fetching, subscriptions, or manually changing the DOM. You can control when it runs by passing a dependency array as the second argument.',
+      difficulty: 'medium',
+      timestamp: Date.now() - 1800000 // 30 minutes ago
+    },
+    {
+      id: 6,
+      question: 'Explain the concept of lifting state up in React',
+      answer: 'Lifting state up is a pattern in React where you move the state from a child component to a common ancestor component. This allows multiple components to share the same state and communicate with each other. It helps to keep your components in sync and manage shared data more effectively.',
+      difficulty: 'medium',
+      timestamp: Date.now() - 600000 // 10 minutes ago
+    },
+    {
+      id: 7,
+      question: 'What is the purpose of keys in React lists?',
+      answer: 'Keys are unique identifiers for elements in a list. They help React identify which items have changed, been added, or removed. Using keys improves performance by allowing React to optimize re-renders and minimize DOM manipulations. Keys should be stable, predictable, and unique among siblings.',
+      difficulty: 'easy',
+      timestamp: Date.now() - 300000 // 5 minutes ago
+    },
+    {
+      id: 8,
+      question: 'What is the difference between controlled and uncontrolled components?',
+      answer: 'Controlled components are React components that derive their value from state and notify changes via callbacks. Uncontrolled components manage their own state internally, and you can access their values using refs. Controlled components provide better control and validation, while uncontrolled components are simpler to implement.',
+      difficulty: 'medium',
+      timestamp: Date.now() - 120000 // 2 minutes ago
+    },
+    {
+      id: 9,
+      question: 'How do you handle forms in React?',
+      answer: 'You can handle forms in React using controlled or uncontrolled components. For controlled components, you manage the form state using useState and handle changes with event handlers. For uncontrolled components, you can use refs to access form values directly. You can also use libraries like Formik or React Hook Form for more complex form handling.',
+      difficulty: 'easy',
+      timestamp: Date.now() - 60000 // 1 minute ago
+    },
+    {
+      id: 10,
+      question: 'What is the purpose of the useMemo hook?',
+      answer: 'The useMemo hook is used to memoize expensive calculations in React components. It returns a memoized value that only updates when its dependencies change. This helps to optimize performance by preventing unnecessary recalculations on every render.',
+      difficulty: 'medium',
+      timestamp: Date.now() - 30000 // 30 seconds ago
+    },
+    {
+      id: 11,
+      question: 'What is the purpose of the useCallback hook?',
+      answer: 'The useCallback hook is used to memoize callback functions in React components. It returns a memoized version of the callback that only changes if its dependencies change. This helps to optimize performance by preventing unnecessary re-creations of functions on every render.',
+      difficulty: 'medium',
+      timestamp: Date.now() - 15000 // 15 seconds ago
+    },
+    {
+      id: 12,
+      question: 'What is context API in React?',
+      answer: 'The Context API is a way to manage global state in React applications. It allows you to create a context object that can be shared across components without passing props down manually at every level. This makes it easier to manage and consume global data, such as themes or user authentication status.',
+      difficulty: 'medium',
+      timestamp: Date.now() - 5000 // 5 seconds ago
+    },
+    {
+      id: 13,
+      question: 'What is the purpose of the useRef hook?',
+      answer: 'The useRef hook is used to create a mutable ref object that persists for the full lifetime of the component. It can be used to access DOM elements, store mutable values, or keep track of previous state without causing re-renders.',
+      difficulty: 'medium',
+      timestamp: Date.now() - 2000 // 2 seconds ago
+    },
+    {
+      id: 14,
+      question: 'What are higher-order components (HOCs) in React?',
+      answer: 'Higher-order components (HOCs) are functions that take a component and return a new component with additional props or functionality. They are used for code reuse and can help with cross-cutting concerns like logging, authentication, or data fetching.',
+      difficulty: 'hard',
+      timestamp: Date.now() - 1000 // 1 second ago
+    },
+    {
+      id: 15,
+      question: 'What is the purpose of the useLayoutEffect hook?',
+      answer: 'The useLayoutEffect hook is similar to useEffect but runs synchronously after all DOM mutations. It is used for reading layout from the DOM and synchronously re-rendering. It can be useful for measuring DOM elements or applying styles before the browser paints.',
+      difficulty: 'hard',
+      timestamp: Date.now() - 500 // 0.5 seconds ago
+    },
+     
   ];
 
   const getDifficultyColor = (difficulty: Difficulty) => {
