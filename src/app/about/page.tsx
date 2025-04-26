@@ -2,87 +2,86 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Rocket, Atom, Globe, Code, Sparkles, Users, Target } from 'lucide-react';
+import { MessageSquare, Brain, Globe, Code, Sparkles, Users, Target } from 'lucide-react';
 
 export default function AboutPage() {
   const team = [
     {
-      name: "Zorblax the Visionary",
-      role: "Lead Quantum Innovator",
-      bio: "Exploring the frontiers of quantum science, ensuring timelines don't collide.",
+      name: "Alex Johnson",
+      role: "Lead AI Engineer",
+      bio: "Building intelligent systems that understand and respond to human needs with precision.",
       image: "https://randomuser.me/api/portraits/men/24.jpg",
-      specialties: ["Quantum Entanglement", "Temporal Mechanics"]
+      specialties: ["Natural Language Processing", "Machine Learning"]
     },
     {
-      name: "Captain Nova",
-      role: "Space Systems Engineer",
-      bio: "From coding in zero-gravity to managing galactic networks, no system is out of reach.",
-      image: "https://randomuser.me/api/portraits/men/45.jpg",
-      specialties: ["Orbital Dynamics", "FTL Communications"]
+      name: "Sarah Chen",
+      role: "Frontend Developer",
+      bio: "Creating beautiful, responsive interfaces that make AI accessible to everyone.",
+      image: "https://randomuser.me/api/portraits/women/45.jpg",
+      specialties: ["React", "UX Design"]
     },
     {
-      name: "Luna Vega",
-      role: "UX Specialist",
-      bio: "Designs experiences that flow as seamlessly as stardust through a nebula.",
-      image: "https://randomuser.me/api/portraits/women/56.jpg",
-      specialties: ["Interstellar UI", "Neural Interfaces"]
+      name: "Michael Rodriguez",
+      role: "Backend Specialist",
+      bio: "Architecting robust systems that power our AI capabilities at scale.",
+      image: "https://randomuser.me/api/portraits/men/56.jpg",
+      specialties: ["Node.js", "API Design"]
     },
     {
-      name: "Dr. Quark",
+      name: "Priya Patel",
       role: "AI Researcher",
-      bio: "Develops intelligent systems that understand both humans and alien lifeforms.",
-      image: "https://randomuser.me/api/portraits/men/66.jpg",
-      specialties: ["Xenolinguistics", "Quantum Neural Nets"]
+      bio: "Pushing the boundaries of what conversational AI can achieve.",
+      image: "https://randomuser.me/api/portraits/women/66.jpg",
+      specialties: ["Deep Learning", "Neural Networks"]
     }
   ];
 
   const stats = [
-    { value: "42+", label: "Quantum Breakthroughs", icon: <Atom className="h-8 w-8" /> },
-    { value: "7", label: "Galactic Branches", icon: <Globe className="h-8 w-8" /> },
-    { value: "∞", label: "Possible Futures", icon: <Sparkles className="h-8 w-8" /> },
-    { value: "10M+", label: "Lines of Q-Code", icon: <Code className="h-8 w-8" /> }
+    { value: "10M+", label: "Questions Answered", icon: <MessageSquare className="h-8 w-8" /> },
+    { value: "24/7", label: "Availability", icon: <Globe className="h-8 w-8" /> },
+    { value: "98%", label: "Accuracy Rate", icon: <Target className="h-8 w-8" /> },
+    { value: "50+", label: "Languages Supported", icon: <Code className="h-8 w-8" /> }
   ];
 
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <div className="bg-white dark:bg-gray-900 transition-colors duration-300">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 to-indigo-900/80 dark:from-blue-950/90 dark:to-indigo-950/90"></div>
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb')] bg-cover bg-center opacity-20"></div>
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-20"></div>
         <div className="relative max-w-7xl mx-auto px-6 py-32 sm:py-40 lg:px-8 text-center">
-          <Rocket className="mx-auto h-16 w-16 text-blue-400 dark:text-blue-300 mb-6" />
+          <Brain className="mx-auto h-16 w-16 text-blue-300 dark:text-blue-200 mb-6" />
           <h1 className="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Welcome to <span className="text-blue-400">QGenius</span>
+            Welcome to <span className="text-blue-300">AI Answers</span>
           </h1>
           <p className="mt-6 text-xl leading-8 text-blue-100 max-w-3xl mx-auto">
-            Connecting minds across galaxies to unlock the infinite potential of quantum computing.
+            Your intelligent assistant for accurate, formatted responses to any question.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
-            <button className="rounded-md bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-all">
-              Explore Our Quantum Network
+            <button className="rounded-md bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 transition-all">
+              Try It Now
             </button>
             <button className="text-sm font-semibold leading-6 text-blue-200 hover:text-white transition-colors">
-              Meet the Team <span aria-hidden="true">→</span>
+              Learn More <span aria-hidden="true">→</span>
             </button>
           </div>
         </div>
       </div>
 
       {/* Stats Section */}
-      <div className="bg-gray-50 dark:bg-gray-800 py-16 sm:py-24">
+      <div className="bg-gray-50 dark:bg-gray-800 py-16 sm:py-24 transition-colors duration-300">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-              Quantum by the numbers
+              AI by the numbers
             </h2>
             <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
-              Our impact across the multiverse
+              Our impact in helping people find answers
             </p>
           </div>
           <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat, statIdx) => (
-              <div key={statIdx} className="flex flex-col items-center text-center bg-white dark:bg-gray-700 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-                <div className="text-blue-600 dark:text-blue-400 mb-4">
+              <div key={statIdx} className="flex flex-col items-center text-center bg-white dark:bg-gray-700 p-8 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+                <div className="text-red-600 dark:text-red-400 mb-4">
                   {stat.icon}
                 </div>
                 <p className="text-4xl font-bold text-gray-900 dark:text-white">{stat.value}</p>
@@ -94,32 +93,33 @@ export default function AboutPage() {
       </div>
 
       {/* Our Story */}
-      <div className="relative bg-white dark:bg-gray-900 py-16 sm:py-24">
+      <div className="relative bg-white dark:bg-gray-900 py-16 sm:py-24 transition-colors duration-300">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
             <div className="max-w-xl lg:max-w-lg">
               <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                Our Cosmic Journey
+                Our Story
               </h2>
               <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                Our odyssey began at the intersection of quantum physics and cosmic curiosity. What started as a small research collective on Europa has expanded into a galactic network of quantum innovators.
+                Founded in 2022, we set out to create an AI that could understand and respond to questions with human-like accuracy and formatting.
               </p>
               <div className="mt-8 space-y-6">
                 <p className="text-lg leading-8 text-gray-600 dark:text-gray-300">
-                  Today, QGenius stands at the forefront of multidimensional computing, with research stations spanning seven star systems and counting.
+                  Today, our platform serves millions of users worldwide, providing instant, well-formatted answers to questions across every domain.
                 </p>
                 <p className="text-lg leading-8 text-gray-600 dark:text-gray-300">
-                  We're committed to making quantum knowledge accessible to all intelligent lifeforms, from Earth-based researchers to Andromedan hobbyists.
+                  We're committed to making AI assistance accessible, accurate, and easy to use for everyone.
                 </p>
               </div>
             </div>
             <div className="relative rounded-2xl overflow-hidden shadow-xl">
               <Image
-                src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb"
-                alt="Quantum research facility"
+                src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                alt="AI research team"
                 width={800}
                 height={600}
                 className="w-full h-full object-cover"
+                priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-blue-900/60 via-transparent to-transparent"></div>
             </div>
@@ -128,15 +128,15 @@ export default function AboutPage() {
       </div>
 
       {/* Team Section */}
-      <div className="bg-gray-50 dark:bg-gray-800 py-16 sm:py-24">
+      <div className="bg-gray-50 dark:bg-gray-800 py-16 sm:py-24 transition-colors duration-300">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <Users className="mx-auto h-12 w-12 text-blue-600 dark:text-blue-400 mb-4" />
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-              Our Galactic Team
+              Our Expert Team
             </h2>
             <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
-              Innovators from across the stars, united for a quantum future
+              Passionate professionals dedicated to advancing conversational AI
             </p>
           </div>
           <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-4">
@@ -175,36 +175,36 @@ export default function AboutPage() {
       </div>
 
       {/* Mission Section */}
-      <div className="relative bg-white dark:bg-gray-900 py-16 sm:py-24">
+      <div className="relative bg-white dark:bg-gray-900 py-16 sm:py-24 transition-colors duration-300">
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute left-16 top-16 -ml-72 -mt-72 opacity-50 blur-3xl">
-            <div className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] dark:from-[#4f46e5] dark:to-[#06b6d4]"></div>
+            <div className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-blue-400 to-blue-600 dark:from-blue-800 dark:to-blue-900"></div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:max-w-4xl text-center">
             <Target className="mx-auto h-12 w-12 text-blue-600 dark:text-blue-400 mb-4" />
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-              Our Universal Mission
+              Our Mission
             </h2>
             <p className="mt-6 text-xl leading-8 text-gray-600 dark:text-gray-300">
-              To make quantum computing a universal language, understood across galaxies and dimensions
+              To provide instant, accurate, and well-formatted answers to any question
             </p>
             <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-3">
-              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl">
+              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl hover:shadow-md transition-all duration-300">
                 <div className="text-blue-600 dark:text-blue-400 text-2xl font-bold mb-2">01</div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Democratize Knowledge</h3>
-                <p className="text-gray-600 dark:text-gray-300">Make quantum computing accessible to all civilizations</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Understand</h3>
+                <p className="text-gray-600 dark:text-gray-300">Interpret questions with human-like comprehension</p>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl">
+              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl hover:shadow-md transition-all duration-300">
                 <div className="text-blue-600 dark:text-blue-400 text-2xl font-bold mb-2">02</div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Bridge Dimensions</h3>
-                <p className="text-gray-600 dark:text-gray-300">Connect quantum researchers across parallel universes</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Process</h3>
+                <p className="text-gray-600 dark:text-gray-300">Analyze information from reliable sources</p>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl">
+              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl hover:shadow-md transition-all duration-300">
                 <div className="text-blue-600 dark:text-blue-400 text-2xl font-bold mb-2">03</div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Solve Cosmic Mysteries</h3>
-                <p className="text-gray-600 dark:text-gray-300">Apply quantum computing to the universe's greatest puzzles</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Deliver</h3>
+                <p className="text-gray-600 dark:text-gray-300">Provide clear, formatted responses instantly</p>
               </div>
             </div>
           </div>
@@ -212,26 +212,26 @@ export default function AboutPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-blue-700 dark:bg-blue-900 py-16 sm:py-24">
+      <div className="bg-blue-700 dark:bg-blue-900 py-16 sm:py-24 transition-colors duration-300">
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="absolute -top-16 left-1/2 -translate-x-1/2 transform">
             <div className="flex h-32 w-32 items-center justify-center rounded-full bg-blue-600 dark:bg-blue-800">
-              <Rocket className="h-16 w-16 text-white" />
+              <MessageSquare className="h-16 w-16 text-white" />
             </div>
           </div>
           <div className="mx-auto max-w-2xl text-center pt-16">
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Ready to explore the quantum frontier?
+              Ready to get instant answers?
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-blue-100">
-              Join our growing community of interstellar quantum researchers today.
+              Try our AI assistant today and experience the difference.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <button className="rounded-md bg-white px-6 py-3 text-sm font-semibold text-blue-700 shadow-sm hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all">
-                Begin Your Journey
+              <button className="rounded-md bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 transition-all">
+                Start Asking Questions
               </button>
               <button className="text-sm font-semibold leading-6 text-white hover:text-blue-100 transition-colors">
-                Learn more <span aria-hidden="true">→</span>
+                See examples <span aria-hidden="true">→</span>
               </button>
             </div>
           </div>
