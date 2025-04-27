@@ -50,6 +50,24 @@ declare global {
     };
   }
 
+  interface SectionItem {
+    name: string;
+    path: string;
+    icon: React.ReactNode;
+  };
+  
+  interface Section {
+    title: string;
+    items: SectionItem[];
+  };
+  
+  interface SectionMap {
+    [key: string]: {
+      active: boolean;
+      sections: Section[];
+    };
+  };
+
 }
 
 export {}

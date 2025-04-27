@@ -3,18 +3,46 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import {usePathname} from 'next/navigation';
+import { usePathname } from 'next/navigation';
+
+const footerLinks = [
+  {
+    title: 'Product',
+    links: [
+      { name: 'Features', href: '/features' },
+      { name: 'Pricing', href: '/pricing' },
+      { name: 'Chat', href: '/chat' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { name: 'About', href: '/about' },
+      { name: 'Privacy', href: '/privacy' },
+      { name: 'Terms', href: '/terms' },
+    ],
+  },
+  {
+    title: 'Connect',
+    links: [
+      { name: 'Twitter', href: 'https://x.com/Mantu_kumar91' },
+      { name: 'GitHub', href: 'https://github.com/Mantu01/qgenius-next-app' },
+      { name: 'LinkedIn', href: 'https://www.linkedin.com/in/mantu-kumar-2b5912238/' },
+    ],
+  },
+];
 
 export default function Footer() {
-
   const pathname = usePathname();
-  const isLoginPage = pathname === "/login" || pathname === "/signup" || pathname.startsWith('/chat');
-  
+  const isHidden = ["/login", "/signup"].includes(pathname) || pathname.startsWith('/chat') || pathname.startsWith('/note') || pathname.startsWith('/profile');
+
+  if (isHidden) return null; // better to not even render the footer instead of "hidden"
+
   return (
-    <footer className={`bg-gray-50 dark:bg-black border-t border-gray-200 dark:border-gray-700 transition-colors duration-300 ${isLoginPage ? "hidden" : "block"}`}>
+    <footer className="bg-gray-50 dark:bg-black border-t border-gray-200 dark:border-gray-700 transition-colors duration-300 block">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="col-span-1 md:col-span-1">
+          <div>
             <div className="flex items-center">
               <Image 
                 src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1740554497/image-removebg-preview_nerxe2.png"
@@ -28,71 +56,29 @@ export default function Footer() {
               Your intelligent assistant for all things
             </p>
           </div>
-          
-          <div className="col-span-1">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white tracking-wider uppercase">Product</h3>
-            <ul className="mt-4 space-y-2">
-              <li>
-                <Link href="/features" className="text-base text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link href="/pricing" className="text-base text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link href="/chat" className="text-base text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  Chat
-                </Link>
-              </li>
-            </ul>
-          </div>
-          
-          <div className="col-span-1">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white tracking-wider uppercase">Company</h3>
-            <ul className="mt-4 space-y-2">
-              <li>
-                <Link href="/about" className="text-base text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="text-base text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  Privacy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-base text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  Terms
-                </Link>
-              </li>
-            </ul>
-          </div>
-          
-          <div className="col-span-1">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white tracking-wider uppercase">Connect</h3>
-            <ul className="mt-4 space-y-2">
-              <li>
-                <Link href="#" className="text-base text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  Twitter
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-base text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  GitHub
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-base text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  LinkedIn
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {footerLinks.map((section) => (
+            <div key={section.title}>
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-white tracking-wider uppercase">
+                {section.title}
+              </h3>
+              <ul className="mt-4 space-y-2">
+                {section.links.map((link) => (
+                  <li key={link.name}>
+                    <Link 
+                      target='_blank'
+                      href={link.href} 
+                      className="text-base text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-        
+
+        {/* Bottom Copyright */}
         <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
           <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
             &copy; {new Date().getFullYear()} QGenius. No rights reserved, You can do whatever you want.

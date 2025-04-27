@@ -5,6 +5,9 @@ import prisma from "@/DB/dbConfig";
 export async function GET(req: NextRequest) {
   try {
     const userId = getDataFromToken(req);
+    if(!userId){
+      return NextResponse.json({message:"Invalid Token"},{status:401});
+    }
     const tokens = await prisma.aPIsTokens.findFirst({ where: { userId } });
     if (!tokens) {
       return NextResponse.json({ message: "No apis found" }, { status: 404 });
@@ -18,6 +21,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const userId = getDataFromToken(req);
+    if(!userId){
+      return NextResponse.json({message:"Invalid Token"},{status:401});
+    }
     const { gemini, openAi, claude, grok } = await req.json();
     const updatedTokens = await prisma.aPIsTokens.update({
       where: { userId },

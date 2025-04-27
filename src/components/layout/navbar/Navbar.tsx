@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux';
-import { User, LogIn, LogOut, Sun, Moon, Menu, X } from 'lucide-react';
+import { LogIn, LogOut, Sun, Moon, Menu, X, UserCircle } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { clearUser } from '@/app/store/userSlice';
@@ -17,7 +17,7 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const router=useRouter();
 
-  const { isAuthenticated } = useSelector((state) => state.user);
+  const { isAuthenticated } = useSelector((state:RootState) => state.user);
 
   useEffect(() => {
     const savedMode = localStorage.getItem('theme');
@@ -58,9 +58,9 @@ export default function Navbar() {
   const navItems = [
     { name: 'Home', path: '/' },
     { name: 'Chat', path: '/chat' },
+    { name: 'Note', path: '/note' },
     { name: 'Features', path: '/features' },
     { name: 'Pricing', path: '/pricing' },
-    { name: 'About', path: '/about' },
   ];
 
   return (
@@ -98,7 +98,7 @@ export default function Navbar() {
             {isAuthenticated ? (
               <>
                 <Link href="/profile" className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
-                  <User className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+                  <UserCircle className="w-6 h-6 text-gray-700 dark:text-gray-300" />
                 </Link>
                 <button
                   onClick={handleLogout}
@@ -133,7 +133,7 @@ export default function Navbar() {
           <div className="flex items-center md:hidden space-x-2">
             {isAuthenticated ? (
               <Link href="/profile" className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
-                <User className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                <UserCircle className="w-5 h-5 text-gray-700 dark:text-gray-300" />
               </Link>
             ) : null}
             <button

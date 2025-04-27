@@ -7,6 +7,9 @@ import { sendEmail } from "@/helper/mail/mailer";
 export async function GET(req: NextRequest) {
   try {
     const userId = getDataFromToken(req);
+    if(!userId){
+      return NextResponse.json({message:"Invalid Token"},{status:401});
+    }
     const user=await prisma.user.findFirst({
       where:{id: userId},
       omit:{
@@ -34,6 +37,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const userId = getDataFromToken(req);
+    if(!userId){
+      return NextResponse.json({message:"Invalid Token"},{status:401});
+    }
     const {basicInfo,updateEmail,updatePassword}=await req.json();
     let updatedUser;
     if(basicInfo){
@@ -91,6 +97,9 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   try {
     const userId = getDataFromToken(req);
+    if(!userId){
+      return NextResponse.json({message:"Invalid Token"},{status:401});
+    }
     await prisma.user.delete({
       where:{id:userId}
     });
