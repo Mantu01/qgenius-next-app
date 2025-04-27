@@ -32,6 +32,24 @@ declare global {
     linkText:string
   }
 
+  interface User {
+    id: string;
+    fullName: string;
+    userName: string;
+    email: string;
+    avatar: string | null;
+    coverImage: string | null;
+    creaditsLeft: number;
+    isVerified: boolean;
+    createdAt: string;
+  }
+  interface RootState {
+    user: {
+      user: User;
+      isAuthenticated:boolean
+    };
+  }
+
 }
 
 export {}

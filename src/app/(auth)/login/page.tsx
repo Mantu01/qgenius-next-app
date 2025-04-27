@@ -10,10 +10,15 @@ import AuthLink from '@/components/auth/AuthLink';
 import AuthLayout from '@/components/auth/AuthLayout ';
 import {useForm} from 'react-hook-form'
 import { toast } from 'react-toastify';
-import axios,{AxiosError} from 'axios';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { setUser } from '@/app/store/userSlice';
+import { useDispatch } from 'react-redux';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch=useDispatch();
+  const router=useRouter();
 
   const togglePassword = () => setShowPassword(prev => !prev);
 
@@ -57,7 +62,9 @@ const LoginPage = () => {
   const handleLogin=async(InputData:LoginData)=>{
     try {
       const {data}=await axios.post('/api/auth/login',InputData);
-      toast.success(data.message)
+      dispatch(setUser(null));
+      toast.success(data.message);
+      router.push('/');
     } catch (error:any) {
       toast.error(error.response.data.message)
     }

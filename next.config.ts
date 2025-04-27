@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       "assets.aceternity.com",
       "images.unsplash.com",
       "randomuser.me",
+      "enwallpaper.com"
     ].map((hostname) => ({
       protocol: "https",
       hostname,

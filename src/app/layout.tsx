@@ -3,9 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./store/storeProvider";
 import Navbar from "@/components/layout/navbar/Navbar";
-import Footer from "@/components/layout/Footer";
+import Footer from "@/components/layout/footer/Footer";
 import Sidebar from "@/components/layout/Sidebar";
 import {ToastContainer} from 'react-toastify'
+import GetUser from "@/hooks/useUser";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
       >
         <ToastContainer position="top-center" draggable />
         <StoreProvider>
+          <GetUser/>
           <div className="min-h-screen flex flex-col">
             <Navbar />
             <div className="flex flex-1 pt-16 relative">
