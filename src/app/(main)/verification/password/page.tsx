@@ -62,11 +62,11 @@ export default function PasswordResetPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-gray-100 px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-green-50 to-gray-100 px-4">
       <div className="w-full max-w-md bg-white shadow-xl rounded-xl p-8 text-center border border-gray-200">
         <div className="mb-6">
-          <div className="w-16 h-16 mx-auto bg-blue-100 rounded-full flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
@@ -77,7 +77,7 @@ export default function PasswordResetPage() {
 
         {validatingToken && (
           <div className="my-8">
-            <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
+            <div className="w-12 h-12 border-4 border-green-200 border-t-green-600 rounded-full animate-spin mx-auto"></div>
             <p className="text-gray-600 mt-4">Validating your reset link...</p>
           </div>
         )}
@@ -94,7 +94,7 @@ export default function PasswordResetPage() {
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 href="/forgot-password"
-                className="flex-1 px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium transition-colors duration-200"
+                className="flex-1 px-4 py-2 text-white bg-green-600 hover:bg-green-700 rounded-lg text-sm font-medium transition-colors duration-200"
               >
                 Request Password Reset
               </Link>
@@ -113,7 +113,7 @@ export default function PasswordResetPage() {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 placeholder="Enter new password"
                 required
               />
@@ -128,7 +128,7 @@ export default function PasswordResetPage() {
                 id="confirmPassword"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-3 py-2 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 placeholder="Confirm new password"
                 required
               />
@@ -185,8 +185,8 @@ export default function PasswordResetPage() {
             <button
               type="submit"
               disabled={loading || !passwordsMatch}
-              className={`w-full py-3 px-4 text-white bg-blue-600 rounded-lg text-sm font-medium transition-colors duration-200 ${
-                loading || !passwordsMatch ? 'opacity-70 cursor-not-allowed' : 'hover:bg-blue-700'
+              className={`w-full py-3 px-4 text-white bg-green-600 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                loading || !passwordsMatch ? 'opacity-70 cursor-not-allowed' : 'hover:bg-green-700'
               }`}
             >
               {loading ? (
@@ -215,7 +215,7 @@ export default function PasswordResetPage() {
             <p className="text-sm text-green-600 mb-4">Your password has been updated. You can now login with your new password.</p>
             <Link
               href="/login"
-              className="inline-block px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium transition-colors duration-200 w-full"
+              className="inline-block px-6 py-3 text-white bg-green-600 hover:bg-green-700 rounded-lg text-sm font-medium transition-colors duration-200 w-full"
             >
               Go to Login
             </Link>
@@ -223,7 +223,7 @@ export default function PasswordResetPage() {
         )}
 
         <div className="mt-8 text-sm text-gray-500">
-          <p>Need help? <Link href="/contact" className="text-blue-600 hover:underline">Contact Support</Link></p>
+          <p>Need help? <Link href="/contact" className="text-green-600 hover:underline">Contact Support</Link></p>
         </div>
       </div>
     </div>

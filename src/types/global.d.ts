@@ -42,6 +42,7 @@ declare global {
     creaditsLeft: number;
     isVerified: boolean;
     createdAt: string;
+    updatedAt:string;
   }
   interface RootState {
     user: {
@@ -67,6 +68,24 @@ declare global {
       sections: Section[];
     };
   };
+
+  interface FormValues {
+    fullName: string;
+    userName: string;
+    avatar: File | null;
+    coverImage: File | null;
+    avatarPreview?: string;
+    coverPreview?: string;
+  }
+
+  interface EditFormValues {
+    fullName: string
+    userName: string
+    avatar: File | null
+    coverImage: File | null
+    avatarPreview?: string
+    coverPreview?: string
+  }
 
 }
 

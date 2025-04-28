@@ -53,11 +53,11 @@ export default function FeaturesPage() {
   return (
     <>
       {/* Hero Section - Enhanced with more gradient and better spacing */}
-      <div className="bg-gradient-to-r from-blue-100 via-blue-50 to-indigo-100 dark:from-blue-950 dark:via-blue-900 dark:to-indigo-950 py-24 transition-colors duration-300">
+      <div className="bg-gradient-to-r from-green-100 via-green-50 to-indigo-100 dark:from-green-950 dark:via-green-900 dark:to-indigo-950 py-24 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="inline-block mb-6">
-              <Zap className="w-16 h-16 text-blue-600 dark:text-blue-400 mx-auto" />
+              <Zap className="w-16 h-16 text-green-600 dark:text-green-400 mx-auto" />
             </div>
             <h1 className="text-5xl font-extrabold text-gray-900 dark:text-white sm:text-6xl mb-6 tracking-tight">
               QGenius Features
@@ -84,7 +84,7 @@ export default function FeaturesPage() {
         
         {/* CTA Section - Enhanced with better button styling and effects */}
         <div className="mt-24 text-center">
-          <div className="bg-blue-50 dark:bg-blue-900/30 rounded-3xl p-12 shadow-lg">
+          <div className="bg-green-50 dark:bg-green-900/30 rounded-3xl p-12 shadow-lg">
             <h2 className="text-3xl font-bold mb-6 dark:text-white">Ready to explore quantum computing?</h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
               Experience the power of QGenius and take your quantum computing journey to the next level.
@@ -101,7 +101,7 @@ export default function FeaturesPage() {
       </div>
 
       {/* How It Works Section - Completely redesigned for better visual appeal */}
-      <div className="bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-blue-950 py-24 transition-colors duration-300">
+      <div className="bg-gradient-to-b from-white to-green-50 dark:from-gray-900 dark:to-green-950 py-24 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 dark:text-white">How QGenius Works</h2>
@@ -114,8 +114,8 @@ export default function FeaturesPage() {
             <div className="order-2 md:order-1">
               <div className="space-y-12">
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 bg-blue-100 dark:bg-blue-800 rounded-full p-4 shadow-md">
-                    <span className="text-blue-600 dark:text-blue-300 font-bold text-xl">1</span>
+                  <div className="flex-shrink-0 bg-green-100 dark:bg-green-800 rounded-full p-4 shadow-md">
+                    <span className="text-green-600 dark:text-green-300 font-bold text-xl">1</span>
                   </div>
                   <div className="ml-6">
                     <h3 className="text-2xl font-semibold dark:text-white">Ask a Question</h3>
@@ -126,8 +126,8 @@ export default function FeaturesPage() {
                 </div>
                 
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 bg-blue-100 dark:bg-blue-800 rounded-full p-4 shadow-md">
-                    <span className="text-blue-600 dark:text-blue-300 font-bold text-xl">2</span>
+                  <div className="flex-shrink-0 bg-green-100 dark:bg-green-800 rounded-full p-4 shadow-md">
+                    <span className="text-green-600 dark:text-green-300 font-bold text-xl">2</span>
                   </div>
                   <div className="ml-6">
                     <h3 className="text-2xl font-semibold dark:text-white">Get Instant Answers</h3>
@@ -138,8 +138,8 @@ export default function FeaturesPage() {
                 </div>
                 
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 bg-blue-100 dark:bg-blue-800 rounded-full p-4 shadow-md">
-                    <span className="text-blue-600 dark:text-blue-300 font-bold text-xl">3</span>
+                  <div className="flex-shrink-0 bg-green-100 dark:bg-green-800 rounded-full p-4 shadow-md">
+                    <span className="text-green-600 dark:text-green-300 font-bold text-xl">3</span>
                   </div>
                   <div className="ml-6">
                     <h3 className="text-2xl font-semibold dark:text-white">Dive Deeper</h3>
@@ -163,11 +163,11 @@ export default function FeaturesPage() {
             
             <div className="order-1 md:order-2 flex justify-center">
               <div className="relative w-full max-w-md">
-                <div className="absolute inset-0 bg-blue-500 dark:bg-blue-600 rounded-3xl blur-3xl opacity-20 transform rotate-6"></div>
-                <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-blue-100 dark:border-blue-800">
+                <div className="absolute inset-0 bg-green-500 dark:bg-green-600 rounded-3xl blur-3xl opacity-20 transform rotate-6"></div>
+                <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-green-100 dark:border-green-800">
                   <div className="p-6">
                     <Image 
-                      src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1740554497/image-removebg-preview_nerxe2.png"
+                      src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1745812881/image__1_-removebg-preview_cq7xid.png"
                       alt="How QGenius Works"
                       width={500}
                       height={400}

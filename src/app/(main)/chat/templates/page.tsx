@@ -78,7 +78,7 @@ export default function Templates() {
 
   const getCategoryColor = (category: TemplateCategory) => {
     switch(category) {
-      case 'React Basics': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+      case 'React Basics': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
       case 'Hooks': return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200';
       case 'State Management': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
       case 'Performance': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
@@ -127,7 +127,7 @@ export default function Templates() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
             <button 
-              className="flex items-center text-blue-600 dark:text-blue-400 hover:underline"
+              className="flex items-center text-green-600 dark:text-green-400 hover:underline"
               onClick={() => console.log('Go back to chat history')}
             >
               <ArrowLeft size={16} className="mr-1" />
@@ -135,8 +135,8 @@ export default function Templates() {
             </button>
           </div>
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2 flex justify-center items-center">
-              <BookTemplate size={24} className="text-blue-600 dark:text-blue-400 mr-2" />
+            <h1 className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2 flex justify-center items-center">
+              <BookTemplate size={24} className="text-green-600 dark:text-green-400 mr-2" />
               Templates
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
@@ -156,7 +156,7 @@ export default function Templates() {
                   </div>
                   <input
                     type="text"
-                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500"
                     placeholder="Search templates..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -178,7 +178,7 @@ export default function Templates() {
                     <span className="text-sm text-gray-600 dark:text-gray-400">Category:</span>
                   </div>
                   <button
-                    className={`px-3 py-1 text-xs rounded-md transition ${selectedCategory === 'all' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                    className={`px-3 py-1 text-xs rounded-md transition ${selectedCategory === 'all' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                     onClick={() => setSelectedCategory('all')}
                   >
                     All
@@ -201,7 +201,7 @@ export default function Templates() {
                       checked={showFeaturedOnly}
                       onChange={() => setShowFeaturedOnly(!showFeaturedOnly)}
                     />
-                    <div className={`w-10 h-5 rounded-full transition ${showFeaturedOnly ? 'bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'}`}>
+                    <div className={`w-10 h-5 rounded-full transition ${showFeaturedOnly ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'}`}>
                       <div className={`transform transition duration-200 ease-in-out bg-white rounded-full h-5 w-5 ${showFeaturedOnly ? 'translate-x-5' : 'translate-x-0'}`} />
                     </div>
                     <span className="ml-2 text-sm text-gray-600 dark:text-gray-400 flex items-center">
@@ -284,14 +284,14 @@ export default function Templates() {
                       </button>
                       <button 
                         onClick={() => handleCopyTemplate(template.id)}
-                        className="p-2 rounded-full text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="p-2 rounded-full text-gray-500 hover:text-green-500 dark:text-gray-400 dark:hover:text-green-400 hover:bg-gray-100 dark:hover:bg-gray-700"
                         title="Use template"
                       >
                         <Copy size={18} />
                       </button>
                       <button 
                         onClick={() => console.log('Edit template', template.id)}
-                        className="p-2 rounded-full text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="p-2 rounded-full text-gray-500 hover:text-green-500 dark:text-gray-400 dark:hover:text-green-400 hover:bg-gray-100 dark:hover:bg-gray-700"
                         title="Edit template"
                       >
                         <Pencil size={18} />

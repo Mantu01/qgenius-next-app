@@ -115,7 +115,7 @@ export default function Sidebar() {
     <Link
       href={item.path}
       onClick={() => windowWidth < 768 && setIsOpen(false)}
-      className={`flex items-center space-x-3 p-3 rounded-lg text-sm font-medium transition-colors ${isActivePath(item.path)? 'bg-blue-50:bg-gray-800 text-red-600 dark:text-red-400': 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20'}`}
+      className={`flex items-center space-x-3 p-3 rounded-lg text-sm font-medium transition-colors ${isActivePath(item.path)? 'bg-green-50:bg-gray-800 text-red-600 dark:text-red-400': 'text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/20'}`}
     >
       <span className={isActivePath(item.path) ? 'text-red-600 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'}>
         {item.icon}
@@ -126,7 +126,7 @@ export default function Sidebar() {
 
   const NavSection = ({ title, items }:{title:string,items:SectionItem[]}) => (
     <div className="mb-8 px-2">
-      <h3 className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-3 pl-2">
+      <h3 className="text-xs font-semibold text-green-600 dark:text-green-400 uppercase tracking-wider mb-3 pl-2">
         {title}
       </h3>
       <nav className="space-y-1">
@@ -138,7 +138,7 @@ export default function Sidebar() {
   return (
     <>
       <button
-        className="md:hidden fixed top-16 left-1 z-40 p-2 bg-white dark:bg-gray-900 rounded-md shadow-lg text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
+        className="md:hidden fixed top-16 left-1 z-40 p-2 bg-white dark:bg-gray-900 rounded-md shadow-lg text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors"
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
       >
@@ -146,7 +146,7 @@ export default function Sidebar() {
       </button>
       
       <aside
-        className={`fixed md:sticky top-16 left-0 z-30 h-[calc(100vh-4rem)] pt-20 md:pt-0 w-72 md:w-56 bg-white dark:bg-gray-900 border-r border-blue-200 dark:border-blue-900 shadow-xl transform transition-transform duration-300 ease-in-out ${
+        className={`fixed md:sticky top-16 left-0 z-30 h-[calc(100vh-4rem)] pt-20 md:pt-0 w-72 md:w-56 bg-white dark:bg-gray-900 border-r border-green-200 dark:border-green-900 shadow-xl transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } md:translate-x-0 overflow-y-auto`}
       >
@@ -155,11 +155,11 @@ export default function Sidebar() {
             <NavSection key={index} title={section.title} items={section.items} />
           ))}
           
-          <div className="mt-auto pt-6 border-t border-blue-100 dark:border-blue-900/50 px-2">
+          <div className="mt-auto pt-6 border-t border-green-100 dark:border-green-900/50 px-2">
             <Link 
               href="/"
               onClick={() => windowWidth < 768 && setIsOpen(false)}
-              className="flex items-center space-x-3 p-3 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+              className="flex items-center space-x-3 p-3 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors"
             >
               <Home className="h-5 w-5 text-gray-500 dark:text-gray-400" />
               <span>Back to Home</span>

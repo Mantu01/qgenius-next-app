@@ -305,7 +305,7 @@ export function generateEmailHTML(params: templateParameters) {
       <div class="container">
           <div class="top-band"></div>
           <div class="header">
-              <img src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1740554497/image-removebg-preview_nerxe2.png" alt="QGenius Logo" class="logo">
+              <img src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1745812881/image__1_-removebg-preview_cq7xid.png" alt="QGenius Logo" class="logo">
           </div>
           
           <div class="content">

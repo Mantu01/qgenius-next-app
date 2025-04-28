@@ -78,11 +78,11 @@ export default function Pricing() {
   return (
     <div className="bg-white dark:bg-gray-900">
       {/* Hero Section */}
-      <div className="relative isolate overflow-hidden bg-gradient-to-b from-blue-100/20 dark:from-blue-900/20">
+      <div className="relative isolate overflow-hidden bg-gradient-to-b from-green-100/20 dark:from-green-900/20">
         <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0">
             <div className="flex items-center gap-x-4">
-              <span className="rounded-full bg-blue-600/10 dark:bg-blue-400/10 px-3 py-1 text-sm font-semibold leading-6 text-blue-600 dark:text-blue-400 ring-1 ring-inset ring-blue-600/10 dark:ring-blue-400/10">
+              <span className="rounded-full bg-green-600/10 dark:bg-green-400/10 px-3 py-1 text-sm font-semibold leading-6 text-green-600 dark:text-green-400 ring-1 ring-inset ring-green-600/10 dark:ring-green-400/10">
                 Pricing
               </span>
               <span className="inline-flex items-center rounded-md bg-green-50 dark:bg-green-900/20 px-2 py-1 text-xs font-medium text-green-700 dark:text-green-400 ring-1 ring-inset ring-green-600/20">
@@ -97,10 +97,10 @@ export default function Pricing() {
               From curious individuals to advanced alien species, we have a plan that fits your quantum computing needs across the multiverse.
             </p>
             <div className="mt-10 flex items-center gap-x-6">
-              <button className="rounded-md bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-all">
+              <button className="rounded-md bg-green-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 transition-all">
                 Start for free
               </button>
-              <button className="text-sm font-semibold leading-6 text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              <button className="text-sm font-semibold leading-6 text-gray-900 dark:text-white hover:text-green-600 dark:hover:text-green-400 transition-colors">
                 Learn more <span aria-hidden="true">→</span>
               </button>
             </div>
@@ -124,7 +124,7 @@ export default function Pricing() {
       {/* Pricing Tiers */}
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-base font-semibold leading-7 text-blue-600 dark:text-blue-400">
+          <h2 className="text-base font-semibold leading-7 text-green-600 dark:text-green-400">
             Pricing
           </h2>
           <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
@@ -140,7 +140,7 @@ export default function Pricing() {
             <div
               key={tier.name}
               className={classNames(
-                tier.featured ? "bg-gray-900 dark:bg-gray-800 ring-2 ring-blue-600" : "bg-gray-50 dark:bg-gray-800/60 ring-1 ring-gray-200 dark:ring-gray-700",
+                tier.featured ? "bg-gray-900 dark:bg-gray-800 ring-2 ring-green-600" : "bg-gray-50 dark:bg-gray-800/60 ring-1 ring-gray-200 dark:ring-gray-700",
                 "rounded-3xl p-8 xl:p-10"
               )}
             >
@@ -155,13 +155,13 @@ export default function Pricing() {
                   {tier.name}
                 </h3>
                 {tier.featured ? (
-                  <p className="rounded-full bg-blue-600/10 dark:bg-blue-400/10 px-2.5 py-1 text-xs font-semibold leading-5 text-blue-600 dark:text-blue-400">
+                  <p className="rounded-full bg-green-600/10 dark:bg-green-400/10 px-2.5 py-1 text-xs font-semibold leading-5 text-green-600 dark:text-green-400">
                     Most popular
                   </p>
                 ) : null}
               </div>
               <p className={classNames(
-                tier.featured ? "text-blue-200" : "text-gray-600 dark:text-gray-400",
+                tier.featured ? "text-green-200" : "text-gray-600 dark:text-gray-400",
                 "mt-2 text-sm"
               )}>
                 {tier.tagline}
@@ -192,9 +192,9 @@ export default function Pricing() {
                 aria-describedby={tier.name}
                 className={classNames(
                   tier.featured
-                    ? "bg-blue-600 text-white shadow-sm hover:bg-blue-500"
-                    : "bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600",
-                  "mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-all w-full"
+                    ? "bg-green-600 text-white shadow-sm hover:bg-green-500"
+                    : "bg-white dark:bg-gray-700 text-green-600 dark:text-green-400 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600",
+                  "mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 transition-all w-full"
                 )}
               >
                 {tier.cta}
@@ -209,7 +209,7 @@ export default function Pricing() {
                 {tier.features.map((feature) => (
                   <li key={feature} className="flex gap-x-3">
                     <Check className={classNames(
-                      tier.featured ? "text-blue-400" : "text-blue-600 dark:text-blue-400",
+                      tier.featured ? "text-green-400" : "text-green-600 dark:text-green-400",
                       "h-6 w-5 flex-none"
                     )} />
                     {feature}
@@ -224,7 +224,7 @@ export default function Pricing() {
       {/* Feature Comparison */}
       <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-40 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-base font-semibold leading-7 text-blue-600 dark:text-blue-400">
+          <h2 className="text-base font-semibold leading-7 text-green-600 dark:text-green-400">
             Compare all features
           </h2>
           <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
@@ -265,7 +265,7 @@ export default function Pricing() {
             }
           ].map((feature) => (
             <div key={feature.name} className="bg-gray-50 dark:bg-gray-800/60 p-6 rounded-xl">
-              <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-blue-600 dark:bg-blue-500 text-white mb-4">
+              <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-green-600 dark:bg-green-500 text-white mb-4">
                 <feature.icon className="h-6 w-6" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
@@ -323,10 +323,10 @@ export default function Pricing() {
       </div>
 
       {/* Final CTA */}
-      <div className="bg-blue-700 dark:bg-blue-900 py-16 sm:py-24">
+      <div className="bg-green-700 dark:bg-green-900 py-16 sm:py-24">
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="absolute -top-16 left-1/2 -translate-x-1/2 transform">
-            <div className="flex h-32 w-32 items-center justify-center rounded-full bg-blue-600 dark:bg-blue-800">
+            <div className="flex h-32 w-32 items-center justify-center rounded-full bg-green-600 dark:bg-green-800">
               <Stars className="h-16 w-16 text-white" />
             </div>
           </div>
@@ -334,14 +334,14 @@ export default function Pricing() {
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Ready to explore quantum computing?
             </h2>
-            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-blue-100">
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-green-100">
               Join millions of researchers across the galaxy who are already using QGenius.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <button className="rounded-md bg-white px-6 py-3 text-sm font-semibold text-blue-700 shadow-sm hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all">
+              <button className="rounded-md bg-white px-6 py-3 text-sm font-semibold text-green-700 shadow-sm hover:bg-green-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all">
                 Start for free
               </button>
-              <button className="text-sm font-semibold leading-6 text-white hover:text-blue-100 transition-colors">
+              <button className="text-sm font-semibold leading-6 text-white hover:text-green-100 transition-colors">
                 Contact sales <span aria-hidden="true">→</span>
               </button>
             </div>

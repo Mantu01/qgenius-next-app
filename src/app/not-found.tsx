@@ -30,7 +30,7 @@ export default function NotFound() {
 
           <button
             onClick={() => router.back()}
-            className="inline-flex items-center gap-2 px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 transition rounded-md font-medium shadow-md"
+            className="inline-flex items-center gap-2 px-6 py-3 text-white bg-green-600 hover:bg-green-700 transition rounded-md font-medium shadow-md"
           >
             <ArrowLeft size={20} />
             Go Back
@@ -39,7 +39,7 @@ export default function NotFound() {
 
         <div className="mt-16 flex justify-center">
           <Image 
-            src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1740554497/image-removebg-preview_nerxe2.png"
+            src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1745812881/image__1_-removebg-preview_cq7xid.png"
             alt="QGenius Logo"
             width={100}
             height={100}

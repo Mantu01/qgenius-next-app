@@ -63,7 +63,7 @@ const Note = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-4xl mx-auto p-4 sm:p-6">
         <div className="flex items-center mb-8">
-          <h1 className="text-2xl font-bold flex items-center gap-2 text-blue-600 dark:text-blue-400">
+          <h1 className="text-2xl font-bold flex items-center gap-2 text-green-600 dark:text-green-400">
             <NotebookText className="w-6 h-6" />
             Smart Notes AI
           </h1>
@@ -88,7 +88,7 @@ const Note = () => {
                     value={question}
                     onChange={(e) => handleQuestionChange(index, e.target.value)}
                     placeholder={`Question ${index + 1}`}
-                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all"
                   />
                   {questions.length > 1 && (
                     <button
@@ -107,7 +107,7 @@ const Note = () => {
             <button
               onClick={addQuestionField}
               disabled={questions.length >= 10}
-              className={`flex items-center gap-1 px-4 py-2 rounded-lg ${questions.length >= 10 ? 'bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed' : 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30'} transition-colors`}
+              className={`flex items-center gap-1 px-4 py-2 rounded-lg ${questions.length >= 10 ? 'bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed' : 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/30'} transition-colors`}
             >
               <Plus className="w-4 h-4" />
               Add Question

@@ -45,7 +45,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center">
               <Image 
-                src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1740554497/image-removebg-preview_nerxe2.png"
+                src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1745812881/image__1_-removebg-preview_cq7xid.png"
                 alt="QGenius Logo"
                 width={40}
                 height={40}
@@ -67,7 +67,7 @@ export default function Footer() {
                     <Link 
                       target='_blank'
                       href={link.href} 
-                      className="text-base text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                      className="text-base text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors"
                     >
                       {link.name}
                     </Link>

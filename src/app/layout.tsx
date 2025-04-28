@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   title: "QGenius",
   description: "Notes provider",
   icons:{
-    icon:"https://res.cloudinary.com/dqznmhhtv/image/upload/v1740554497/image-removebg-preview_nerxe2.png"
+    icon:"https://res.cloudinary.com/dqznmhhtv/image/upload/v1745812881/image__1_-removebg-preview_cq7xid.png"
   },
 };
 

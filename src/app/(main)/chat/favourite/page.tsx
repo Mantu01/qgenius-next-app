@@ -73,7 +73,7 @@ export default function FavoritesPage() {
       case 'easy': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
       case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
       case 'hard': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-      default: return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+      default: return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
     }
   };
 
@@ -105,7 +105,7 @@ export default function FavoritesPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
             <button 
-              className="flex items-center text-blue-600 dark:text-blue-400 hover:underline"
+              className="flex items-center text-green-600 dark:text-green-400 hover:underline"
               onClick={() => console.log('Go back to chat history')}
             >
               <ArrowLeft size={16} className="mr-1" />
@@ -113,7 +113,7 @@ export default function FavoritesPage() {
             </button>
           </div>
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2 flex justify-center items-center">
+            <h1 className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2 flex justify-center items-center">
               <Heart size={24} className="text-red-500 mr-2 fill-red-500" />
               Favorite Conversations
             </h1>
@@ -134,7 +134,7 @@ export default function FavoritesPage() {
                 </h2>
                 <div className="flex space-x-2">
                   <button
-                    className={`px-3 py-1 rounded-md text-sm transition ${filterDifficulty === 'all' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                    className={`px-3 py-1 rounded-md text-sm transition ${filterDifficulty === 'all' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                     onClick={() => setFilterDifficulty('all')}
                   >
                     All

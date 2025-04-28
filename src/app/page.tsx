@@ -66,7 +66,7 @@ export default function Home() {
             <div className="animate-fade-in-up">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
                 <span className="block">Smart Notes</span>
-                <span className="block text-blue-600 dark:text-blue-400 mt-3">AI-Powered Assistance</span>
+                <span className="block text-green-600 dark:text-green-400 mt-3">AI-Powered Assistance</span>
               </h1>
               <p className="mt-6 text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-xl">
                 Effortlessly organize information, generate insightful summaries, and create effective notes tailored precisely to your needs.
@@ -91,7 +91,7 @@ export default function Home() {
                 )}
                 <Link 
                   href="/features" 
-                  className="inline-flex items-center justify-center px-8 py-3 border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 font-medium rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800 transition-all duration-300"
+                  className="inline-flex items-center justify-center px-8 py-3 border border-green-600 dark:border-green-500 text-green-600 dark:text-green-400 font-medium rounded-lg hover:bg-green-50 dark:hover:bg-gray-800 transition-all duration-300"
                 >
                   Explore Features
                   <ArrowRight className="ml-2 h-5 w-5" strokeWidth={2.5} />
@@ -101,9 +101,9 @@ export default function Home() {
             
             {/* Image */}
             <div className="hidden md:block relative animate-fade-in">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-transparent to-transparent dark:from-blue-900/30 rounded-full blur-3xl opacity-50 -z-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-green-100 via-transparent to-transparent dark:from-green-900/30 rounded-full blur-3xl opacity-50 -z-10"></div>
               <Image 
-                src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1740554497/image-removebg-preview_nerxe2.png"
+                src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1745812881/image__1_-removebg-preview_cq7xid.png"
                 alt="AI assisting with notes illustration"
                 width={600}
                 height={500}
@@ -119,7 +119,7 @@ export default function Home() {
       <section className="py-16 md:py-20 lg:py-24 bg-gray-50 dark:bg-gray-800/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-base font-semibold text-blue-600 dark:text-blue-400 tracking-wide uppercase">Features</h2>
+            <h2 className="text-base font-semibold text-green-600 dark:text-green-400 tracking-wide uppercase">Features</h2>
             <p className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
               Everything You Need
             </p>
@@ -135,7 +135,7 @@ export default function Home() {
                 className="bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700 p-8 text-center transform hover:-translate-y-2"
               >
                 <feature.icon 
-                    className="w-12 h-12 mx-auto mb-6 text-blue-600 dark:text-blue-400 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-full" 
+                    className="w-12 h-12 mx-auto mb-6 text-green-600 dark:text-green-400 p-2 bg-green-50 dark:bg-green-900/20 rounded-full" 
                     aria-hidden="true" 
                     strokeWidth={1.5}
                 />
@@ -151,7 +151,7 @@ export default function Home() {
       <section className="py-16 md:py-20 lg:py-24 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-base font-semibold text-blue-600 dark:text-blue-400 tracking-wide uppercase">Testimonials</h2>
+            <h2 className="text-base font-semibold text-green-600 dark:text-green-400 tracking-wide uppercase">Testimonials</h2>
             <p className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
               Loved by Users
             </p>
@@ -164,10 +164,10 @@ export default function Home() {
             {testinomial.map((testimonial, index) => (
               <div 
                 key={index} 
-                className="bg-gray-50 dark:bg-gray-800 rounded-xl shadow-md p-8 border border-gray-200 dark:border-gray-700 flex flex-col h-full transition duration-300 hover:border-blue-300 dark:hover:border-blue-500"
+                className="bg-gray-50 dark:bg-gray-800 rounded-xl shadow-md p-8 border border-gray-200 dark:border-gray-700 flex flex-col h-full transition duration-300 hover:border-green-300 dark:hover:border-green-500"
               >
                 <Sparkles 
-                    className="w-8 h-8 text-blue-500 dark:text-blue-400 mb-4 opacity-60" 
+                    className="w-8 h-8 text-green-500 dark:text-green-400 mb-4 opacity-60" 
                     strokeWidth={1.5}
                     aria-hidden="true" 
                 /> 
@@ -187,7 +187,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden p-8 md:p-10 lg:p-12 text-center border border-gray-200 dark:border-gray-700">
               <Sparkles 
-                className="w-12 h-12 mx-auto mb-6 text-blue-500 dark:text-blue-400 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-full"
+                className="w-12 h-12 mx-auto mb-6 text-green-500 dark:text-green-400 p-2 bg-green-50 dark:bg-green-900/20 rounded-full"
                 strokeWidth={1.5}
                 aria-hidden="true" 
               />

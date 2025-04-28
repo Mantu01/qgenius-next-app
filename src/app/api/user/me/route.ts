@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
 }
 
 
-// basicInfo={fullName,userName,creaditsLeft}
+// basicInfo={fullName,userName}
 // updateEmail={email,password}
 // updatePassword={oldPassword,newPassword}
 export async function POST(req: NextRequest) {
@@ -43,16 +43,17 @@ export async function POST(req: NextRequest) {
     const {basicInfo,updateEmail,updatePassword}=await req.json();
     let updatedUser;
     if(basicInfo){
-      const {fullName,userName,creaditsLeft}=basicInfo;
+      const {fullName,userName}=basicInfo;
       const userExists=await prisma.user.findFirst({where:{userName}});
       if(userName && userExists){
         return NextResponse.json({ message: "Username already exists" },{ status: 400 });
       }
       updatedUser=await prisma.user.update({
         where:{id:userId},
-        data:{fullName,userName,creaditsLeft},
+        data:{fullName,userName},
         omit:{password:true,verifyToken:true,verifyTokenExpiry:true,forgotPasswordToken:true,forgotPasswordTokenExpiry:true}
       });
+      console.log(updatedUser)
     }else if(updateEmail){
       const {email,password}=updateEmail;
       const userExists=await prisma.user.findFirst({where:{email}});
@@ -87,7 +88,7 @@ export async function POST(req: NextRequest) {
     if(!updatedUser){
       return NextResponse.json({ message: "User not found" },{ status: 404 });
     }
-    return NextResponse.json({ message: "User updated successfully",data:updatedUser },{status:200});
+    return NextResponse.json({ message: "User updated successfully",user:updatedUser },{status:200});
   } catch (error:any) {
     console.error(error);
     return NextResponse.json({ message: error.message },{status:500});

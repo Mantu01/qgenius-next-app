@@ -74,7 +74,7 @@ export default function ChatPage() {
       case 'easy': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
       case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
       case 'hard': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-      default: return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+      default: return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
     }
   };
 
@@ -86,7 +86,7 @@ export default function ChatPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200 py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+          <h1 className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
             Question Submission System
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
@@ -98,7 +98,7 @@ export default function ChatPage() {
         {chatHistory.length > 0 && (
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transition-colors duration-200 mb-6">
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-xl font-semibold text-blue-600 dark:text-blue-400">
+              <h2 className="text-xl font-semibold text-green-600 dark:text-green-400">
                 Chat History
               </h2>
             </div>
@@ -106,7 +106,7 @@ export default function ChatPage() {
               {chatHistory.map((item, index) => (
                 <div key={item.id} className="space-y-3">
                   <div className="flex items-start">
-                    <span className="bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm font-medium flex-shrink-0">
+                    <span className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm font-medium flex-shrink-0">
                       {index + 1}
                     </span>
                     <div className="flex-1">
@@ -144,7 +144,7 @@ export default function ChatPage() {
         {/* Questions Input */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transition-colors duration-200">
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4">
+            <h2 className="text-xl font-semibold text-green-600 dark:text-green-400 mb-4">
               {questions.length > 0 ? `${questions.length} Question${questions.length > 1 ? 's' : ''} Added` : 'Add Your Questions'}
             </h2>
             
@@ -157,7 +157,7 @@ export default function ChatPage() {
                   value={currentQuestion}
                   onChange={(e) => setCurrentQuestion(e.target.value)}
                   placeholder="Type your question here..."
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:text-white transition"
                   rows={4}
                 />
               </div>
@@ -187,7 +187,7 @@ export default function ChatPage() {
               <button
                 onClick={handleAddQuestion}
                 disabled={!currentQuestion.trim()}
-                className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Add Question
               </button>
@@ -231,7 +231,7 @@ export default function ChatPage() {
                 <button
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center shadow-md"
+                  className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center shadow-md"
                 >
                   {isSubmitting ? (
                     <>

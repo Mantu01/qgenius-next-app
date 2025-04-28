@@ -66,7 +66,7 @@ const LoginPage = () => {
       toast.success(data.message);
       router.push('/');
     } catch (error:any) {
-      toast.error(error.response.data.message)
+      toast.error(error.response.data.message || 'Something went wrong')
     }
   }
 
@@ -87,7 +87,7 @@ const LoginPage = () => {
               {field.id === 'password' && (
                 <div className="text-right mt-2">
                   <Link href="/forgot-password">
-                    <span className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline transition-colors duration-200">
+                    <span className="text-sm text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 hover:underline transition-colors duration-200">
                       Forgot password?
                     </span>
                   </Link>
