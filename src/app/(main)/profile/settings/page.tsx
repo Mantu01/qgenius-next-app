@@ -9,8 +9,8 @@ const SettingPage = () => {
       icon: <User className="w-5 h-5" />,
       items: [
         { label: "Profile Information", description: "Update your personal details",url:'/profile/settings/edit' },
-        { label: "Password", description: "Change your password" },
-        { label: "Email & Phone", description: "Manage your contact information" }
+        { label: "Password", description: "Change your password", url:'/profile/settings/password' },
+        { label: "Email & Phone", description: "Manage your contact information", url:"/profile/settings/email" }
       ]
     },
     {

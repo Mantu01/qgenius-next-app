@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import PageLayout from '@/components/layout/PageLayout';
 import { ArrowRight, CheckCircle, Zap, Code, BarChart3, BookOpen, Settings, MapPin, Shield, Users } from 'lucide-react';
 import FeatureCard from '@/components/features/FeatureCard';
 

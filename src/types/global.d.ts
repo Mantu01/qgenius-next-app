@@ -81,8 +81,8 @@ declare global {
   interface EditFormValues {
     fullName: string
     userName: string
-    avatar: File | null
-    coverImage: File | null
+    avatar: string | null
+    coverImage: string | null
     avatarPreview?: string
     coverPreview?: string
   }

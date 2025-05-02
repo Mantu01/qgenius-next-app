@@ -1,13 +1,15 @@
 'use client'
-import React from 'react'
-import Link from 'next/link'
-import { Shield, Gem } from 'lucide-react'
 
-interface PlanVerificationSectionProps {
-  user: User | null;
+import { Gem, Shield } from 'lucide-react'
+import Link from 'next/link'
+import React from 'react'
+
+interface PlanVerificationCardProps {
+  creditsLeft: number
+  isVerified: boolean
 }
 
-const PlanVerificationSection: React.FC<PlanVerificationSectionProps> = ({ user }) => {
+export const PlanVerificationCard: React.FC<PlanVerificationCardProps> = ({creditsLeft, isVerified }) => {
   return (
     <div className="bg-gray-50 dark:bg-gray-700/30 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
       <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Plan & Verification</h3>
@@ -18,7 +20,7 @@ const PlanVerificationSection: React.FC<PlanVerificationSectionProps> = ({ user 
           <div className="relative">
             <Gem size={16} className="absolute top-3 left-3 text-green-600 dark:text-green-500" />
             <div className="pl-9 w-full border border-gray-200 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 flex justify-between items-center text-sm">
-              <span>{user?.creaditsLeft || 0} credits remaining</span>
+              <span>{creditsLeft || 0} credits remaining</span>
               <Link href="/pricing" className="text-green-600 dark:text-green-400 hover:underline text-xs font-medium ml-2">
                 Upgrade
               </Link>
@@ -32,7 +34,7 @@ const PlanVerificationSection: React.FC<PlanVerificationSectionProps> = ({ user 
             <Shield size={16} className="absolute top-3 left-3 text-green-600 dark:text-green-500" />
             <div className="pl-9 w-full border border-gray-200 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 flex justify-between items-center text-sm">
               <div className="flex items-center">
-                {user?.isVerified ? (
+                {isVerified ? (
                   <>
                     <span className="h-2 w-2 rounded-full bg-green-500 mr-2"></span>
                     <span>Verified Account</span>
@@ -44,7 +46,7 @@ const PlanVerificationSection: React.FC<PlanVerificationSectionProps> = ({ user 
                   </>
                 )}
               </div>
-              {!user?.isVerified && (
+              {!isVerified && (
                 <Link href="/verify" className="text-green-600 dark:text-green-400 hover:underline text-xs font-medium ml-2">
                   Verify
                 </Link>
@@ -56,5 +58,3 @@ const PlanVerificationSection: React.FC<PlanVerificationSectionProps> = ({ user 
     </div>
   )
 }
-
-export default PlanVerificationSection

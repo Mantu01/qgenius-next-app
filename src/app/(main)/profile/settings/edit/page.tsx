@@ -4,20 +4,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
-import Link from 'next/link'
 import { 
-  User, 
-  Mail, 
-  Calendar, 
+  User,
   Image as ImageIcon, 
   Save, 
-  ArrowLeft,
-  Shield,
-  Gem,
   X,
-  Pencil
 } from 'lucide-react'
 import axios from 'axios'
+import { toast } from 'react-toastify'
+import { setUser } from '@/app/store/userSlice'
+import { FileUploadButton } from '@/components/profile/edit/FileUploadButton'
+import { AccountInfoCard } from '@/components/profile/edit/AccountInfoCard'
+import { PlanVerificationCard } from '@/components/profile/edit/PlanVerificationCard.tsx'
+import BackButton from '@/components/buttons/BackButton'
 
 const EditPage = () => {
   const router = useRouter()
@@ -27,7 +26,7 @@ const EditPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, dirtyFields },
     setValue,
     watch,
     reset,
@@ -44,28 +43,40 @@ const EditPage = () => {
 
   React.useEffect(() => {
     if (user) {
-      reset({
+      const initialValues = {
         fullName: user.fullName || '',
         userName: user.userName || '',
-        avatar: null,
-        coverImage: null
-      })
+        avatar: user.avatar,
+        coverImage: user.coverImage
+      }
+      reset(initialValues)
     }
   }, [user, reset])
 
-  const onSubmit = async (inputData:EditFormValues) => {
+  const onSubmit = async (inputData: EditFormValues) => {
     try {
-      const {data}=await axios.post('/api/user/me',{basicInfo:inputData});
-      console.log(data)
-    } catch (error) {
-      setError('root', {
+      const changedFields = Object.entries(dirtyFields).reduce((acc:any, [key, isDirty]) => {
+        if (isDirty) {
+          acc[key as keyof EditFormValues] = inputData[key as keyof EditFormValues];
+        }
+        return acc;
+      }, {} as Partial<EditFormValues>);
+      
+      if (Object.keys(changedFields).length === 0) {
+        return
+      }
+      const { data } = await axios.post('/api/user/me', { basicInfo: changedFields });
+      dispatch(setUser(data.user));
+      toast.success(data.message);
+    } catch (error:any) {
+      setError('userName', {
         type: 'manual',
-        message: 'Failed to update profile. Please try again.'
+        message:error.response.data?.message || 'Failed to update profile. Please try again.'
       })
     }
   }
 
-  const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>, fieldName:any) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: any) => {
     const file = e.target.files?.[0]
     if (!file) return
 
@@ -77,29 +88,19 @@ const EditPage = () => {
       return
     }
 
-    setValue(fieldName, file)
+    setValue(fieldName, file, { shouldDirty: true })
     clearErrors(fieldName)
 
     const reader = new FileReader()
     reader.onload = (event) => {
-      const result=event.target?.result as string;
+      const result = event.target?.result as string
       if (fieldName === 'avatar') {
-        setValue('avatarPreview', result);
+        setValue('avatarPreview', result, { shouldDirty: true })
       } else if (fieldName === 'coverImage') {
-        setValue('coverPreview', result);
+        setValue('coverPreview', result, { shouldDirty: true })
       }
     }
     reader.readAsDataURL(file)
-  }
-
-  const formatDate = (dateString:string) => {
-    if (!dateString) return ''
-    const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
   }
 
   const avatarPreview = watch('avatarPreview') || user?.avatar
@@ -108,22 +109,10 @@ const EditPage = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 pt-12 pb-8 px-4">
       <div className="max-w-3xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center space-x-4">
-            <button 
-              onClick={() => router.back()} 
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400 transition-colors"
-              aria-label="Go back"
-            >
-              <ArrowLeft size={20} />
-            </button>
-            <h1 className="text-2xl font-bold">Edit Profile</h1>
-          </div>
-        </div>
-
+        <BackButton/>
         {errors.root && (
           <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400 flex justify-between items-center">
-            <span>asdfasdf</span>
+            <span>{errors.root?.message}</span>
             <button onClick={() => clearErrors('root')} className="p-1">
               <X size={16} />
             </button>
@@ -133,29 +122,25 @@ const EditPage = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
           <div className="relative h-56 bg-gray-200 dark:bg-gray-700">
             {coverPreview ? (
-              <>
-                <Image 
-                  src={coverPreview} 
-                  alt="Cover image" 
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                <label className="absolute top-4 right-4 cursor-pointer bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 p-2.5 rounded-full shadow-md transition-all flex items-center justify-center">
-                  <Pencil size={16} className="text-green-600 dark:text-red-500 font-bold" />
-                  <input 
-                    type="file" 
-                    accept="image/jpeg,image/png,image/webp" 
-                    onChange={(e) => handleFileChange(e, 'coverImage')} 
-                    className="hidden" 
-                  />
-                </label>
-              </>
+              <Image 
+                src={coverPreview} 
+                alt="Cover image" 
+                fill
+                sizes="(max-width: 768px) 100vw, 768px"
+                className="object-cover"
+                priority
+              />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <ImageIcon size={48} className="text-gray-400 dark:text-gray-500" />
               </div>
             )}
+            <div className="absolute top-4 right-4">
+              <FileUploadButton
+                onChange={(e) => handleFileChange(e, 'coverImage')}
+                className="p-2.5"
+              />
+            </div>
             {errors.coverImage && (
               <div className="absolute bottom-4 left-4 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-sm py-1 px-3 rounded-md shadow">
                 {errors.coverImage.message}
@@ -166,30 +151,25 @@ const EditPage = () => {
           <div className="relative mx-8 -mt-20">
             <div className="h-36 w-36 rounded-full border-4 border-white dark:border-gray-800 overflow-hidden bg-gray-300 dark:bg-gray-600 shadow-lg relative">
               {avatarPreview ? (
-                <>
-                  <Image 
-                    src={avatarPreview} 
-                    alt="Profile avatar" 
-                    width={144}
-                    height={144}
-                    className="object-cover w-full h-full"
-                    priority
-                  />
-                  <label className="absolute bottom-2 right-2 cursor-pointer bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 p-2 rounded-full shadow-md transition-all flex items-center justify-center">
-                    <Pencil size={14} className="text-green-600 dark:text-red-500 font-bold" />
-                    <input 
-                      type="file" 
-                      accept="image/jpeg,image/png,image/webp" 
-                      onChange={(e) => handleFileChange(e, 'avatar')} 
-                      className="hidden" 
-                    />
-                  </label>
-                </>
+                <Image 
+                  src={avatarPreview} 
+                  alt="Profile avatar" 
+                  width={144}
+                  height={144}
+                  sizes="144px"
+                  className="object-cover w-full h-full"
+                  priority
+                />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <User size={48} className="text-gray-500 dark:text-gray-400" />
                 </div>
               )}
+              <div className="absolute bottom-2 right-2">
+                <FileUploadButton 
+                  onChange={(e) => handleFileChange(e, 'avatar')}
+                />
+              </div>
             </div>
           </div>
 
@@ -232,80 +212,15 @@ const EditPage = () => {
 
               <div className="space-y-6 pt-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-gray-50 dark:bg-gray-700/30 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Account Information</h3>
-                    
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-xs font-medium mb-1.5 text-gray-500 dark:text-gray-400">Email Address</label>
-                        <div className="relative">
-                          <Mail size={16} className="absolute top-3 left-3 text-green-600 dark:text-green-500" />
-                          <div className="pl-9 w-full border border-gray-200 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 flex justify-between items-center text-sm">
-                            <span className="truncate">{user?.email || 'example@email.com'}</span>
-                            <Link href="/settings/email" className="text-green-600 dark:text-green-400 hover:underline text-xs font-medium ml-2">
-                              Change
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
+                  <AccountInfoCard
+                    email={user?.email || ''}
+                    createdAt={user?.createdAt || ''}
+                  />
 
-                      <div>
-                        <label className="block text-xs font-medium mb-1.5 text-gray-500 dark:text-gray-400">Member Since</label>
-                        <div className="relative">
-                          <Calendar size={16} className="absolute top-3 left-3 text-green-600 dark:text-green-500" />
-                          <div className="pl-9 w-full border border-gray-200 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm">
-                            {user?.createdAt ? formatDate(user.createdAt) : 'N/A'}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-gray-50 dark:bg-gray-700/30 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Plan & Verification</h3>
-
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-xs font-medium mb-1.5 text-gray-500 dark:text-gray-400">Credits Available</label>
-                        <div className="relative">
-                          <Gem size={16} className="absolute top-3 left-3 text-green-600 dark:text-green-500" />
-                          <div className="pl-9 w-full border border-gray-200 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 flex justify-between items-center text-sm">
-                            <span>{user?.creaditsLeft || 0} credits remaining</span>
-                            <Link href="/pricing" className="text-green-600 dark:text-green-400 hover:underline text-xs font-medium ml-2">
-                              Upgrade
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-medium mb-1.5 text-gray-500 dark:text-gray-400">Account Status</label>
-                        <div className="relative">
-                          <Shield size={16} className="absolute top-3 left-3 text-green-600 dark:text-green-500" />
-                          <div className="pl-9 w-full border border-gray-200 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 flex justify-between items-center text-sm">
-                            <div className="flex items-center">
-                              {user?.isVerified ? (
-                                <>
-                                  <span className="h-2 w-2 rounded-full bg-green-500 mr-2"></span>
-                                  <span>Verified Account</span>
-                                </>
-                              ) : (
-                                <>
-                                  <span className="h-2 w-2 rounded-full bg-yellow-500 mr-2"></span>
-                                  <span>Pending Verification</span>
-                                </>
-                              )}
-                            </div>
-                            {!user?.isVerified && (
-                              <Link href="/verify" className="text-green-600 dark:text-green-400 hover:underline text-xs font-medium ml-2">
-                                Verify
-                              </Link>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <PlanVerificationCard
+                    creditsLeft={user?.creaditsLeft || 0}
+                    isVerified={user?.isVerified || false}
+                  />
                 </div>
               </div>
             </div>

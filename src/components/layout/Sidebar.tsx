@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname,useSearchParams } from 'next/navigation';
 import { 
   MessageSquare, Star, FileText, Home, Search, Cpu, Monitor, Wrench,
   ChevronLeft, Menu, History, User, Settings, Bell, Bookmark, Edit,
@@ -11,6 +11,7 @@ import {
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(true);
   const [windowWidth, setWindowWidth] = useState(0);
   
@@ -105,9 +106,14 @@ export default function Sidebar() {
   
   const isActivePath = (path:string) => {
     if (path === pathname) return true;
-    if (path.includes('?') && 
-        pathname.includes(path.split('?')[0]) && 
-        window.location.search.includes(path.split('?')[1])) return true;
+    if (path.includes('?')) {
+      const [basePath, queryString] = path.split('?');
+      if (!pathname.includes(basePath)) return false;
+      const queryPairs = new URLSearchParams(queryString);
+      for (const [key, value] of queryPairs.entries())
+        if (searchParams.get(key) !== value) return false;
+      return true;
+    }
     return false;
   };
 

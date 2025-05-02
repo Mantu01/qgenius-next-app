@@ -53,7 +53,6 @@ export async function POST(req: NextRequest) {
         data:{fullName,userName},
         omit:{password:true,verifyToken:true,verifyTokenExpiry:true,forgotPasswordToken:true,forgotPasswordTokenExpiry:true}
       });
-      console.log(updatedUser)
     }else if(updateEmail){
       const {email,password}=updateEmail;
       const userExists=await prisma.user.findFirst({where:{email}});

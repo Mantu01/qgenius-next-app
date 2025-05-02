@@ -30,7 +30,7 @@ const InputField: React.FC<InputFieldProps> = ({
           id={id}
           {...register}
           required={required}
-          className="w-full pl-10 pr-12 py-3 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 focus:border-green-500 focus:ring-2 focus:ring-green-500/40 dark:focus:border-green-400 dark:focus:ring-green-400/30 transition duration-200 ease-in-out text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+          className="pl-10 w-full border border-gray-300 dark:border-gray-600 rounded-lg p-3 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
           placeholder={placeholder}
         />
         {togglePassword && (
