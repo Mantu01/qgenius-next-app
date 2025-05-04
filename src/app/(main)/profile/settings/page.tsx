@@ -17,26 +17,26 @@ const SettingPage = () => {
       title: "Preferences",
       icon: <Globe className="w-5 h-5" />,
       items: [
-        { label: "Language", description: "Change display language" },
-        { label: "Appearance", description: "Light or dark theme" },
-        { label: "Accessibility", description: "Adjust for your needs" }
+        { label: "Language", description: "Change display language",url:"#" },
+        { label: "Appearance", description: "Light or dark theme",url:"#" },
+        { label: "Accessibility", description: "Adjust for your needs",url:"#" }
       ]
     },
     {
       title: "Notifications",
       icon: <Bell className="w-5 h-5" />,
       items: [
-        { label: "Push Notifications", description: "Manage app alerts" },
-        { label: "Email Notifications", description: "Updates via email" }
+        { label: "Push Notifications", description: "Manage app alerts",url:"#" },
+        { label: "Email Notifications", description: "Updates via email",url:"#" }
       ]
     },
     {
       title: "Privacy & Security",
       icon: <Shield className="w-5 h-5" />,
       items: [
-        { label: "Privacy Settings", description: "Control your data" },
-        { label: "Security Options", description: "Keep your account secure" },
-        { label: "Two-Factor Authentication", description: "Add an extra layer of security" }
+        { label: "Privacy Settings", description: "Control your data",url:"#" },
+        { label: "Security Options", description: "Keep your account secure",url:"#" },
+        { label: "Two-Factor Authentication", description: "Add an extra layer of security",url:"#" }
       ]
     }
   ];
@@ -69,7 +69,7 @@ const SettingPage = () => {
               <div className="divide-y divide-gray-100 dark:divide-gray-700">
                 {section.items.map((item, itemIndex) => (
                   <Link 
-                    href={item.url || '#'} 
+                    href={item.url} 
                     key={itemIndex} 
                     className="block px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150"
                   >
