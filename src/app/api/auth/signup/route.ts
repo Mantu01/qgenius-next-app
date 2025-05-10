@@ -1,4 +1,4 @@
-import prisma from "@/DB/dbConfig";
+import prisma from "@/config/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { sendEmail } from "@/helper/mail/mailer";

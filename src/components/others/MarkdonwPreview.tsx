@@ -13,7 +13,7 @@ interface MarkdownPreviewProps {
   isWhite?: boolean;
 }
 
-const MarkdownPreview: FC<MarkdownPreviewProps> = ({ markdown, question, isWhite }) => {
+const MarkdownPreview: FC<MarkdownPreviewProps> = ({ markdown }) => {
   const [copied, setCopied] = useState<string | null>(null);
 
   const handleCopy = (text: string, key: string) => {
@@ -22,88 +22,39 @@ const MarkdownPreview: FC<MarkdownPreviewProps> = ({ markdown, question, isWhite
       setTimeout(() => setCopied(null), 2000);
     });
   };
-   const md: string = `
-👋 Hi there! I am **Mantu Kumar**, a passionate **Frontend Developer** from **India**.  
-
-### 🚀 About Me:  
-- 💻 I specialize in **React.js**, **Next.js**, and the **MERN Stack**.  
-- 🎨 I create **beautiful, interactive, and user-friendly** web applications.  
-- 📚 I am continuously **learning and improving** my skills in **web development**.  
-- 🌍 I love building projects that solve **real-world problems**.  
-
-### 🔥 My Key Skills:  
-- **Frontend:** React.js, Next.js, TypeScript, Tailwind CSS  
-- **Backend:** Node.js, Express.js  
-- **Other Technologies:** Git, npm, js-cookie, Markdown preview  
-
-### 🛠️ Projects:  
-- **[Yatra](https://yatra-eight.vercel.app/):** A **travel website** to explore destinations.  
-- **Portfolio:** Showcasing my work, integrating **AI-powered Q&A**.  
-
-### 💻 Code Snippets:
-
-#### C++
-\`\`\`cpp
-#include <iostream>
-using namespace std;
-
-int main() {
-    cout << "Hello, Mantu!" << endl;
-    return 0;
-}
-\`\`\`
-
-#### JavaScript
-\`\`\`js
-const greet = (name) => {
-  console.log(\`Hello, \${name}!\`);
-};
-
-greet("Mantu");
-\`\`\`
-
-#### Java
-\`\`\`java
-public class HelloWorld {
-  public static void main(String[] args) {
-    System.out.println("Hello, Mantu!");
-  }
-}
-\`\`\`
-
-### 📌 Goals:  
-- Mastering **React animations** ✨  
-- Improving my **Data Structures & Algorithms (DSA)** knowledge 📊  
-- Building **AI-powered applications** 🤖
-
-🔗 **GitHub:** [Mantu01](https://github.com/Mantu01)  
-
-💡 *Always learning, always building!* 🚀  
-`;
-
 
   return (
-    <div className="text-base leading-relaxed">
+    <div className="text-base leading-relaxed max-w-full overflow-hidden">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
           h1: ({ children }) => (
-            <h1 className="text-2xl font-semibold mt-4 mb-2 text-gray-900 dark:text-gray-100">{children}</h1>
+            <h1 className="text-2xl font-semibold mt-4 mb-2 text-gray-900 dark:text-gray-100 break-words">
+              {children}
+            </h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-xl font-semibold mt-3 mb-2 text-gray-900 dark:text-gray-100">{children}</h2>
+            <h2 className="text-xl font-semibold mt-3 mb-2 text-gray-900 dark:text-gray-100 break-words">
+              {children}
+            </h2>
           ),
           h3: ({ children }) => (
-            <h3 className="text-lg font-medium mt-3 mb-1 text-gray-900 dark:text-gray-100">{children}</h3>
+            <h3 className="text-lg font-medium mt-3 mb-1 text-gray-900 dark:text-gray-100 break-words">
+              {children}
+            </h3>
           ),
           h4: ({ children }) => (
-            <h4 className="text-base font-medium mt-2 mb-1 text-gray-900 dark:text-gray-200">{children}</h4>
+            <h4 className="text-base font-medium mt-2 mb-1 text-gray-900 dark:text-gray-200 break-words">
+              {children}
+            </h4>
           ),
           p: ({ children }) => (
-            <p className="mb-3 text-gray-800 dark:text-gray-200">{children}</p>
+            <p className="mb-3 text-gray-800 dark:text-gray-200 break-words whitespace-pre-wrap">
+              {children}
+            </p>
           ),
           blockquote: ({ children }) => (
-            <blockquote className="border-l-4 border-gray-300 dark:border-gray-600 pl-4 italic text-gray-700 dark:text-gray-300 my-2">
+            <blockquote className="border-l-4 border-gray-300 dark:border-gray-600 pl-4 italic text-gray-700 dark:text-gray-300 my-2 break-words">
               {children}
             </blockquote>
           ),
@@ -112,7 +63,7 @@ public class HelloWorld {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 dark:text-blue-400 hover:underline"
+              className="text-blue-600 dark:text-blue-400 hover:underline break-all"
             >
               {children}
             </a>
@@ -123,13 +74,15 @@ public class HelloWorld {
             const key = `${match ? match[1] : "text"}-${codeString.substring(0, 20)}`;
 
             return match ? (
-              <div className="relative my-3 rounded-md overflow-hidden">
+              <div className="relative my-3 rounded-md overflow-hidden max-w-full">
                 <SyntaxHighlighter
                   style={oneDark}
                   language={match[1]}
                   PreTag="div"
                   {...props}
-                  className="rounded-md text-sm leading-relaxed"
+                  className="rounded-md text-sm leading-relaxed overflow-x-auto"
+                  wrapLines={true}
+                  wrapLongLines={true}
                 >
                   {codeString}
                 </SyntaxHighlighter>
@@ -146,46 +99,58 @@ public class HelloWorld {
                 </button>
               </div>
             ) : (
-              <code className="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-gray-800 dark:text-gray-200 text-sm">
+              <code className="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-gray-800 dark:text-gray-200 text-sm break-words whitespace-pre-wrap">
                 {children}
               </code>
             );
           },
           table: ({ children }) => (
-            <div className="overflow-x-auto my-3">
+            <div className="overflow-x-auto my-3 max-w-full">
               <table className="min-w-full border-collapse border border-gray-300 dark:border-gray-700">
                 {children}
               </table>
             </div>
           ),
           th: ({ children }) => (
-            <th className="border border-gray-300 dark:border-gray-700 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-left font-medium text-gray-700 dark:text-gray-300">
+            <th className="border border-gray-300 dark:border-gray-700 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-left font-medium text-gray-700 dark:text-gray-300 break-words">
               {children}
             </th>
           ),
           td: ({ children }) => (
-            <td className="border border-gray-300 dark:border-gray-700 px-4 py-2 text-gray-800 dark:text-gray-200">
+            <td className="border border-gray-300 dark:border-gray-700 px-4 py-2 text-gray-800 dark:text-gray-200 break-words">
               {children}
             </td>
           ),
           ul: ({ children }) => (
-            <ul className="list-disc list-inside space-y-1 my-3 text-gray-800 dark:text-gray-200">
+            <ul className="list-disc list-inside space-y-1 my-3 text-gray-800 dark:text-gray-200 break-words">
               {children}
             </ul>
           ),
           ol: ({ children }) => (
-            <ol className="list-decimal list-inside space-y-1 my-3 text-gray-800 dark:text-gray-200">
+            <ol className="list-decimal list-inside space-y-1 my-3 text-gray-800 dark:text-gray-200 break-words">
               {children}
             </ol>
           ),
-          li: ({ children }) => <li className="ml-1">{children}</li>,
-          hr: () => <hr className="my-4 border-t border-gray-300 dark:border-gray-700" />,
+          li: ({ children }) => (
+            <li className="ml-1 break-words whitespace-normal">
+              {children}
+            </li>
+          ),
+          hr: () => (
+            <hr className="my-4 border-t border-gray-300 dark:border-gray-700" />
+          ),
           img: ({ src, alt }) => (
-            <img src={src} alt={alt} className="max-w-full h-auto my-3 rounded-md" />
+            <div className="my-3 max-w-full overflow-hidden">
+              <img
+                src={src}
+                alt={alt}
+                className="max-w-full h-auto rounded-md"
+              />
+            </div>
           ),
         }}
       >
-        {md}
+        {markdown}
       </ReactMarkdown>
     </div>
   );

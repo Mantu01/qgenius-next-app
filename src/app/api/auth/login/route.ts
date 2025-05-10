@@ -1,4 +1,4 @@
-import prisma from "@/DB/dbConfig";
+import prisma from "@/config/dbConfig";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { NextRequest,NextResponse } from "next/server";

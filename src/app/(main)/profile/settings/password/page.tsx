@@ -2,19 +2,20 @@
 
 import InputField from '@/components/auth/InputField';
 import BackButton from '@/components/buttons/BackButton';
+import axios from 'axios';
 import { Eye, EyeOff, KeyRound, ShieldAlert } from 'lucide-react';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 interface ResetPasswordData {
-  currentPassword: string;
+  password: string;
   newPassword: string;
   confirmPassword: string;
 }
 
 const ResetPassword = () => {
-  const { user } = useSelector((state: RootState) => state.user);
   const { register, handleSubmit, watch, setError, formState: { errors, isSubmitting } } = useForm<ResetPasswordData>();
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -26,10 +27,6 @@ const ResetPassword = () => {
 
   const onSubmit = async (data: ResetPasswordData) => {
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Check if new passwords match (though we also validate this client-side)
       if (data.newPassword !== data.confirmPassword) {
         setError('confirmPassword', {
           type: 'manual',
@@ -37,25 +34,20 @@ const ResetPassword = () => {
         });
         return;
       }
-      
-      // Here you would typically call your API to reset the password
-      // await resetPassword(data.currentPassword, data.newPassword);
-      
-      // For demo purposes, we'll just show a success message
-      alert('Password updated successfully!');
-      
+      await axios.put('/api/auth/resetpassword',{...data,type:'password'});
+      toast.success('Password updated successfully')
     } catch (error: any) {
       setError('root', {
         type: 'manual',
-        message: error.message || 'Something went wrong'
+        message: error.response.data.message || 'Something went wrong'
       });
     }
   };
 
   const passwordFields = [
     {
-      id: 'currentPassword',
-      register: register('currentPassword', {
+      id: 'password',
+      register: register('password', {
         required: 'Current password is required',
       }),
       type: showCurrentPassword ? 'text' : 'password',
@@ -75,7 +67,7 @@ const ResetPassword = () => {
           message: 'Password must be at least 8 characters',
         },
         validate: (value) => {
-          if (value === watch('currentPassword')) {
+          if (value === watch('password')) {
             return 'New password must be different from current password';
           }
           return true;

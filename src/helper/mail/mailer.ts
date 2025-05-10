@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import bcrypt from 'bcrypt';
-import prisma from '@/DB/dbConfig';
+import prisma from '@/config/dbConfig';
 import { generateEmailHTML } from './mailTemplate';
 import { verifyMessage,forgotPassword } from '../constants/messages';
 

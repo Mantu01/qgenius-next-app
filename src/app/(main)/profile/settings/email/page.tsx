@@ -1,29 +1,34 @@
 'use client'
 
+import { setUser } from '@/app/store/userSlice';
 import InputField from '@/components/auth/InputField';
 import BackButton from '@/components/buttons/BackButton';
+import axios from 'axios';
 import { Eye, EyeOff, KeyRound, Mail, ShieldAlert } from 'lucide-react';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const ChangeEmail = () => {
   const { user } = useSelector((state: RootState) => state.user);
+  const dispatch=useDispatch();
   const { register, handleSubmit,setError, formState: { errors, isSubmitting } } = useForm<LoginData>();
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => setShowPassword(prev => !prev);
 
-  const onSubmit = async (data:any) => {
+  const onSubmit = async (inputData:any) => {
     
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const {data}=await axios.put('/api/auth/resetpassword',{...inputData,type:'email'});
+      dispatch(setUser(data.user));
+      toast.success(data.message);
+    } catch (error:any) {
       setError('root',{
         type: 'manual',
         message:'Something went wrong'
       })
-    } catch (error:any) {
-      console.log(error)
     }
   };
 

@@ -55,27 +55,41 @@ const EditPage = () => {
 
   const onSubmit = async (inputData: EditFormValues) => {
     try {
-      const changedFields = Object.entries(dirtyFields).reduce((acc:any, [key, isDirty]) => {
+      const formData = new FormData();
+      const changedFields = Object.entries(dirtyFields).reduce((fields, [key, isDirty]) => {
         if (isDirty) {
-          acc[key as keyof EditFormValues] = inputData[key as keyof EditFormValues];
+          fields.push(key);
         }
-        return acc;
-      }, {} as Partial<EditFormValues>);
-      
-      if (Object.keys(changedFields).length === 0) {
-        return
+        return fields;
+      }, [] as string[]);
+      if (changedFields.length === 0) {
+        toast.info('No changes done');
+        return;
       }
-      const { data } = await axios.post('/api/user/me', { basicInfo: changedFields });
+      changedFields.forEach((key) => {
+        const fieldKey = key as keyof EditFormValues;
+        const value = inputData[fieldKey];
+        if (fieldKey === 'avatar' || fieldKey === 'coverImage') {
+          if (value) {
+            formData.append(fieldKey, value);
+          }
+        }
+        formData.append(fieldKey, value as string);
+      });
+      const { data } = await axios.put('/api/user/me', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
       dispatch(setUser(data.user));
       toast.success(data.message);
-    } catch (error:any) {
+    } catch (error: any) {
       setError('userName', {
         type: 'manual',
-        message:error.response.data?.message || 'Failed to update profile. Please try again.'
-      })
+        message: error.response?.data?.message || 'Failed to update profile. Please try again.'
+      });
     }
-  }
-
+  };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: any) => {
     const file = e.target.files?.[0]
     if (!file) return

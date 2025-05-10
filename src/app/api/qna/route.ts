@@ -1,17 +1,23 @@
-// app/api/stream/route.ts
 import { NextRequest } from "next/server";
+import {GoogleGenAI} from '@google/genai'
+import { prompt } from "@/app/_lib/constants/prompt";
 
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const count = Number(body.count || 50);
+  const {question} = await req.json();
 
+  const instructions=prompt.replace('{USER_QUESTION}',question);
+  const response = await ai.models.generateContentStream({
+    model: "gemini-1.5-flash",
+    contents:instructions,
+  });
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
-      for (let i = 1; i <= count; i++) {
-        const chunk = JSON.stringify({ index: i, message: `Chunk ${i}` }) + "\n";
-        controller.enqueue(encoder.encode(chunk));
-        await new Promise((r) => setTimeout(r, 100)); // simulate delay
+      for await(const chunks of response){
+        const text=chunks.text;
+        controller.enqueue(encoder.encode(text));
       }
       controller.close();
     },
@@ -19,7 +25,7 @@ export async function POST(req: NextRequest) {
 
   return new Response(stream, {
     headers: {
-      "Content-Type": "text/plain",
+      "Content-Type": "text/plain; charset=utf-8 ",
       "Cache-Control": "no-cache",
     },
   });

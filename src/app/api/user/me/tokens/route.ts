@@ -1,6 +1,6 @@
 import { getDataFromToken } from "@/helper/getDataFromToken";
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/DB/dbConfig";
+import prisma from "@/config/dbConfig";
 
 export async function GET(req: NextRequest) {
   try {
