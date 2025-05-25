@@ -9,7 +9,9 @@ export async function GET(req: NextRequest) {
   try {
     const userId = getDataFromToken(req);
     if(!userId){
-      return NextResponse.json({message:"Invalid Token"},{status:401});
+      const response=NextResponse.json({message:"Invalid Token"},{status:401});
+      response.cookies.delete('token');
+      return response
     }
     const user=await prisma.user.findFirst({
       where:{id: userId},

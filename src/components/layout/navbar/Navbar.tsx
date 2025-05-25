@@ -12,7 +12,7 @@ import { clearUser } from '@/app/store/userSlice';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const pathname = usePathname();
   const dispatch = useDispatch();
   const router=useRouter();

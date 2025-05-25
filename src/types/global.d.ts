@@ -49,6 +49,10 @@ declare global {
       user: User;
       isAuthenticated:boolean
     };
+    chat:{
+      chat:Message[];
+      selectedChat:any;
+    }
   }
 
   interface SectionItem {
@@ -86,6 +90,11 @@ declare global {
     avatarPreview?: string
     coverPreview?: string
   }
+
+  interface Message {
+  role: 'user' | 'assistant';
+  content: string;
+}
 
 }
 

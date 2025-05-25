@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState={
+interface chatMsg{
+  chat:Message[];
+  selectedChat:string | null
+}
+
+const initialState:chatMsg={
   chat:[],
   selectedChat:null
 };
@@ -9,17 +14,28 @@ const chatSlice=createSlice({
   name:'chat',
   initialState,
   reducers:{
-    addChat:(state,action)=>{
-      state.chat.push(action.payload);
+    initChat:(state,action)=>{
+      state.chat=action.payload;
     },
-    setChat:(state,action)=>{
-      state.selectedChat=action.payload;
+    addChat:(state,action)=>{
+      const newChat=action.payload;
+      const latestChat=state.chat[state.chat.length-1];
+      if(newChat.role===latestChat?.role){
+        state.chat[state.chat.length-1].content=newChat.Content;
+      }else{
+        state.chat.push(newChat);
+      }
     },
     removeChat:(state)=>{
+      state.chat=[];
       state.selectedChat=null;
+    },
+    setSelctedChat:(state,action)=>{
+      console.log(action.payload)
+      state.selectedChat=action.payload;
     }
   }
 });
 
-export const {addChat,setChat,removeChat}=chatSlice.actions;
+export const {addChat,removeChat,setSelctedChat,initChat}=chatSlice.actions;
 export default chatSlice.reducer;

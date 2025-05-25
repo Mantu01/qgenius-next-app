@@ -3,13 +3,15 @@ import Image from 'next/image';
 
 export default function ChatInterface() {
   const suggestedQuestions = [
-  "Ask me anything",
-  "How to save as PDF",
-  "Explain quantum computing in simple terms",
-  "What is the best way to learn React?",
-  "Summarize this article for me",
-  "Generate a study plan for web development",
-];
+    "Ask me anything",
+    "How to save as PDF",
+    "Explain quantum computing in simple terms",
+    "What is the best way to learn React?",
+    "Summarize this article for me",
+    "Generate a study plan for web development",
+  ];
+
+
 
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 py-16">
@@ -41,7 +43,7 @@ export default function ChatInterface() {
               </div>
         </div>
       </main>
-      <ChatInput/>
+      <ChatInput isOpening={true}/>
     </div>
   );
 }

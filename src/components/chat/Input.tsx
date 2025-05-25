@@ -1,18 +1,29 @@
 "use client";
 
+import { addChat, setSelctedChat } from '@/app/store/chatSlice';
+import axios from 'axios';
 import { Send, Loader2 } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
 import { useState, useRef, useEffect, KeyboardEvent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-}
-
-const ChatInput = () => {
+const ChatInput = ({isOpening}:{isOpening:boolean}) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  const router = useRouter();
+  const {chatId}=useParams();
+
+  const {selectedChat}=useSelector((state:RootState)=>state.chat)
+
+  useEffect(()=>{
+    if(selectedChat && chatId!==selectedChat ){
+      router.push(`/chat/c/${selectedChat}`);
+    }
+  },[selectedChat])
+
+  const dispatch=useDispatch();
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputMessage(e.target.value);
@@ -20,19 +31,30 @@ const ChatInput = () => {
 
   const handleSubmit = async () => {
     if (inputMessage.trim() === '' || isLoading) return;
-
     const userMessage = inputMessage;
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+    dispatch(addChat({role:'user',content:userMessage}));
     setInputMessage('');
     setIsLoading(true);
 
-    const newAssistantMessage: Message = { role: 'assistant', content: '' };
-    setMessages(prev => [...prev, newAssistantMessage]);
-    const messageIndex = messages.length + 1;
+    if(isOpening){
+      try {
+        const {data}=await axios.post('api/chat',{question:userMessage});
+        router.push(`chat/c/${data.id}`)
+      } catch (error) {
+        console.error('Streaming error:', error);
+        dispatch(addChat({role:'assistant',Content:'Sorry, something went wrong.'}));
+      } finally {
+        setIsLoading(false);
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }
+      return;
+    }
     
     try {
-      const res = await fetch('/api/qna', {
-        method: 'POST',
+      const res = await fetch('/api/chat', {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: userMessage }),
       });
@@ -50,21 +72,11 @@ const ChatInput = () => {
         const chunk = decoder.decode(value, { stream: true });
         assistantText += chunk;
 
-        setMessages(prev => {
-          const updated = [...prev];
-          updated[messageIndex] = {
-            role: 'assistant',
-            content: assistantText,
-          };
-          return updated;
-        });
+        dispatch(addChat({role:'assistant',Content:assistantText}));
       }
     } catch (error) {
       console.error('Streaming error:', error);
-      setMessages(prev => [
-        ...prev,
-        { role: 'assistant', content: 'Sorry, something went wrong.' },
-      ]);
+      dispatch(addChat({role:'assistant',Content:'Sorry, something went wrong.'}));
     } finally {
       setIsLoading(false);
       if (inputRef.current) {
@@ -89,7 +101,7 @@ const ChatInput = () => {
   }, [inputMessage]);
 
   return (
-    <div className="bg-white/95 backdrop-blur-sm fixed bottom-0 left-0 right-0 dark:bg-gray-900/95 border-t border-gray-200 dark:border-gray-700 px-4 py-3">
+    <div className="bg-white/95 backdrop-blur-sm fixed bottom-0 left-0 md:ml-60 right-0 dark:bg-gray-900/95 border-t border-gray-200 dark:border-gray-700 px-4 py-3">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-2">
           <div className="flex-1 relative bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition-all focus-within:border-green-500 focus-within:ring-2 focus-within:ring-green-500/20">
