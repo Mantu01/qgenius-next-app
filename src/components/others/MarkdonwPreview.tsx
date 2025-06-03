@@ -1,441 +1,292 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useState, useCallback, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
-import remarkBreaks from "remark-breaks";
-import remarkEmoji from "remark-emoji";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
-import rehypeHighlight from "rehype-highlight";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { FaRegClipboard, FaClipboardCheck } from "react-icons/fa";
-import "katex/dist/katex.min.css"; // Import KaTeX CSS
+import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { FaRegClipboard, FaClipboardCheck, FaExpand, FaCompress } from "react-icons/fa";
+import "katex/dist/katex.min.css";
 
 interface MarkdownPreviewProps {
   markdown: string;
-  question?: string;
-  isWhite?: boolean;
+  theme?: "dark" | "light" | "auto";
+  className?: string;
+  enableMath?: boolean;
+  enableRawHtml?: boolean;
+  maxWidth?: string;
 }
 
-const MarkdownPreview: FC<MarkdownPreviewProps> = ({ markdown }) => {
+const MarkdownPreview: FC<MarkdownPreviewProps> = ({ 
+  markdown, 
+  theme = "auto",
+  className = "",
+  enableMath = true,
+  enableRawHtml = false,
+  maxWidth = "full"
+}) => {
   const [copied, setCopied] = useState<string | null>(null);
+  const [expandedBlocks, setExpandedBlocks] = useState<Set<string>>(new Set());
 
-  const handleCopy = (text: string, key: string) => {
+  const handleCopy = useCallback((text: string, key: string) => {
     navigator.clipboard.writeText(text).then(() => {
       setCopied(key);
       setTimeout(() => setCopied(null), 2000);
+    }).catch(() => {
+      // Fallback for older browsers
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopied(key);
+      setTimeout(() => setCopied(null), 2000);
     });
-  };
+  }, []);
 
-  // Enhanced text preprocessing for better symbol support
-  const preprocessMarkdown = (text: string) => {
-    return text
-      // Fix common Unicode issues
-      .replace(/[\u2018\u2019]/g, "'") // Smart quotes to regular quotes
-      .replace(/[\u201C\u201D]/g, '"') // Smart double quotes
-      .replace(/\u2013/g, '-') // En dash
-      .replace(/\u2014/g, '--') // Em dash
-      .replace(/\u2026/g, '...') // Ellipsis
-      // Support for common mathematical symbols
-      .replace(/±/g, '±')
-      .replace(/×/g, '×')
-      .replace(/÷/g, '÷')
-      .replace(/∞/g, '∞')
-      .replace(/∑/g, '∑')
-      .replace(/∏/g, '∏')
-      .replace(/∫/g, '∫')
-      .replace(/√/g, '√')
-      .replace(/∆/g, '∆')
-      .replace(/π/g, 'π')
-      .replace(/α/g, 'α')
-      .replace(/β/g, 'β')
-      .replace(/γ/g, 'γ')
-      .replace(/δ/g, 'δ')
-      .replace(/ε/g, 'ε')
-      .replace(/θ/g, 'θ')
-      .replace(/λ/g, 'λ')
-      .replace(/μ/g, 'μ')
-      .replace(/σ/g, 'σ')
-      .replace(/φ/g, 'φ')
-      .replace(/ω/g, 'ω')
-      // Support for arrows
-      .replace(/→/g, '→')
-      .replace(/←/g, '←')
-      .replace(/↑/g, '↑')
-      .replace(/↓/g, '↓')
-      .replace(/↔/g, '↔')
-      .replace(/⇒/g, '⇒')
-      .replace(/⇐/g, '⇐')
-      .replace(/⇔/g, '⇔')
-      // Support for logical symbols
-      .replace(/∧/g, '∧')
-      .replace(/∨/g, '∨')
-      .replace(/¬/g, '¬')
-      .replace(/∀/g, '∀')
-      .replace(/∃/g, '∃')
-      .replace(/∈/g, '∈')
-      .replace(/∉/g, '∉')
-      .replace(/⊂/g, '⊂')
-      .replace(/⊃/g, '⊃')
-      .replace(/∪/g, '∪')
-      .replace(/∩/g, '∩')
-      // Support for comparison symbols
-      .replace(/≤/g, '≤')
-      .replace(/≥/g, '≥')
-      .replace(/≠/g, '≠')
-      .replace(/≈/g, '≈')
-      .replace(/≡/g, '≡');
-  };
+  const toggleExpand = useCallback((key: string) => {
+    setExpandedBlocks(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(key)) {
+        newSet.delete(key);
+      } else {
+        newSet.add(key);
+      }
+      return newSet;
+    });
+  }, []);
+
+  const isDarkMode = useMemo(() => {
+    if (theme === "auto") {
+      return typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+    }
+    return theme === "dark";
+  }, [theme]);
+
+  const syntaxTheme = isDarkMode ? oneDark : oneLight;
+
+  const remarkPlugins = useMemo(() => {
+    const plugins = [remarkGfm];
+    if (enableMath) plugins.push(remarkMath);
+    return plugins;
+  }, [enableMath]);
+
+  const rehypePlugins = useMemo(() => {
+    const plugins = [];
+    if (enableMath) plugins.push(rehypeKatex);
+    if (enableRawHtml) plugins.push(rehypeRaw);
+    return plugins;
+  }, [enableMath, enableRawHtml]);
 
   return (
-    <div className="text-base leading-relaxed max-w-full overflow-hidden markdown-content">
-      <style jsx global>{`
-        .markdown-content {
-          font-feature-settings: "liga" 1, "calt" 1;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-        }
-        
-        .katex {
-          font-size: 1.1em;
-        }
-        
-        .katex-display {
-          margin: 1em 0;
-          text-align: center;
-        }
-        
-        .katex-display > .katex {
-          display: inline-block;
-          white-space: nowrap;
-        }
-        
-        /* Custom checkbox styling */
-        .task-list-item {
-          list-style: none;
-          margin-left: -1.5em;
-        }
-        
-        .task-list-item input[type="checkbox"] {
-          margin-right: 0.5em;
-        }
-        
-        /* Enhanced table styling */
-        .table-container {
-          border-radius: 8px;
-          overflow: hidden;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Mermaid diagram support */
-        .mermaid {
-          text-align: center;
-          margin: 1em 0;
-        }
-        
-        /* Better handling of long URLs */
-        .url-break {
-          word-break: break-all;
-          overflow-wrap: break-word;
-        }
-        
-        /* Enhanced code block styling */
-        .code-container {
-          position: relative;
-          margin: 1em 0;
-          border-radius: 8px;
-          overflow: hidden;
-        }
-        
-        .code-header {
-          background: #2d3748;
-          color: #e2e8f0;
-          padding: 0.5rem 1rem;
-          font-size: 0.875rem;
-          font-weight: 500;
-          border-bottom: 1px solid #4a5568;
-        }
-      `}</style>
-
+    <div className={`text-base leading-relaxed overflow-hidden ${maxWidth === 'full' ? 'w-full' : `max-w-${maxWidth}`} ${className}`}>
       <ReactMarkdown
-        remarkPlugins={[
-          remarkGfm,
-          remarkMath,
-          remarkBreaks,
-          remarkEmoji,
-        ]}
-        rehypePlugins={[
-          rehypeKatex,
-          rehypeRaw,
-          rehypeHighlight,
-        ]}
+        remarkPlugins={remarkPlugins}
+        rehypePlugins={rehypePlugins}
         components={{
-          // Enhanced heading components with anchor support
-          h1: ({ children, id }) => (
-            <h1 
-              id={id}
-              className="text-3xl font-bold mt-6 mb-4 text-gray-900 dark:text-gray-100 break-words border-b border-gray-200 dark:border-gray-700 pb-2"
-            >
+          h1: ({ children }) => (
+            <h1 className="text-3xl font-bold mt-6 mb-4 text-gray-900 dark:text-gray-100 break-words border-b-2 border-gray-200 dark:border-gray-700 pb-2">
               {children}
             </h1>
           ),
-          h2: ({ children, id }) => (
-            <h2 
-              id={id}
-              className="text-2xl font-semibold mt-5 mb-3 text-gray-900 dark:text-gray-100 break-words border-b border-gray-200 dark:border-gray-700 pb-1"
-            >
+          h2: ({ children }) => (
+            <h2 className="text-2xl font-semibold mt-5 mb-3 text-gray-900 dark:text-gray-100 break-words border-b border-gray-200 dark:border-gray-700 pb-1">
               {children}
             </h2>
           ),
-          h3: ({ children, id }) => (
-            <h3 
-              id={id}
-              className="text-xl font-semibold mt-4 mb-2 text-gray-900 dark:text-gray-100 break-words"
-            >
+          h3: ({ children }) => (
+            <h3 className="text-xl font-semibold mt-4 mb-2 text-gray-900 dark:text-gray-100 break-words">
               {children}
             </h3>
           ),
-          h4: ({ children, id }) => (
-            <h4 
-              id={id}
-              className="text-lg font-medium mt-3 mb-2 text-gray-900 dark:text-gray-200 break-words"
-            >
+          h4: ({ children }) => (
+            <h4 className="text-lg font-medium mt-3 mb-2 text-gray-900 dark:text-gray-200 break-words">
               {children}
             </h4>
           ),
-          h5: ({ children, id }) => (
-            <h5 
-              id={id}
-              className="text-base font-medium mt-2 mb-1 text-gray-900 dark:text-gray-200 break-words"
-            >
+          h5: ({ children }) => (
+            <h5 className="text-base font-medium mt-2 mb-1 text-gray-900 dark:text-gray-200 break-words">
               {children}
             </h5>
           ),
-          h6: ({ children, id }) => (
-            <h6 
-              id={id}
-              className="text-sm font-medium mt-2 mb-1 text-gray-700 dark:text-gray-300 break-words"
-            >
+          h6: ({ children }) => (
+            <h6 className="text-sm font-medium mt-2 mb-1 text-gray-800 dark:text-gray-300 break-words">
               {children}
             </h6>
           ),
-          
-          // Enhanced paragraph with better line height
           p: ({ children }) => (
             <p className="mb-4 text-gray-800 dark:text-gray-200 break-words whitespace-pre-wrap leading-7">
               {children}
             </p>
           ),
-          
-          // Enhanced blockquote with better styling
           blockquote: ({ children }) => (
-            <blockquote className="border-l-4 border-blue-500 dark:border-blue-400 pl-4 py-2 italic text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800/50 my-4 break-words rounded-r-md">
+            <blockquote className="border-l-4 border-blue-500 dark:border-blue-400 pl-6 pr-4 py-2 italic text-gray-700 dark:text-gray-300 my-4 bg-gray-50 dark:bg-gray-800/50 rounded-r-md break-words">
               {children}
             </blockquote>
           ),
-          
-          // Enhanced link with better security and styling
           a: ({ href, children }) => (
             <a
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline break-all transition-colors duration-200 url-break"
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline break-all transition-colors duration-200 font-medium"
             >
               {children}
             </a>
           ),
-          
-          // Enhanced code component with language detection and better styling
-          code: ({ className, children, ...props }) => {
+          code: ({ node, className, children, ...props }) => {
             const match = /language-(\w+)/.exec(className || "");
             const codeString = String(children).replace(/\n$/, "");
-            const language = match ? match[1] : "text";
-            const key = `${language}-${codeString.substring(0, 20)}`;
+            const key = `${match ? match[1] : "text"}-${codeString.substring(0, 20).replace(/\s/g, '')}`;
+            const isExpanded = expandedBlocks.has(key);
+            const isLongCode = codeString.split('\n').length > 10 || codeString.length > 300;
 
             return match ? (
-              <div className="code-container">
-                {language !== "text" && (
-                  <div className="code-header">
-                    {language.toUpperCase()}
+              <div className="relative my-4 rounded-lg overflow-hidden w-full shadow-sm border border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between bg-gray-100 dark:bg-gray-800 px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400 capitalize">
+                    {match[1]}
+                  </span>
+                  <div className="flex items-center space-x-2">
+                    {isLongCode && (
+                      <button
+                        onClick={() => toggleExpand(key)}
+                        className="p-1.5 rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 transition-colors"
+                        aria-label={isExpanded ? "Collapse code" : "Expand code"}
+                        title={isExpanded ? "Collapse" : "Expand"}
+                      >
+                        {isExpanded ? (
+                          <FaCompress className="w-3 h-3" />
+                        ) : (
+                          <FaExpand className="w-3 h-3" />
+                        )}
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleCopy(codeString, key)}
+                      className="p-1.5 rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 transition-colors"
+                      aria-label="Copy code"
+                      title="Copy to clipboard"
+                    >
+                      {copied === key ? (
+                        <FaClipboardCheck className="text-green-500 w-3 h-3" />
+                      ) : (
+                        <FaRegClipboard className="w-3 h-3" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+                <div className={`${isLongCode && !isExpanded ? 'max-h-96 overflow-y-auto' : ''}`}>
+                  <SyntaxHighlighter
+                    style={syntaxTheme}
+                    language={match[1]}
+                    PreTag="div"
+                    {...props}
+                    className={`text-sm leading-relaxed ${!isExpanded ? 'overflow-x-auto' : ''}`}
+                    wrapLines={true}
+                    wrapLongLines={true}
+                    showLineNumbers={codeString.split('\n').length > 3}
+                    showInlineLineNumbers={false}
+                    lineNumberStyle={{ minWidth: '2.5em' }}
+                  >
+                    {codeString}
+                  </SyntaxHighlighter>
+                </div>
+                {isLongCode && !isExpanded && (
+                  <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-gray-100 to-transparent dark:from-gray-800 flex items-end justify-center pb-2">
+                    <button
+                      onClick={() => toggleExpand(key)}
+                      className="text-xs bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-2 py-1 rounded-md text-gray-600 dark:text-gray-300 transition-colors flex items-center gap-1"
+                    >
+                      <FaExpand className="w-2.5 h-2.5" />
+                      Show more
+                    </button>
                   </div>
                 )}
-                <SyntaxHighlighter
-                  style={oneDark}
-                  language={language}
-                  PreTag="div"
-                  {...props}
-                  className="!m-0 text-sm leading-relaxed"
-                  wrapLines={true}
-                  wrapLongLines={true}
-                  showLineNumbers={codeString.split('\n').length > 10}
-                >
-                  {codeString}
-                </SyntaxHighlighter>
-                <button
-                  onClick={() => handleCopy(codeString, key)}
-                  className="absolute top-2 right-2 p-2 rounded-md bg-gray-700/80 hover:bg-gray-600 text-gray-200 transition-all duration-200 backdrop-blur-sm"
-                  aria-label="Copy code"
-                  style={{ zIndex: 10 }}
-                >
-                  {copied === key ? (
-                    <FaClipboardCheck className="text-green-400 w-4 h-4" />
-                  ) : (
-                    <FaRegClipboard className="w-4 h-4" />
-                  )}
-                </button>
               </div>
             ) : (
-              <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-800 dark:text-gray-200 text-sm break-words whitespace-pre-wrap font-mono">
+              <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-md text-gray-800 dark:text-gray-200 text-sm break-words whitespace-pre-wrap font-mono border border-gray-200 dark:border-gray-600">
                 {children}
               </code>
             );
           },
-          
-          // Enhanced table with better responsive design
           table: ({ children }) => (
-            <div className="overflow-x-auto my-4 max-w-full">
-              <div className="table-container">
-                <table className="min-w-full border-collapse">
-                  {children}
-                </table>
-              </div>
+            <div className="overflow-x-auto my-4 w-full rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+              <table className="min-w-full border-collapse">
+                {children}
+              </table>
             </div>
           ),
-          
-          // Enhanced table headers
+          thead: ({ children }) => (
+            <thead className="bg-gray-50 dark:bg-gray-800">
+              {children}
+            </thead>
+          ),
           th: ({ children }) => (
-            <th className="border border-gray-300 dark:border-gray-600 px-4 py-3 bg-gray-100 dark:bg-gray-800 text-left font-semibold text-gray-800 dark:text-gray-200 break-words">
+            <th className="border-b border-gray-200 dark:border-gray-700 px-6 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 break-words uppercase text-xs tracking-wider">
               {children}
             </th>
           ),
-          
-          // Enhanced table cells
           td: ({ children }) => (
-            <td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-800 dark:text-gray-200 break-words">
+            <td className="border-b border-gray-200 dark:border-gray-700 px-6 py-4 text-gray-800 dark:text-gray-200 break-words">
               {children}
             </td>
           ),
-          
-          // Enhanced lists with better spacing
           ul: ({ children }) => (
-            <ul className="list-disc ml-6 space-y-2 my-4 text-gray-800 dark:text-gray-200">
+            <ul className="list-disc list-outside space-y-2 my-4 text-gray-800 dark:text-gray-200 break-words pl-6">
               {children}
             </ul>
           ),
-          
           ol: ({ children }) => (
-            <ol className="list-decimal ml-6 space-y-2 my-4 text-gray-800 dark:text-gray-200">
+            <ol className="list-decimal list-outside space-y-2 my-4 text-gray-800 dark:text-gray-200 break-words pl-6">
               {children}
             </ol>
           ),
-          
-          // Enhanced list items with task list support
-          li: ({ children, className }) => {
-            const isTaskItem = className?.includes('task-list-item');
-            return (
-              <li className={`${isTaskItem ? 'task-list-item' : 'ml-1'} break-words whitespace-normal leading-6`}>
-                {children}
-              </li>
-            );
-          },
-          
-          // Enhanced horizontal rule
-          hr: () => (
-            <hr className="my-6 border-t-2 border-gray-300 dark:border-gray-700" />
+          li: ({ children }) => (
+            <li className="break-words whitespace-normal leading-7">
+              {children}
+            </li>
           ),
-          
-          // Enhanced image with better responsive handling
+          hr: () => (
+            <hr className="my-8 border-t-2 border-gray-300 dark:border-gray-700" />
+          ),
           img: ({ src, alt }) => (
-            <div className="my-4 max-w-full overflow-hidden">
+            <div className="my-4 w-full overflow-hidden flex flex-col items-center">
               <img
                 src={src}
-                alt={alt}
-                className="max-w-full h-auto rounded-lg shadow-md"
+                alt={alt || ""}
+                className="max-w-full h-auto rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
                 loading="lazy"
               />
               {alt && (
-                <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-2 italic">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center italic">
                   {alt}
                 </p>
               )}
             </div>
           ),
-          
-          // Support for definition lists
-          dl: ({ children }) => (
-            <dl className="my-4 space-y-2">
+          strong: ({ children }) => (
+            <strong className="font-bold text-gray-900 dark:text-gray-100">
               {children}
-            </dl>
+            </strong>
           ),
-          
-          dt: ({ children }) => (
-            <dt className="font-semibold text-gray-900 dark:text-gray-100">
+          em: ({ children }) => (
+            <em className="italic text-gray-800 dark:text-gray-200">
               {children}
-            </dt>
+            </em>
           ),
-          
-          dd: ({ children }) => (
-            <dd className="ml-4 text-gray-700 dark:text-gray-300">
-              {children}
-            </dd>
-          ),
-          
-          // Support for keyboard keys
-          kbd: ({ children }) => (
-            <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-sm font-mono">
-              {children}
-            </kbd>
-          ),
-          
-          // Support for mark (highlight)
-          mark: ({ children }) => (
-            <mark className="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">
-              {children}
-            </mark>
-          ),
-          
-          // Support for subscript and superscript
-          sub: ({ children }) => (
-            <sub className="text-xs align-sub">
-              {children}
-            </sub>
-          ),
-          
-          sup: ({ children }) => (
-            <sup className="text-xs align-super">
-              {children}
-            </sup>
-          ),
-          
-          // Support for deleted and inserted text
           del: ({ children }) => (
             <del className="line-through text-gray-500 dark:text-gray-400">
               {children}
             </del>
           ),
-          
-          ins: ({ children }) => (
-            <ins className="underline text-green-700 dark:text-green-400 no-underline bg-green-100 dark:bg-green-900/30 px-1 rounded">
-              {children}
-            </ins>
-          ),
-          
-          // Support for abbreviations
-          abbr: ({ children, title }) => (
-            <abbr 
-              title={title}
-              className="border-b border-dotted border-gray-400 cursor-help"
-            >
-              {children}
-            </abbr>
-          ),
         }}
       >
-        {preprocessMarkdown(markdown)}
+        {markdown}
       </ReactMarkdown>
     </div>
   );

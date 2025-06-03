@@ -2,17 +2,19 @@
 
 import ChatMessage from '@/components/chat/ChatMessage';
 import ChatInput from '@/components/chat/Input';
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Loader2 } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
-import { initChat } from '@/app/store/chatSlice';
+import { initChat, setSelctedChat } from '@/app/store/chatSlice';
 
 function Page() {
   const { chat } = useSelector((state: RootState) => state.chat);
   const [isLoading, setIsLoading] = React.useState(true);
-  const messagesEndRef = React.useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const scrollBehaviorRef = useRef<'auto' | 'smooth'>('auto');
 
   const { isAuthenticated } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
@@ -22,10 +24,13 @@ function Page() {
 
   useEffect(() => {
     if (chatId && isAuthenticated) {
+      dispatch(setSelctedChat(chatId))
       axios.get(`/api/chat/${chatId}`)
         .then(({ data }) => {
           dispatch(initChat(data.messages));
           setIsLoading(false);
+          // Use auto scroll for initial load
+          scrollBehaviorRef.current = 'auto';
         })
         .catch(() => setIsLoading(false));
     } else {
@@ -34,7 +39,22 @@ function Page() {
   }, [chatId, isAuthenticated, dispatch]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Only scroll if we're at the bottom or close to it
+    if (messagesEndRef.current && chatContainerRef.current) {
+      const container = chatContainerRef.current;
+      const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+      
+      if (isNearBottom || scrollBehaviorRef.current === 'auto') {
+        messagesEndRef.current.scrollIntoView({
+          behavior: scrollBehaviorRef.current
+        });
+      }
+      
+      // After initial load, switch to smooth scrolling for new messages
+      if (scrollBehaviorRef.current === 'auto') {
+        scrollBehaviorRef.current = 'smooth';
+      }
+    }
   }, [chat]);
 
   if (!isAuthenticated) {
@@ -60,8 +80,11 @@ function Page() {
 
   return (
     <div className='flex flex-col min-h-[calc(100vh-64px)] bg-white dark:bg-gray-900'>
-      <main className='flex-1 overflow-y-auto py-6'>
-        <div className='max-w-3xl mx-auto px-4 space-y-6'>
+      <main 
+        ref={chatContainerRef}
+        className='flex-1 overflow-y-auto py-6 scroll-smooth' // Added scroll-smooth class
+      >
+        <div className='max-w-3xl mx-auto px-4'>
           {chat.length === 0 && !isLoading ? (
             <div className='flex flex-col items-center justify-center h-[60vh]'>
               <div className='text-center max-w-md mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm'>
@@ -75,10 +98,10 @@ function Page() {
             </div>
           ) : (
             <>
-              {chat.map((c,idx) => (
+              {chat?.map((c,idx) => (
                 <div 
                   key={idx} 
-                  className={`flex ${c.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
+                  className={`flex ${c.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <ChatMessage content={c.content} role={c.role} />
                 </div>
