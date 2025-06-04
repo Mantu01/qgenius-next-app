@@ -4,13 +4,18 @@ import {GoogleGenAI} from '@google/genai';
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 export default async function geminiAiStream(question:string){
-  const instruction=prompt.replace('{USER_QUESTION}',question);
-  const response = await ai.models.generateContentStream({
-    model: "gemini-1.5-flash",
-    contents: instruction,
-  });
-
-  return response;
+  try {
+    const instruction=prompt.replace('{USER_QUESTION}',question);
+    const response = await ai.models.generateContentStream({
+      model: "gemini-2.0-flash",
+      contents: instruction,
+    });
+  
+    return response;
+  } catch (error) {
+    console.log(error)
+    return null;
+  }
 
 };
 

@@ -102,7 +102,7 @@ const ChatInput = ({isOpening}:{isOpening:boolean}) => {
   }, [inputMessage]);
 
   return (
-    <div className="bg-white/95 backdrop-blur-sm fixed bottom-0 left-0 md:ml-60 right-0 dark:bg-gray-900/95 border-t border-gray-200 dark:border-gray-700 px-4 py-3">
+    <div className="bg-white/95 backdrop-blur-sm fixed bottom-0 left-0 md:ml-60 right-0 dark:bg-gray-900/95  border-gray-200 dark:border-gray-700 px-4 py-1">
       <div className="max-w-4xl mx-auto">
         {/* AI Disclaimer */}
         <div className={`mb-3 flex items-start gap-2 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg ${isOpening?'':'hidden'}`}>

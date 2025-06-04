@@ -2,16 +2,51 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname,useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useDispatch } from 'react-redux'; // Added for dispatch
 import { 
   MessageSquare, Star, FileText, Home, Search, Cpu, Monitor, Wrench,
   ChevronLeft, Menu, History, User, Settings, Bell, Bookmark, Edit,
-  Clock, Folder, Tag, BookOpen, CheckSquare, Shield, CreditCard, Link2, Download
+  Clock, Folder, Tag, BookOpen, CheckSquare, Shield, CreditCard, Link2, 
+  Download, Plus, Sparkles
 } from 'lucide-react';
+import { removeChat } from '@/app/store/chatSlice';
+
+interface SectionItem {
+  name: string;
+  path: string;
+  icon: React.ReactNode;
+  isSpecial?: boolean;
+  specialColor?: string;
+}
+
+interface Section {
+  title: string;
+  items: SectionItem[];
+}
+
+interface SectionConfig {
+  active: boolean;
+  sections: Section[];
+}
+
+interface SectionMap {
+  [key: string]: SectionConfig;
+}
+
+// Placeholder for Redux action definitions
+// Typically, these would be in an actions file or a slice (e.g., using Redux Toolkit)
+// Example:
+// const SIDEBAR_NEW_CHAT_CLICKED = 'SIDEBAR_NEW_CHAT_CLICKED';
+// const SIDEBAR_NEW_NOTE_CLICKED = 'SIDEBAR_NEW_NOTE_CLICKED';
+//
+// export const newChatClicked = (payload) => ({ type: SIDEBAR_NEW_CHAT_CLICKED, payload });
+// export const newNoteClicked = (payload) => ({ type: SIDEBAR_NEW_NOTE_CLICKED, payload });
 
 export default function Sidebar() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const dispatch = useDispatch(); // Added: Initialize dispatch
   const [isOpen, setIsOpen] = useState(true);
   const [windowWidth, setWindowWidth] = useState(0);
   
@@ -20,30 +55,45 @@ export default function Sidebar() {
       active: pathname.includes('/chat'),
       sections: [
         {
-          title: 'Navigation',
+          title: 'Chat Actions',
           items: [
-            { name: 'Chats', path: '/chat', icon: <MessageSquare className="w-5 h-5" /> },
-            { name: 'Chat History', path: '/chat/history', icon: <History className="w-5 h-5" /> },
-            { name: 'Favourite', path: '/chat/favourite', icon: <Star className="w-5 h-5" /> },
-            { name: 'Templates', path: '/chat/templates', icon: <FileText className="w-5 h-5" /> },
+            { 
+              name: 'New Chat', 
+              path: '/chat', 
+              icon: <Plus className="w-5 h-5" />,
+              isSpecial: true,
+              specialColor: 'red'
+            },
           ]
         },
         {
-          title: 'Popular Topics',
+          title: 'Navigation',
           items: [
-            { name: 'Quantum Basics', path: '/chat?topic=basics', icon: <Search className="w-5 h-5" /> },
-            { name: 'Quantum Algorithms', path: '/chat?topic=algorithms', icon: <Cpu className="w-5 h-5" /> },
-            { name: 'Quantum Hardware', path: '/chat?topic=hardware', icon: <Monitor className="w-5 h-5" /> },
-            { name: 'Error Correction', path: '/chat?topic=error', icon: <Wrench className="w-5 h-5" /> },
+            { name: 'All Chats', path: '/chat', icon: <MessageSquare className="w-5 h-5" /> },
+            { name: 'Chat History', path: '/chat/history', icon: <History className="w-5 h-5" /> },
+            { name: 'Favourites', path: '/chat/favourite', icon: <Star className="w-5 h-5" /> },
+            { name: 'Templates', path: '/chat/templates', icon: <FileText className="w-5 h-5" /> },
           ]
-        }
+        },
       ]
     },
     '/note': {
       active: pathname.includes('/note'),
       sections: [
         {
-          title: 'Notes',
+          title: 'Note Actions',
+          items: [
+            { 
+              name: 'New Note', 
+              path: '/note/new', 
+              icon: <Plus className="w-5 h-5" />,
+              isSpecial: true,
+              specialColor: 'red'
+            },
+          ]
+        },
+        {
+          title: 'Notes Management',
           items: [
             { name: 'All Notes', path: '/note', icon: <Edit className="w-5 h-5" /> },
             { name: 'Recent Notes', path: '/note/recent', icon: <Clock className="w-5 h-5" /> },
@@ -51,27 +101,18 @@ export default function Sidebar() {
             { name: 'Folders', path: '/note/folders', icon: <Folder className="w-5 h-5" /> },
           ]
         },
-        {
-          title: 'Categories',
-          items: [
-            { name: 'Research', path: '/note?category=research', icon: <BookOpen className="w-5 h-5" /> },
-            { name: 'Tasks', path: '/note?category=tasks', icon: <CheckSquare className="w-5 h-5" /> },
-            { name: 'Ideas', path: '/note?category=ideas', icon: <Tag className="w-5 h-5" /> },
-            { name: 'Projects', path: '/note?category=projects', icon: <FileText className="w-5 h-5" /> },
-          ]
-        }
       ]
     },
     '/profile': {
       active: pathname.includes('/profile'),
       sections: [
         {
-          title: 'Profile',
+          title: 'Profile Management',
           items: [
             { name: 'Account', path: '/profile', icon: <User className="w-5 h-5" /> },
             { name: 'Settings', path: '/profile/settings', icon: <Settings className="w-5 h-5" /> },
             { name: 'Notifications', path: '/profile/notifications', icon: <Bell className="w-5 h-5" /> },
-            { name: 'Preferences', path: '/profile/preferences', icon: <Star className="w-5 h-5" /> },
+            { name: 'Preferences', path: '/profile/preferences', icon: <Sparkles className="w-5 h-5" /> },
           ]
         },
         {
@@ -87,24 +128,24 @@ export default function Sidebar() {
     }
   };
   
-  
   const activeSectionKey = Object.keys(sectionMap).find(key => sectionMap[key].active);
   const shouldRenderSidebar = Boolean(activeSectionKey);
   
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
-    setWindowWidth(window.innerWidth);
+    setWindowWidth(window.innerWidth); // Set initial width
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
   useEffect(() => {
+    // Sidebar is open by default on desktop, closed on mobile unless shouldRenderSidebar is false
     setIsOpen(shouldRenderSidebar && windowWidth >= 768);
   }, [shouldRenderSidebar, windowWidth]);
 
   if (!shouldRenderSidebar) return null;
   
-  const isActivePath = (path:string) => {
+  const isActivePath = (path: string) => {
     if (path === pathname) return true;
     if (path.includes('?')) {
       const [basePath, queryString] = path.split('?');
@@ -117,66 +158,138 @@ export default function Sidebar() {
     return false;
   };
 
-  const NavLink = ({ item }:any) => (
-    <Link
-      href={item.path}
-      onClick={() => windowWidth < 768 && setIsOpen(false)}
-      className={`flex items-center space-x-3 p-3 rounded-lg text-sm font-medium transition-colors ${isActivePath(item.path)? 'bg-green-50:bg-gray-800 text-red-600 dark:text-red-400': 'text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/20'}`}
-    >
-      <span className={isActivePath(item.path) ? 'text-red-600 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'}>
-        {item.icon}
-      </span>
-      <span>{item.name}</span>
-    </Link>
-  );
+  const NavLink = ({ item }: { item: SectionItem }) => {
+    const isActive = isActivePath(item.path);
+    
+    const handleItemClick = () => {
+      // Dispatch logic for specific items
+      if (item.name === 'New Chat' && item.isSpecial) {
+        dispatch(removeChat());
+        console.log('Dispatch: New Chat Clicked', { path: item.path, name: item.name });
+      } else if (item.name === 'New Note' && item.isSpecial) {
+        dispatch({ type: 'SIDEBAR_NEW_NOTE_CLICKED', payload: { path: item.path, name: item.name } });
+        console.log('Dispatch: New Note Clicked', { path: item.path, name: item.name });
+      }
 
-  const NavSection = ({ title, items }:{title:string,items:SectionItem[]}) => (
-    <div className="mb-8 px-2">
-      <h3 className="text-xs font-semibold text-green-600 dark:text-green-400 uppercase tracking-wider mb-3 pl-2">
+      // Close sidebar on mobile after any link click
+      if (windowWidth < 768) {
+        setIsOpen(false);
+      }
+    };
+    
+    if (item.isSpecial && item.specialColor === 'red') {
+      return (
+        <Link
+          href={item.path}
+          onClick={handleItemClick} // Use the combined handler
+          className="flex items-center justify-center space-x-3 p-3 mb-4 rounded-xl bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+        >
+          <span className="text-white">
+            {item.icon}
+          </span>
+          <span>{item.name}</span>
+        </Link>
+      );
+    }
+
+    return (
+      <Link
+        href={item.path}
+        onClick={handleItemClick} // Use the combined handler
+        className={`flex items-center space-x-3 p-3 rounded-xl text-sm font-medium transition-all duration-200 group ${
+          isActive
+            ? 'bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 text-blue-700 dark:text-blue-300 border-l-4 border-blue-500 shadow-sm'
+            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:shadow-sm hover:translate-x-1'
+        }`}
+      >
+        <span className={`transition-colors ${
+          isActive 
+            ? 'text-blue-600 dark:text-blue-400' 
+            : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300'
+        }`}>
+          {item.icon}
+        </span>
+        <span className="font-medium">{item.name}</span>
+      </Link>
+    );
+  };
+
+  const NavSection = ({ title, items }: { title: string; items: SectionItem[] }) => (
+    <div className="mb-8">
+      <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4 px-3 font-sans">
         {title}
       </h3>
-      <nav className="space-y-1">
-        {items.map((item:SectionItem) => <NavLink key={item.path} item={item} />)}
+      <nav className="space-y-2 px-2">
+        {items.map((item: SectionItem) => (
+          <NavLink key={item.path} item={item} />
+        ))}
       </nav>
     </div>
   );
 
   return (
     <>
-      <button
-        className="md:hidden fixed top-16 left-1 z-40 p-2 bg-white dark:bg-gray-900 rounded-md shadow-lg text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
-      >
-        {isOpen ? <ChevronLeft className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-      </button>
+      {/* Mobile "Open" Toggle Button: Shown when sidebar is closed on mobile */}
+      {windowWidth < 768 && !isOpen && (
+        <button
+          className="fixed top-20 left-4 z-50 p-3 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 hover:shadow-xl"
+          onClick={() => setIsOpen(true)}
+          aria-label="Open sidebar"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+      )}
       
+      {/* Sidebar */}
       <aside
-        className={`fixed md:sticky top-16 left-0 z-30 h-[calc(100vh-4rem)] pt-20 md:pt-0 w-72 md:w-56 bg-white dark:bg-gray-900 border-r border-green-200 dark:border-green-900 shadow-xl transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 overflow-y-auto`}
+        className={`fixed md:sticky top-16 left-0 z-40 h-[calc(100vh-4rem)] pt-6 md:pt-0 w-80 md:w-60 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transform transition-all duration-300 ease-in-out ${
+          isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
+        } md:translate-x-0 md:shadow-lg overflow-hidden`}
+        // `aside` itself acts as a positioning context due to `fixed` and `transform`
       >
-        <div className="p-5 h-full flex flex-col">
-          {activeSectionKey && sectionMap[activeSectionKey].sections.map((section, index:number) => (
-            <NavSection key={index} title={section.title} items={section.items} />
-          ))}
+        {/* Mobile "Close" Toggle Button: Shown inside sidebar when open on mobile */}
+        {windowWidth < 768 && isOpen && (
+          <button
+            className="absolute top-4 right-4 z-50 p-2 bg-gray-100 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            onClick={() => setIsOpen(false)}
+            aria-label="Close sidebar"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+        )}
+
+        {/* Sidebar Content */}
+        <div className="h-full flex flex-col bg-gradient-to-b from-gray-50/50 to-white dark:from-gray-900 dark:to-gray-900">
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent px-4 py-6">
+            {activeSectionKey && sectionMap[activeSectionKey].sections.map((section, index: number) => (
+              <NavSection key={index} title={section.title} items={section.items} />
+            ))}
+          </div>
           
-          <div className="mt-auto pt-6 border-t border-green-100 dark:border-green-900/50 px-2">
+          {/* Footer Section */}
+          <div className="border-t border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/50 p-4">
             <Link 
               href="/"
-              onClick={() => windowWidth < 768 && setIsOpen(false)}
-              className="flex items-center space-x-3 p-3 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors"
+              onClick={() => {
+                // Also close sidebar on mobile for home link
+                if (windowWidth < 768) {
+                  setIsOpen(false);
+                }
+              }}
+              className="flex items-center space-x-3 p-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-200 hover:shadow-md group"
             >
-              <Home className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+              <Home className="h-5 w-5 group-hover:text-blue-500 transition-colors" />
               <span>Back to Home</span>
             </Link>
           </div>
         </div>
       </aside>
       
+      {/* Mobile Overlay */}
       {isOpen && windowWidth < 768 && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-20 mt-16"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 mt-16"
           onClick={() => setIsOpen(false)}
           aria-hidden="true"
         />

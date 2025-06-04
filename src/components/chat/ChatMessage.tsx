@@ -7,7 +7,7 @@ type Props = {
 
 export default function ChatMessage({ role, content }: Props) {
   return (
-    <div className="w-full py-2 scale-95">
+    <div className="w-full scale-90">
       <div className={`flex items-start ${role === 'user' ? 'justify-end' : 'justify-center'}`}>
         <div
           className={`${role==='user'?'max-w-[85%] bg-slate-100 dark:bg-slate-950':'w-full'} rounded-2xl px-4 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 shadow-md`}

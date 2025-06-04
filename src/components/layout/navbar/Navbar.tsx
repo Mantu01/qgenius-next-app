@@ -18,6 +18,7 @@ export default function Navbar() {
   const router=useRouter();
 
   const { isAuthenticated } = useSelector((state:RootState) => state.user);
+  const { selectedChat } = useSelector((state:RootState) => state.chat);
 
   useEffect(() => {
     const savedMode = localStorage.getItem('theme');

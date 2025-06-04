@@ -25,7 +25,7 @@ const MarkdownPreview: FC<MarkdownPreviewProps> = ({
   theme = "auto",
   className = "",
   enableMath = true,
-  enableRawHtml = false,
+  enableRawHtml = true,
   maxWidth = "full"
 }) => {
   const [copied, setCopied] = useState<string | null>(null);
@@ -70,7 +70,7 @@ const MarkdownPreview: FC<MarkdownPreviewProps> = ({
   const syntaxTheme = isDarkMode ? oneDark : oneLight;
 
   const remarkPlugins = useMemo(() => {
-    const plugins = [remarkGfm];
+    const plugins:any = [remarkGfm];
     if (enableMath) plugins.push(remarkMath);
     return plugins;
   }, [enableMath]);
