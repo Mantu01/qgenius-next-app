@@ -31,7 +31,6 @@ const chatSlice=createSlice({
       state.selectedChat=null;
     },
     setSelctedChat:(state,action)=>{
-      console.log(action.payload)
       state.selectedChat=action.payload;
     }
   }

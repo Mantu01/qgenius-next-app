@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function ChatInterface() {
   return (
-    <div className="flex flex-col max-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex flex-col h-[80vh] bg-gray-50 dark:bg-gray-900">
       <main className="flex-1 p-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center py-8 px-4">
@@ -34,9 +34,6 @@ export default function ChatInterface() {
       <div className="sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4">
         <div className="max-w-4xl mx-auto px-4">
           <ChatInput isOpening={true} />
-          <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-2">
-            QGenius may produce inaccurate information. Please verify important facts.
-          </p>
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-const ChatInput = ({isOpening}:{isOpening:boolean}) => {
+const ChatInput = ({isOpening,setLoading}:{isOpening:boolean,setLoading:any}) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -19,7 +19,7 @@ const ChatInput = ({isOpening}:{isOpening:boolean}) => {
 
   useEffect(()=>{
     if(selectedChat && chatId!==selectedChat ){
-      router.push(`/chat/c/${selectedChat}`);
+      router.push(`/chat/c/${selectedChat.id}`);
     }
   },[selectedChat])
 
@@ -39,7 +39,8 @@ const ChatInput = ({isOpening}:{isOpening:boolean}) => {
     if(isOpening){
       try {
         const {data}=await axios.post('api/chat',{question:userMessage});
-        dispatch(setSelctedChat(data.id))
+        dispatch(setSelctedChat(data))
+        console.log(data.id)
         router.push(`chat/c/${data.id}`)
       } catch (error) {
         console.error('Streaming error:', error);
@@ -54,6 +55,7 @@ const ChatInput = ({isOpening}:{isOpening:boolean}) => {
     }
     
     try {
+      setLoading(true);
       const res = await fetch(`/api/chat/${selectedChat}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -79,6 +81,7 @@ const ChatInput = ({isOpening}:{isOpening:boolean}) => {
       console.error('Streaming error:', error);
       dispatch(addChat({role:'assistant',Content:'Sorry, something went wrong.'}));
     } finally {
+      setLoading(false);
       setIsLoading(false);
       if (inputRef.current) {
         inputRef.current.focus();
@@ -110,8 +113,7 @@ const ChatInput = ({isOpening}:{isOpening:boolean}) => {
           <div className="text-sm text-amber-800 dark:text-amber-200">
             <p className="font-medium mb-1">Important Notice</p>
             <p className="text-xs leading-relaxed">
-              QGenius AI provides individual responses to each query and does not maintain conversation context between messages. 
-              Each question is treated as a standalone inquiry. For better results, include relevant context in your current message.
+              QGenius answers each question individually without remembering past messages. Include context in your query for best results.
             </p>
           </div>
         </div>

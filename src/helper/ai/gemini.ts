@@ -1,5 +1,6 @@
 import { prompt } from '@/app/_lib/constants/prompt';
 import {GoogleGenAI} from '@google/genai';
+import { initialPrompt } from '@/app/_lib/constants/initailPrompt';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -13,12 +14,33 @@ export default async function geminiAiStream(question:string){
   
     return response;
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return null;
   }
 
 };
 
 export async function geminiAi(question:string) {
-  
+  try {
+    const instruction=initialPrompt.replace('{USER_QUESTION}',question);
+    const response=await ai.models.generateContent({
+      model: "gemini-1.5-flash",
+      contents: instruction,
+    });
+    const generatedText=response.text;
+    if(!generatedText){
+      return { header:null, content:null };
+    }
+    const parts:string[]=generatedText?.split("---HEADER_END---");
+    let header = parts[0].trim();
+    if (header.startsWith('# ')) {
+      header = header.substring(2).trim();
+    }
+    const content = parts[1].trim();
+
+    return { header, content };
+  } catch (error) {
+    console.log(error);
+    return { header:null, content:null };
+  }
 }

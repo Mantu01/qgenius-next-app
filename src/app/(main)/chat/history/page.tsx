@@ -1,206 +1,364 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { removeChat } from '@/app/store/chatSlice';
+import { 
+  MessageSquare, 
+  Plus, 
+  RefreshCw, 
+  Search, 
+  ChevronRight, 
+  AlertCircle,
+  Clock,
+  Calendar,
+  RotateCw,
+  Home,
+  Loader2
+} from 'lucide-react';
 
-type Difficulty = 'easy' | 'medium' | 'hard';
+interface Chat {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+  header: string;
+}
 
-interface ChatEntry {
-  question: string;
-  answer: string;
-  difficulty: Difficulty;
-  id: number;
-  timestamp: number;
+interface ApiResponse {
+  chats: Chat[];
 }
 
 export default function ChatHistoryPage() {
-  // In a real app, this would come from your database or state management
-  const chatHistory: ChatEntry[] = [
-    {
-      id: 1,
-      question: 'What is React?',
-      answer: 'React is a JavaScript library for building user interfaces. It lets you create reusable UI components and efficiently update the DOM when your data changes.',
-      difficulty: 'easy',
-      timestamp: Date.now() - 86400000 // 1 day ago
-    },
-    {
-      id: 2,
-      question: 'Explain the virtual DOM in React',
-      answer: 'The virtual DOM is a lightweight copy of the actual DOM that React maintains. When state changes occur, React first updates the virtual DOM, then compares it with the previous version (diffing algorithm), and finally updates only the changed parts in the real DOM (reconciliation). This makes updates more efficient than directly manipulating the DOM.',
-      difficulty: 'medium',
-      timestamp: Date.now() - 43200000 // 12 hours ago
-    },
-    {
-      id: 3,
-      question: 'How does React Fiber improve rendering?',
-      answer: 'React Fiber is a complete rewrite of React\'s core algorithm. It enables:\n\n1. Incremental rendering: splitting rendering work into chunks\n2. Better prioritization of updates\n3. Support for features like suspense and concurrent mode\n4. The ability to pause, abort, or reuse work as needed\n\nFiber makes React more flexible and capable of handling complex animations and gestures while keeping the app responsive.',
-      difficulty: 'hard',
-      timestamp: Date.now() - 3600000 // 1 hour ago
-    },
-    {
-      id: 4,
-      question: 'What are hooks in React?',
-      answer: 'Hooks are functions that let you use state and other React features without writing a class. They allow you to manage state, side effects, context, refs, and more in functional components. Common hooks include useState, useEffect, and useContext.',
-      difficulty: 'easy',
-      timestamp: Date.now() - 7200000 // 2 hours ago
-    },
-    {
-      id: 5,
-      question: 'What is the purpose of useEffect?',
-      answer: 'useEffect is a hook that lets you perform side effects in function components. It runs after the render phase and can be used for data fetching, subscriptions, or manually changing the DOM. You can control when it runs by passing a dependency array as the second argument.',
-      difficulty: 'medium',
-      timestamp: Date.now() - 1800000 // 30 minutes ago
-    },
-    {
-      id: 6,
-      question: 'Explain the concept of lifting state up in React',
-      answer: 'Lifting state up is a pattern in React where you move the state from a child component to a common ancestor component. This allows multiple components to share the same state and communicate with each other. It helps to keep your components in sync and manage shared data more effectively.',
-      difficulty: 'medium',
-      timestamp: Date.now() - 600000 // 10 minutes ago
-    },
-    {
-      id: 7,
-      question: 'What is the purpose of keys in React lists?',
-      answer: 'Keys are unique identifiers for elements in a list. They help React identify which items have changed, been added, or removed. Using keys improves performance by allowing React to optimize re-renders and minimize DOM manipulations. Keys should be stable, predictable, and unique among siblings.',
-      difficulty: 'easy',
-      timestamp: Date.now() - 300000 // 5 minutes ago
-    },
-    {
-      id: 8,
-      question: 'What is the difference between controlled and uncontrolled components?',
-      answer: 'Controlled components are React components that derive their value from state and notify changes via callbacks. Uncontrolled components manage their own state internally, and you can access their values using refs. Controlled components provide better control and validation, while uncontrolled components are simpler to implement.',
-      difficulty: 'medium',
-      timestamp: Date.now() - 120000 // 2 minutes ago
-    },
-    {
-      id: 9,
-      question: 'How do you handle forms in React?',
-      answer: 'You can handle forms in React using controlled or uncontrolled components. For controlled components, you manage the form state using useState and handle changes with event handlers. For uncontrolled components, you can use refs to access form values directly. You can also use libraries like Formik or React Hook Form for more complex form handling.',
-      difficulty: 'easy',
-      timestamp: Date.now() - 60000 // 1 minute ago
-    },
-    {
-      id: 10,
-      question: 'What is the purpose of the useMemo hook?',
-      answer: 'The useMemo hook is used to memoize expensive calculations in React components. It returns a memoized value that only updates when its dependencies change. This helps to optimize performance by preventing unnecessary recalculations on every render.',
-      difficulty: 'medium',
-      timestamp: Date.now() - 30000 // 30 seconds ago
-    },
-    {
-      id: 11,
-      question: 'What is the purpose of the useCallback hook?',
-      answer: 'The useCallback hook is used to memoize callback functions in React components. It returns a memoized version of the callback that only changes if its dependencies change. This helps to optimize performance by preventing unnecessary re-creations of functions on every render.',
-      difficulty: 'medium',
-      timestamp: Date.now() - 15000 // 15 seconds ago
-    },
-    {
-      id: 12,
-      question: 'What is context API in React?',
-      answer: 'The Context API is a way to manage global state in React applications. It allows you to create a context object that can be shared across components without passing props down manually at every level. This makes it easier to manage and consume global data, such as themes or user authentication status.',
-      difficulty: 'medium',
-      timestamp: Date.now() - 5000 // 5 seconds ago
-    },
-    {
-      id: 13,
-      question: 'What is the purpose of the useRef hook?',
-      answer: 'The useRef hook is used to create a mutable ref object that persists for the full lifetime of the component. It can be used to access DOM elements, store mutable values, or keep track of previous state without causing re-renders.',
-      difficulty: 'medium',
-      timestamp: Date.now() - 2000 // 2 seconds ago
-    },
-    {
-      id: 14,
-      question: 'What are higher-order components (HOCs) in React?',
-      answer: 'Higher-order components (HOCs) are functions that take a component and return a new component with additional props or functionality. They are used for code reuse and can help with cross-cutting concerns like logging, authentication, or data fetching.',
-      difficulty: 'hard',
-      timestamp: Date.now() - 1000 // 1 second ago
-    },
-    {
-      id: 15,
-      question: 'What is the purpose of the useLayoutEffect hook?',
-      answer: 'The useLayoutEffect hook is similar to useEffect but runs synchronously after all DOM mutations. It is used for reading layout from the DOM and synchronously re-rendering. It can be useful for measuring DOM elements or applying styles before the browser paints.',
-      difficulty: 'hard',
-      timestamp: Date.now() - 500 // 0.5 seconds ago
-    },
-     
-  ];
+  const [chats, setChats] = useState<Chat[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredChats, setFilteredChats] = useState<Chat[]>([]);
+  const [selectedChat, setSelectedChat] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const router = useRouter();
+  const dispatch = useDispatch();
 
-  const getDifficultyColor = (difficulty: Difficulty) => {
-    switch (difficulty) {
-      case 'easy': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
-      case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
-      case 'hard': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-      default: return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+  useEffect(() => {
+    fetchChats();
+  }, []);
+
+  useEffect(() => {
+    const filtered = chats.filter(chat =>
+      chat.header.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredChats(filtered);
+  }, [chats, searchTerm]);
+
+  const fetchChats = async () => {
+    try {
+      setLoading(true);
+      setIsRefreshing(true);
+      setError(null);
+      
+      const response = await axios.get<ApiResponse>('/api/chat', {
+        timeout: 10000,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      
+      const sortedChats = response.data.chats.sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      
+      setChats(sortedChats);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || err.message || 'Failed to fetch chat history');
+      } else {
+        setError('An unexpected error occurred');
+      }
+    } finally {
+      setLoading(false);
+      setIsRefreshing(false);
     }
   };
 
-  const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleString('en-US', {
+  const handleChatClick = (chatId: string) => {
+    setSelectedChat(chatId);
+    setTimeout(() => {
+      router.push(`/chat/c/${chatId}`);
+    }, 150);
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
+      hour12: true
     });
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
-            Chat History
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Review all your previous questions and answers
-          </p>
-        </div>
+  const getRelativeTime = (dateString: string) => {
+    const now = new Date();
+    const chatDate = new Date(dateString);
+    const diffInMs = now.getTime() - chatDate.getTime();
+    const diffInHours = diffInMs / (1000 * 60 * 60);
+    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
 
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
-                {chatHistory.length} Conversation{chatHistory.length !== 1 ? 's' : ''}
-              </h2>
-              <div className="flex space-x-2">
-                <span className="px-2 py-1 text-xs rounded-md bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                  Easy: {chatHistory.filter(q => q.difficulty === 'easy').length}
-                </span>
-                <span className="px-2 py-1 text-xs rounded-md bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-                  Medium: {chatHistory.filter(q => q.difficulty === 'medium').length}
-                </span>
-                <span className="px-2 py-1 text-xs rounded-md bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-                  Hard: {chatHistory.filter(q => q.difficulty === 'hard').length}
-                </span>
+    if (diffInMs < 60000) {
+      return 'Just now';
+    } else if (diffInHours < 1) {
+      const minutes = Math.floor(diffInMs / (1000 * 60));
+      return `${minutes}m ago`;
+    } else if (diffInHours < 24) {
+      const hours = Math.floor(diffInHours);
+      return `${hours}h ago`;
+    } else if (diffInDays < 7) {
+      const days = Math.floor(diffInDays);
+      return `${days}d ago`;
+    } else if (diffInDays < 30) {
+      const weeks = Math.floor(diffInDays / 7);
+      return `${weeks}w ago`;
+    } else {
+      return formatDate(dateString);
+    }
+  };
+
+  const truncateText = (text: string, maxLength: number = 60) => {
+    return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="max-w-md w-full px-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 text-center">
+            <div className="animate-spin mx-auto mb-6 text-green-600 dark:text-green-400">
+              <Loader2 className="w-12 h-12" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+              Loading Conversations
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400">
+              Fetching your chat history...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="max-w-md w-full px-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className="p-8 text-center">
+              <div className="w-20 h-20 mx-auto mb-6 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center">
+                <AlertCircle className="w-10 h-10 text-red-600 dark:text-red-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                Unable to load conversations
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                {error}
+              </p>
+              <div className="flex justify-center space-x-4">
+                <button
+                  onClick={fetchChats}
+                  className="inline-flex items-center px-5 py-2.5 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+                >
+                  <RotateCw className="w-4 h-4 mr-2" />
+                  Try Again
+                </button>
+                <button
+                  onClick={() => router.push('/')}
+                  className="inline-flex items-center px-5 py-2.5 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-lg transition-all duration-200"
+                >
+                  <Home className="w-4 h-4 mr-2" />
+                  Go Home
+                </button>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    );
+  }
 
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
-            {chatHistory.map((entry) => (
-              <div key={entry.id} className="p-6">
-                <div className="flex justify-between items-start mb-2">
-                  <div className="flex items-center">
-                    <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200 mr-3">
-                      {entry.question}
-                    </h3>
-                    <span className={`px-2 py-1 rounded-md text-xs font-medium ${getDifficultyColor(entry.difficulty)}`}>
-                      {entry.difficulty}
-                    </span>
-                  </div>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {formatDate(entry.timestamp)}
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        {/* Header Section */}
+        <div className="mb-10">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                Conversation History
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400">
+                Review and manage your previous conversations
+              </p>
+            </div>
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={() => {
+                  dispatch(removeChat());
+                  router.push('/chat')
+                }}
+                className="inline-flex items-center px-5 py-2.5 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                New Chat
+              </button>
+              <button
+                onClick={fetchChats}
+                disabled={isRefreshing}
+                className={`inline-flex items-center px-5 py-2.5 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md ${isRefreshing ? 'opacity-75 cursor-not-allowed' : ''}`}
+              >
+                {isRefreshing ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                )}
+                Refresh
+              </button>
+            </div>
+          </div>
+
+          {/* Search and Stats Bar */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-8">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="relative w-full md:w-auto flex-1">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search conversations..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="block w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 shadow-sm"
+                />
+              </div>
+              <div className="flex items-center space-x-6 text-sm">
+                <div className="flex items-center bg-gray-100 dark:bg-gray-700 px-3 py-1.5 rounded-full">
+                  <span className="text-gray-700 dark:text-gray-300 font-medium">
+                    {filteredChats.length}
+                  </span>
+                  <span className="ml-1 text-gray-600 dark:text-gray-400">
+                    {filteredChats.length === 1 ? 'Conversation' : 'Conversations'}
                   </span>
                 </div>
-                
-                <div className="prose dark:prose-invert max-w-none mt-3">
-                  {entry.answer.split('\n\n').map((paragraph, i) => (
-                    <p key={i} className="text-gray-700 dark:text-gray-300 mb-3">
-                      {paragraph}
-                    </p>
-                  ))}
+                <div className="hidden sm:flex items-center space-x-2">
+                  <span className="text-gray-600 dark:text-gray-400">Sorted by:</span>
+                  <span className="font-medium text-gray-700 dark:text-gray-300">Newest first</span>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
+        </div>
+
+        {/* Chat List */}
+        {filteredChats.length === 0 ? (
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className="p-12 text-center">
+              <div className="w-24 h-24 mx-auto mb-6 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                <MessageSquare className="w-12 h-12 text-gray-400 dark:text-gray-500" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                {searchTerm ? 'No matching conversations' : 'No conversations yet'}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto mb-6">
+                {searchTerm 
+                  ? 'Try adjusting your search terms to find what you\'re looking for.'
+                  : 'Start a new conversation to see your chat history here.'
+                }
+              </p>
+              <div className="flex justify-center">
+                {searchTerm ? (
+                  <button
+                    onClick={() => setSearchTerm('')}
+                    className="inline-flex items-center px-5 py-2.5 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+                  >
+                    Clear search
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => router.push('/chat')}
+                    className="inline-flex items-center px-5 py-2.5 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Start New Chat
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className="divide-y divide-gray-100 dark:divide-gray-700">
+              {filteredChats.map((chat) => (
+                <div
+                  key={chat.id}
+                  onClick={() => handleChatClick(chat.id)}
+                  onMouseEnter={() => setSelectedChat(chat.id)}
+                  onMouseLeave={() => setSelectedChat(null)}
+                  className={`group relative p-6 hover:bg-gray-50 dark:hover:bg-gray-700/30 cursor-pointer transition-all duration-200 ${selectedChat === chat.id ? 'bg-gray-50 dark:bg-gray-700/30' : ''}`}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 min-w-0 pr-4">
+                      <div className="flex items-start space-x-4">
+                        <div className={`mt-1 flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-lg ${selectedChat === chat.id ? 'bg-green-100 dark:bg-green-900/30' : 'bg-gray-100 dark:bg-gray-700'} transition-colors duration-200`}>
+                          <MessageSquare className={`h-5 w-5 ${selectedChat === chat.id ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'} transition-colors duration-200`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <h3 className={`text-lg font-semibold ${selectedChat === chat.id ? 'text-green-600 dark:text-green-400' : 'text-gray-900 dark:text-gray-100'} transition-colors duration-200 truncate`}>
+                              {truncateText(chat.header, 80)}
+                            </h3>
+                            <span className="text-xs text-gray-500 dark:text-gray-400 ml-2 whitespace-nowrap">
+                              {getRelativeTime(chat.createdAt)}
+                            </span>
+                          </div>
+                          <div className="mt-1 flex items-center space-x-4">
+                            <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+                              <Calendar className="w-3 h-3 mr-1" />
+                              {formatDate(chat.createdAt)}
+                            </span>
+                            {chat.updatedAt !== chat.createdAt && (
+                              <>
+                                <span className="text-gray-300 dark:text-gray-600">•</span>
+                                <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+                                  <Clock className="w-3 h-3 mr-1" />
+                                  Updated: {formatDate(chat.updatedAt)}
+                                </span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center">
+                      <ChevronRight className={`h-5 w-5 ${selectedChat === chat.id ? 'text-green-600 dark:text-green-400' : 'text-gray-400'} transition-colors duration-200`} />
+                    </div>
+                  </div>
+                  
+                  {/* Animated hover indicator */}
+                  <div className={`absolute left-0 top-0 bottom-0 w-1 bg-green-500 ${selectedChat === chat.id ? 'opacity-100' : 'opacity-0'} transition-all duration-200`}></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Footer */}
+        <div className="mt-12 text-center text-sm text-gray-500 dark:text-gray-400">
+          <p>Showing {filteredChats.length} of {chats.length} total conversations</p>
         </div>
       </div>
     </div>

@@ -48,7 +48,6 @@ model QnA {
   id       String @id @default(uuid())
   question String
   answer   String
-  category String
   askedBy  User   @relation(fields: [userId], references: [id])
   userId   String
 }
@@ -60,7 +59,7 @@ model Chat {
   messages  ChatMessage[]
   user      User?         @relation(fields: [userId], references: [id])
   userId    String?
-  header    String
+  header    String        @default("Untitled")
 }
 
 model ChatMessage {

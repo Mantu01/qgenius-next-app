@@ -12,7 +12,7 @@ export async function GET(req:NextRequest,{ params }: { params: { chatId: string
     const {chatId}=await params;
     const chat=await prisma.chat.findFirst({
       where:{id:chatId},
-      include:{messages:true,user:true}
+      include:{messages:true}
     })
     return NextResponse.json(chat,{status:200})
   } catch (error:any) {

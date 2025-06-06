@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/config/dbConfig";
 import { getDataFromToken } from "@/helper/getDataFromToken";
 import { prompt } from "@/app/_lib/constants/prompt";
-import geminiAi from "@/helper/ai/gemini";
+import { geminiAi } from "@/helper/ai/gemini";
+
 
 
 // GET -> Get all chats
@@ -16,9 +17,8 @@ export async function GET(req:NextRequest) {
     }
     const allChat=await prisma.chat.findMany({
       where:{userId},
-      include:{messages:true}
     });
-    return Response.json({data:allChat},{status:200});
+    return Response.json({chats:allChat},{status:200});
   } catch (error:any) {
     return NextResponse.json({ message:'Internal Server Error' ,error:error.message},{ status: 500 });
   }
@@ -34,25 +34,34 @@ export async function POST(req:NextRequest) {
     if(!userId){
       return Response.json({message:'User not found'},{status:404});
     }
-    const response=await geminiAi(question)
+    const result=await geminiAi(question);
+    console.log(result)
+    if(!result || !result.header){
+      return Response.json({message:'Something went wrong'},{status:500});
+    }
+    const {header,content} =result;
     const newChat=await prisma.chat.create({
       data:{
         userId,
+        header,
         messages: {
           create: [
             {
               role: 'user',
-              content: 'Hello, how are you?'
+              content:question
             },
             {
               role: 'assistant',
-              content: 'I’m great, how can I help you today?'
+              content:content
             }
           ]
         }
       }
     });
-    return Response.json({id:newChat.id},{status:201});
+    if(!newChat){
+      return Response.json({message:'Something went wrong'},{status:500});
+    }
+    return Response.json({id:newChat.id,header:newChat.header},{status:201});
   } catch (error:any) {
     console.log(error)
     return NextResponse.json({ message:'Internal Server Error' ,error:error.message},{ status: 500 });

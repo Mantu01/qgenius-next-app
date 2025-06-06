@@ -165,7 +165,6 @@ export default function Sidebar() {
       // Dispatch logic for specific items
       if (item.name === 'New Chat' && item.isSpecial) {
         dispatch(removeChat());
-        console.log('Dispatch: New Chat Clicked', { path: item.path, name: item.name });
       } else if (item.name === 'New Note' && item.isSpecial) {
         dispatch({ type: 'SIDEBAR_NEW_NOTE_CLICKED', payload: { path: item.path, name: item.name } });
         console.log('Dispatch: New Note Clicked', { path: item.path, name: item.name });
@@ -198,14 +197,14 @@ export default function Sidebar() {
         onClick={handleItemClick} // Use the combined handler
         className={`flex items-center space-x-3 p-3 rounded-xl text-sm font-medium transition-all duration-200 group ${
           isActive
-            ? 'bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 text-blue-700 dark:text-blue-300 border-l-4 border-blue-500 shadow-sm'
-            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:shadow-sm hover:translate-x-1'
+            ? 'bg-gradient-to-r from-red-50 to-indigo-50 dark:from-red-900/20 dark:to-indigo-900/20 text-red-700 dark:text-red-300 border-l-4 border-red-500 shadow-sm'
+            : 'text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-800/50 hover:shadow-sm hover:translate-x-1'
         }`}
       >
         <span className={`transition-colors ${
           isActive 
-            ? 'text-blue-600 dark:text-blue-400' 
-            : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300'
+            ? 'text-red-600 dark:text-red-400' 
+            : 'text-gray-500 dark:text-gray-400 group-hover:text-green-700 dark:group-hover:text-green-300'
         }`}>
           {item.icon}
         </span>
@@ -279,7 +278,7 @@ export default function Sidebar() {
               }}
               className="flex items-center space-x-3 p-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-200 hover:shadow-md group"
             >
-              <Home className="h-5 w-5 group-hover:text-blue-500 transition-colors" />
+              <Home className="h-5 w-5 group-hover:text-red-500 transition-colors" />
               <span>Back to Home</span>
             </Link>
           </div>

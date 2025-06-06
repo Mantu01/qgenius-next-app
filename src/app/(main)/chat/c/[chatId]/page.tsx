@@ -10,36 +10,35 @@ import axios from 'axios';
 import { initChat, setSelctedChat } from '@/app/store/chatSlice';
 
 function Page() {
-  const { chat } = useSelector((state: RootState) => state.chat);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setLoading] = React.useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const scrollBehaviorRef = useRef<'auto' | 'smooth'>('auto');
-
+  
+  const { chat, selectedChat } = useSelector((state: RootState) => state.chat);
   const { isAuthenticated } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
+  const header = selectedChat?.header;
   const router = useRouter();
   const { chatId } = useParams();
 
   useEffect(() => {
     if (chatId && isAuthenticated) {
-      dispatch(setSelctedChat(chatId))
       axios.get(`/api/chat/${chatId}`)
         .then(({ data }) => {
+          dispatch(setSelctedChat({id: data.id, header: data.header}))
           dispatch(initChat(data.messages));
-          setIsLoading(false);
-          // Use auto scroll for initial load
+          setLoading(false);
           scrollBehaviorRef.current = 'auto';
         })
-        .catch(() => setIsLoading(false));
+        .catch(() => setLoading(false));
     } else {
-      setIsLoading(false);
+      setLoading(false);
     }
   }, [chatId, isAuthenticated, dispatch]);
 
   useEffect(() => {
-    // Only scroll if we're at the bottom or close to it
     if (messagesEndRef.current && chatContainerRef.current) {
       const container = chatContainerRef.current;
       const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
@@ -50,7 +49,6 @@ function Page() {
         });
       }
       
-      // After initial load, switch to smooth scrolling for new messages
       if (scrollBehaviorRef.current === 'auto') {
         scrollBehaviorRef.current = 'smooth';
       }
@@ -59,19 +57,24 @@ function Page() {
 
   if (!isAuthenticated) {
     return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-white dark:bg-gray-900">
-        <div className="text-center p-6 max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+      <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-gray-50/50 dark:bg-gray-900/90 backdrop-blur-sm">
+        <div className="text-center p-10 max-w-md w-full mx-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300 hover:shadow-3xl">
+          <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg">
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4 tracking-tight">
             Authentication Required
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Please sign in to access your chats.
+          <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+            Please sign in to access your chat history and continue your conversations.
           </p>
           <button
             onClick={() => router.push('/login')}
-            className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-red-500/25 shadow-lg hover:shadow-xl"
           >
-            Sign In
+            Sign In to Continue
           </button>
         </div>
       </div>
@@ -79,56 +82,82 @@ function Page() {
   }
 
   return (
-    <div className='flex flex-col bg-white dark:bg-gray-900'>
+    <div className='flex flex-col h-[calc(100vh-64px)] bg-gray-50/30 dark:bg-gray-900'>
+      {header && (
+        <header className='border-b border-gray-200/60 dark:border-gray-800/60 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md py-5 sticky top-0 z-10'>
+          <div className='max-w-4xl mx-auto px-6'>
+            <h1 className='text-xl font-semibold text-gray-900 dark:text-gray-100 truncate tracking-tight'>
+              {header || 'Untitled Chat'}
+            </h1>
+          </div>
+        </header>
+      )}
+      
       <main 
         ref={chatContainerRef}
-        className=' overflow-y-auto'
+        className='flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent'
+        style={{
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'rgb(156 163 175) transparent'
+        }}
       >
-        <div className='max-w-3xl mx-auto '>
+        <div className='max-w-4xl mx-auto px-6 pb-32 pt-8 space-y-8'>
           {chat.length === 0 && !isLoading ? (
-            <div className='flex flex-col items-center '>
-              <div className='text-center max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-sm '>
-                <h2 className='text-xl font-semibold text-gray-800 dark:text-gray-200 mb-3'>
-                  Start a conversation
+            <div className='flex flex-col items-center justify-center h-full min-h-[60vh]'>
+              <div className='text-center max-w-lg p-10 bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-3xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300 hover:shadow-2xl'>
+                <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 rounded-3xl flex items-center justify-center shadow-inner">
+                  <svg className="w-10 h-10 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                </div>
+                <h2 className='text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4 tracking-tight'>
+                  {header ? 'Continue Your Conversation' : 'Start a New Conversation'}
                 </h2>
-                <p className='text-gray-600 dark:text-gray-400'>
-                  Ask anything or share your thoughts with the AI Assistant.
+                <p className='text-gray-600 dark:text-gray-400 leading-relaxed text-lg'>
+                  {header 
+                    ? 'Pick up where you left off with your AI assistant.' 
+                    : 'Ask anything or share your thoughts with the AI assistant.'}
                 </p>
               </div>
             </div>
           ) : (
-            <>
-              {chat?.map((c,idx) => (
+            <div className="space-y-6">
+              {chat?.map((c, idx) => (
                 <div 
                   key={idx} 
-                  className={`flex p-0 ${c.role === 'user' ? 'justify-end bg-red-500' : 'justify-start bg-green-700'}`}
+                  className={`flex ${c.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in-0 slide-in-from-bottom-4 duration-500`}
+                  style={{ animationDelay: `${idx * 50}ms` }}
                 >
                   <ChatMessage content={c.content} role={c.role} />
                 </div>
               ))}
               
               {isLoading && (
-                <div className="flex justify-start animate-fade-in">
-                  <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-3 max-w-[80%] shadow-sm">
-                    <div className="flex items-center space-x-2">
-                      <Loader2 size={16} className="animate-spin text-green-500" />
-                      <span className="text-sm text-gray-500 dark:text-gray-400">AI is thinking...</span>
+                <div className="flex justify-start animate-in fade-in-0 slide-in-from-bottom-4 duration-300">
+                  <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/60 dark:border-gray-700/60 rounded-2xl px-6 py-4 max-w-[80%] shadow-lg">
+                    <div className="flex items-center space-x-3">
+                      <div className="relative">
+                        <Loader2 size={18} className="animate-spin text-green-500" />
+                        <div className="absolute inset-0 animate-ping">
+                          <Loader2 size={18} className="text-green-500/30" />
+                        </div>
+                      </div>
+                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        AI is thinking...
+                      </span>
                     </div>
                   </div>
                 </div>
               )}
-              <div ref={messagesEndRef} className="h-4" />
-            </>
+              <div ref={messagesEndRef} className="h-6" />
+            </div>
           )}
         </div>
       </main>
 
       <footer className='bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800'>
         <div className='max-w-3xl mx-auto'>
-          <ChatInput isOpening={false} />
-          <p className="text-xs text-center text-gray-500 dark:text-gray-400">
-            AI Assistant may produce inaccurate information
-          </p>
+          <ChatInput isOpening={false} setLoading={setLoading} />
         </div>
       </footer>
     </div>

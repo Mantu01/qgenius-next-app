@@ -72,7 +72,7 @@ const Note = () => {
   const anyQuestionsFilled = questions.some(q => q.trim() !== '')
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 font-sans transition-colors duration-300">
+    <div className="min-h-[91vh] bg-gray-50 dark:bg-gray-950 font-sans transition-colors duration-300">
       <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
         <div className="flex items-center mb-10">
           <h1 className="text-3xl font-extrabold flex items-center gap-3 text-green-700 dark:text-green-400">
