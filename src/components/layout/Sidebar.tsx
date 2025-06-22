@@ -69,7 +69,7 @@ export default function Sidebar() {
         {
           title: 'Navigation',
           items: [
-            { name: 'All Chats', path: '/chat', icon: <MessageSquare className="w-5 h-5" /> },
+            { name: 'Chat', path: '/chat', icon: <MessageSquare className="w-5 h-5" /> },
             { name: 'Chat History', path: '/chat/history', icon: <History className="w-5 h-5" /> },
             { name: 'Favourites', path: '/chat/favourite', icon: <Star className="w-5 h-5" /> },
             { name: 'Templates', path: '/chat/templates', icon: <FileText className="w-5 h-5" /> },
@@ -95,8 +95,7 @@ export default function Sidebar() {
         {
           title: 'Notes Management',
           items: [
-            { name: 'All Notes', path: '/note', icon: <Edit className="w-5 h-5" /> },
-            { name: 'Recent Notes', path: '/note/recent', icon: <Clock className="w-5 h-5" /> },
+            { name: 'All Notes', path: '/note/all', icon: <Edit className="w-5 h-5" /> },
             { name: 'Bookmarked', path: '/note/bookmarked', icon: <Bookmark className="w-5 h-5" /> },
             { name: 'Folders', path: '/note/folders', icon: <Folder className="w-5 h-5" /> },
           ]

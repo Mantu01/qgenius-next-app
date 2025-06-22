@@ -1,7 +1,18 @@
+'use client'
+
+import NotLoggedIn from '@/components/auth/notLoggedIn';
 import ChatInput from '@/components/chat/Input';
 import Image from 'next/image';
+import { useSelector } from 'react-redux';
 
 export default function ChatInterface() {
+
+  const { isAuthenticated } = useSelector((state: RootState) => state.user);
+
+  if(!isAuthenticated){
+    return <NotLoggedIn/>;
+  }
+
   return (
     <div className="flex flex-col h-[80vh] bg-gray-50 dark:bg-gray-900">
       <main className="flex-1 p-4">
@@ -33,7 +44,7 @@ export default function ChatInterface() {
       {/* Chat Input */}
       <div className="sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4">
         <div className="max-w-4xl mx-auto px-4">
-          <ChatInput isOpening={true} />
+          <ChatInput setLoading={null} isOpening={true} />
         </div>
       </div>
     </div>

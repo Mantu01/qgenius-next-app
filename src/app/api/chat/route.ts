@@ -35,7 +35,6 @@ export async function POST(req:NextRequest) {
       return Response.json({message:'User not found'},{status:404});
     }
     const result=await geminiAi(question);
-    console.log(result)
     if(!result || !result.header){
       return Response.json({message:'Something went wrong'},{status:500});
     }

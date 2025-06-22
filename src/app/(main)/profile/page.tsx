@@ -72,7 +72,6 @@ function Profile() {
               {
                 [
                   {icon:Mail,text:user?.email},
-                  {icon:Gem,text:`Credits remaining: ${user?.creaditsLeft}`},
                   {icon:Clock,text:`Joined on ${formatDate(user?.createdAt)}`},
                   {icon:Timer,text:`Last Updated on ${formatDate(user?.updatedAt)}`}
                 ].map((item,idex)=>(

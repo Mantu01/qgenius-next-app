@@ -2,7 +2,7 @@
 
 import ChatMessage from '@/components/chat/ChatMessage';
 import ChatInput from '@/components/chat/Input';
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Loader2 } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
@@ -11,16 +11,15 @@ import { initChat, setSelctedChat } from '@/app/store/chatSlice';
 
 function Page() {
   const [isLoading, setLoading] = React.useState(true);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  const scrollBehaviorRef = useRef<'auto' | 'smooth'>('auto');
   
   const { chat, selectedChat } = useSelector((state: RootState) => state.chat);
   const { isAuthenticated } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
   const header = selectedChat?.header;
-  const router = useRouter();
   const { chatId } = useParams();
 
   useEffect(() => {
@@ -30,7 +29,6 @@ function Page() {
           dispatch(setSelctedChat({id: data.id, header: data.header}))
           dispatch(initChat(data.messages));
           setLoading(false);
-          scrollBehaviorRef.current = 'auto';
         })
         .catch(() => setLoading(false));
     } else {
@@ -38,48 +36,28 @@ function Page() {
     }
   }, [chatId, isAuthenticated, dispatch]);
 
+  // Improved scroll behavior
   useEffect(() => {
     if (messagesEndRef.current && chatContainerRef.current) {
       const container = chatContainerRef.current;
+      
+      // Always scroll to bottom on initial load
+      if (isInitialLoad) {
+        container.scrollTop = container.scrollHeight;
+        setIsInitialLoad(false);
+        return;
+      }
+
+      // For subsequent updates, only scroll if near bottom
       const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
       
-      if (isNearBottom || scrollBehaviorRef.current === 'auto') {
+      if (isNearBottom) {
         messagesEndRef.current.scrollIntoView({
-          behavior: scrollBehaviorRef.current
+          behavior: 'smooth'
         });
       }
-      
-      if (scrollBehaviorRef.current === 'auto') {
-        scrollBehaviorRef.current = 'smooth';
-      }
     }
-  }, [chat]);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-gray-50/50 dark:bg-gray-900/90 backdrop-blur-sm">
-        <div className="text-center p-10 max-w-md w-full mx-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300 hover:shadow-3xl">
-          <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4 tracking-tight">
-            Authentication Required
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
-            Please sign in to access your chat history and continue your conversations.
-          </p>
-          <button
-            onClick={() => router.push('/login')}
-            className="w-full px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-red-500/25 shadow-lg hover:shadow-xl"
-          >
-            Sign In to Continue
-          </button>
-        </div>
-      </div>
-    );
-  }
+  }, [chat, isInitialLoad]);
 
   return (
     <div className='flex flex-col h-[calc(100vh-64px)] bg-gray-50/30 dark:bg-gray-900'>
@@ -101,7 +79,7 @@ function Page() {
           scrollbarColor: 'rgb(156 163 175) transparent'
         }}
       >
-        <div className='max-w-4xl mx-auto px-6 pb-32 pt-8 space-y-8'>
+        <div className='max-w-4xl mx-auto px-6 pb-32 pt-4'> {/* Added pt-4 for top padding */}
           {chat.length === 0 && !isLoading ? (
             <div className='flex flex-col items-center justify-center h-full min-h-[60vh]'>
               <div className='text-center max-w-lg p-10 bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-3xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300 hover:shadow-2xl'>

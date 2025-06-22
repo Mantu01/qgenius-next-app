@@ -34,7 +34,9 @@ export async function PUT(req: NextRequest, { params }: { params: { chatId: stri
     });
 
     const AIresponse=await geminiAiStream(question);
-
+    if(!AIresponse){
+      return Response.json({message:'Something wnet wrong'},{status:500});
+    }
     const stream = new ReadableStream({
       async start(controller) {
         for await(const chunks of AIresponse) {

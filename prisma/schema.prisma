@@ -23,7 +23,7 @@ model User {
   coverImage                String?
   creaditsLeft              Int         @default(3)
   Apis                      APIsTokens?
-  askedHistory              QnA[]
+  notes                     Note[]
   chatHistory               Chat[]
   forgotPasswordToken       String?
   forgotPasswordTokenExpiry DateTime?
@@ -31,25 +31,35 @@ model User {
   verifyTokenExpiry         DateTime?
   isVerified                Boolean     @default(false)
   createdAt                 DateTime    @default(now())
-  updatedAt                 DateTime?    @updatedAt
+  updatedAt                 DateTime?   @updatedAt
 }
 
 model APIsTokens {
-  id        String  @id @default(uuid())
-  user      User    @relation(fields: [userId], references: [id])
-  userId    String  @unique
-  gemini    String?
-  openAi    String?
-  claude    String?
-  grok      String?
+  id     String  @id @default(uuid())
+  user   User    @relation(fields: [userId], references: [id])
+  userId String  @unique
+  gemini String?
+  openAi String?
+  claude String?
+  grok   String?
+}
+
+model Note {
+  id        String @id @default(uuid())
+  contenets QnA[]
+  topic     String
+  askedBy   User   @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime      @default(now())
 }
 
 model QnA {
   id       String @id @default(uuid())
   question String
   answer   String
-  askedBy  User   @relation(fields: [userId], references: [id])
-  userId   String
+  level    String
+  note     Note   @relation(fields: [noteId], references: [id])
+  noteId   String
 }
 
 model Chat {
