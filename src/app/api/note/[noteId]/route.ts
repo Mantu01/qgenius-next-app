@@ -2,7 +2,8 @@ import prisma from "@/config/dbConfig";
 import { getDataFromToken } from "@/helper/getDataFromToken";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req:NextRequest
+export async function GET(req:NextRequest){
+  try{
     const userId=await getDataFromToken(req);
     if(!userId){
       return NextResponse.json({message:'Unautherize'},{status:401});
