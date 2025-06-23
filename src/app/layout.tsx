@@ -8,6 +8,7 @@ import Sidebar from "@/components/layout/Sidebar";
 import {ToastContainer} from 'react-toastify'
 import GetUser from "@/hooks/useUser";
 import { Suspense } from "react";
+import {Analytics} from '@vercel/analytics/next'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,6 +49,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
               <Footer />
             </div>
           </StoreProvider>
+          <Analytics/>
         </body>
       </Suspense>
       
