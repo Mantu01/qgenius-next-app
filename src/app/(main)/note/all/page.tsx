@@ -22,7 +22,7 @@ function formatDate(dateString: string): string {
   })
 }
 
-function Page() {
+export default function Page() {
   const [notes, setNotes] = useState<Note[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -112,5 +112,3 @@ function Page() {
     </div>
   )
 }
-
-export default Page
