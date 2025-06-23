@@ -61,11 +61,11 @@ const LoginPage = () => {
 
   const handleLogin=async(InputData:LoginData)=>{
     try {
-      const {data}=await axios.post('/api/auth/login',InputData);
+      await axios.post('/api/auth/login',InputData);
       dispatch(setUser(null));
-      toast.success(data.message);
       router.push('/');
-    } catch (error:any) {
+    } catch (error) {
+      //@ts-expect-error: Unknown
       toast.error(error.response.data.message || 'Something went wrong')
     }
   }

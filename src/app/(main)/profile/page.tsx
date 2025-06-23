@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Mail, Clock, BadgeCheck, Gem, Shield, Timer } from 'lucide-react';
+import { Mail, Clock, BadgeCheck, Shield, Timer } from 'lucide-react';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import ProfileButton from '@/components/profile/ProfilButton';
 import ProfileInfoItem from '@/components/profile/ProfileInfoItem';
@@ -74,11 +74,13 @@ function Profile() {
                   {icon:Mail,text:user?.email},
                   {icon:Clock,text:`Joined on ${formatDate(user?.createdAt)}`},
                   {icon:Timer,text:`Last Updated on ${formatDate(user?.updatedAt)}`}
-                ].map((item,idex)=>(
-                  <ProfileInfoItem
+                ].map((item,idx)=>(
+                  <div key={idx}>
+                    <ProfileInfoItem
                     icon={item.icon} 
                     text={item.text}
-                  />
+                    />
+                  </div>
                 ))}
             </div>
           </div>

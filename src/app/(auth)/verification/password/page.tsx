@@ -43,9 +43,10 @@ export default function PasswordResetPage() {
       await axios.post("/api/auth/resetpassword", { token, password: data.password });
       setSuccess(true);
       setLoading(false);
-    } catch (error: any) {
+    } catch (error) {
       setError("root", {
         type: "manual",
+        //@ts-expect-error: unknown
         message: error.response?.data?.message || "Password reset failed",
       });
       setLoading(false);
@@ -217,7 +218,7 @@ export default function PasswordResetPage() {
                       isSubmitting ? "opacity-70 cursor-not-allowed" : ""
                     }`}
                   >
-                    {true ? (
+                    {loading ? (
                       <span className="flex items-center justify-center gap-2">
                         <svg
                           className="animate-spin h-5 w-5 text-white"

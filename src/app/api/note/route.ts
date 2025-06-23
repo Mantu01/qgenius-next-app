@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/config/dbConfig";
 import { getDataFromToken } from "@/helper/getDataFromToken";
-import geminiAiStream, { geminiNoteAi } from "@/helper/ai/gemini";
+import  { geminiNoteAi } from "@/helper/ai/gemini";
 
 
 // GET -> Get all notes
@@ -18,12 +18,13 @@ export async function GET(req:NextRequest) {
       where:{userId},
     });
     return Response.json({Notes:allNotes},{status:200});
-  } catch (error:any) {
+  } catch (error) {
+    //@ts-expect-error: unknown
     return NextResponse.json({ message:'Internal Server Error' ,error:error.message},{ status: 500 });
   }
 }
 
-export async function POST(req: NextRequest, { params }: { params: { chatId: string } }) {
+export async function POST(req: NextRequest) {
   try {
     const { questions,topic } = await req.json();
     if(!questions || !questions.length){
@@ -42,7 +43,7 @@ export async function POST(req: NextRequest, { params }: { params: { chatId: str
       }
     });
 
-    let data=[];
+    const data=[];
     for(const ele of questions){
       const answer=await geminiNoteAi(ele.question,ele.level,topic);
       data.push({
@@ -59,8 +60,9 @@ export async function POST(req: NextRequest, { params }: { params: { chatId: str
 
     await prisma.qnA.createMany({data});
     return NextResponse.json({message:'success',noteId:note.id},{status:201});
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json(
+      //@ts-expect-error: unknown
       { message: 'Internal Server Error', error: error.message },
       { status: 500 }
     );

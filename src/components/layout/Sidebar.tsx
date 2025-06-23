@@ -4,12 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useDispatch } from 'react-redux'; // Added for dispatch
-import { 
-  MessageSquare, Star, FileText, Home, Search, Cpu, Monitor, Wrench,
-  ChevronLeft, Menu, History, User, Settings, Bell, Bookmark, Edit,
-  Clock, Folder, Tag, BookOpen, CheckSquare, Shield, CreditCard, Link2, 
-  Download, Plus, Sparkles
-} from 'lucide-react';
+import {MessageSquare,Star,FileText,Home,ChevronLeft,Menu,History,User,Settings,Bell,Bookmark,Edit,Folder,Shield,CreditCard,Link2,Download,Plus,Sparkles} from 'lucide-react';
 import { removeChat } from '@/app/store/chatSlice';
 
 interface SectionItem {
@@ -85,7 +80,7 @@ export default function Sidebar() {
           items: [
             { 
               name: 'New Note', 
-              path: '/note/new', 
+              path: '/note', 
               icon: <Plus className="w-5 h-5" />,
               isSpecial: true,
               specialColor: 'red'

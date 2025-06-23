@@ -6,7 +6,6 @@ import axios from 'axios';
 import { Eye, EyeOff, KeyRound, ShieldAlert } from 'lucide-react';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 interface ResetPasswordData {
@@ -36,9 +35,10 @@ const ResetPassword = () => {
       }
       await axios.put('/api/auth/resetpassword',{...data,type:'password'});
       toast.success('Password updated successfully')
-    } catch (error: any) {
+    } catch (error) {
       setError('root', {
         type: 'manual',
+        //@ts-expect-error: unknown
         message: error.response.data.message || 'Something went wrong'
       });
     }

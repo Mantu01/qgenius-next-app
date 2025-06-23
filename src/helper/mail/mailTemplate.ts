@@ -347,7 +347,7 @@ export function generateEmailHTML(params: templateParameters) {
   `;
   
     // Replace all template placeholders with actual values
-    let html:string = mailTemplate
+    const html:string = mailTemplate
       .replace('{{title}}', params.title || '')
       .replace('{{message}}', params.message || '')
       .replace('{{link}}', params.link || '')

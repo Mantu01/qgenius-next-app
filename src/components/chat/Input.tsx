@@ -7,7 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-const ChatInput = ({isOpening,setLoading}:{isOpening:boolean,setLoading:any}) => {
+const ChatInput = ({isOpening,setLoading}:{isOpening:boolean,setLoading:React.Dispatch<React.SetStateAction<boolean>>}) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -18,10 +18,10 @@ const ChatInput = ({isOpening,setLoading}:{isOpening:boolean,setLoading:any}) =>
   const {selectedChat}=useSelector((state:RootState)=>state.chat)
 
   useEffect(()=>{
-    if(selectedChat && chatId!==selectedChat ){
+    if(selectedChat && chatId!==selectedChat.id ){
       router.push(`/chat/c/${selectedChat.id}`);
     }
-  },[selectedChat])
+  },[selectedChat,chatId,router])
 
   const dispatch=useDispatch();
 
@@ -40,7 +40,6 @@ const ChatInput = ({isOpening,setLoading}:{isOpening:boolean,setLoading:any}) =>
       try {
         const {data}=await axios.post('api/chat',{question:userMessage});
         dispatch(setSelctedChat(data))
-        console.log(data.id)
         router.push(`chat/c/${data.id}`)
       } catch (error) {
         console.error('Streaming error:', error);
@@ -56,7 +55,7 @@ const ChatInput = ({isOpening,setLoading}:{isOpening:boolean,setLoading:any}) =>
     
     try {
       setLoading(true);
-      const res = await fetch(`/api/chat/${selectedChat}`, {
+      const res = await fetch(`/api/chat/${selectedChat.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: userMessage }),

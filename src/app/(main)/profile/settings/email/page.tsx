@@ -7,24 +7,25 @@ import axios from 'axios';
 import { Eye, EyeOff, KeyRound, Mail, ShieldAlert } from 'lucide-react';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const ChangeEmail = () => {
-  const { user } = useSelector((state: RootState) => state.user);
   const dispatch=useDispatch();
   const { register, handleSubmit,setError, formState: { errors, isSubmitting } } = useForm<LoginData>();
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => setShowPassword(prev => !prev);
 
-  const onSubmit = async (inputData:any) => {
+  //@ts-expect-error: unknown
+  const onSubmit = async (inputData) => {
     
     try {
       const {data}=await axios.put('/api/auth/resetpassword',{...inputData,type:'email'});
       dispatch(setUser(data.user));
       toast.success(data.message);
-    } catch (error:any) {
+    } catch (error) {
+      console.log(error)
       setError('root',{
         type: 'manual',
         message:'Something went wrong'
@@ -94,7 +95,7 @@ const ChangeEmail = () => {
               <div>
                 <h3 className="font-medium text-gray-900 dark:text-white mb-1">Important</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  After changing your email, you'll need to verify the new address. All account notifications will be sent to the new email.
+                  After changing your email, you&apos;ll need to verify the new address. All account notifications will be sent to the new email.
                 </p>
               </div>
             </div>

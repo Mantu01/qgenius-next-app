@@ -14,7 +14,8 @@ export async function GET(req:NextRequest,{ params }: { params: { noteId: string
       include:{contenets:true}
     })
     return NextResponse.json(chat,{status:200})
-  } catch (error:any) {
+  } catch (error) {
+    //@ts-expect-error: unknown
     return NextResponse.json({ message:'Internal Server Error' ,error:error.message},{ status: 500 });
   }
 }

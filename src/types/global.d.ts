@@ -51,7 +51,10 @@ declare global {
     };
     chat:{
       chat:Message[];
-      selectedChat:any;
+      selectedChat:{
+        id:string;
+        header:string;
+      };
     }
   }
 

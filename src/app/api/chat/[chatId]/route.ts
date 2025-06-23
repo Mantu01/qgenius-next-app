@@ -3,27 +3,35 @@ import { getDataFromToken } from "@/helper/getDataFromToken";
 import { NextRequest, NextResponse } from "next/server";
 import geminiAiStream from "@/helper/ai/gemini";
 
-export async function GET(req:NextRequest,{ params }: { params: { chatId: string }}) {
+export async function GET(req:NextRequest) {
   try {
     const userId=await getDataFromToken(req);
     if(!userId){
-      return NextResponse.json({message:'Unautherize'},{status:401});
+      return NextResponse.json({message:'Unauthorized'},{status:401});
     }
-    const {chatId}=await params;
+    const url = new URL(req.url);
+    const chatId = url.pathname.split('/').pop();
     const chat=await prisma.chat.findFirst({
       where:{id:chatId},
       include:{messages:true}
     })
     return NextResponse.json(chat,{status:200})
-  } catch (error:any) {
+  } catch (error) {
+    //@ts-expect-error: unknown
     return NextResponse.json({ message:'Internal Server Error' ,error:error.message},{ status: 500 });
   }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { chatId: string } }) {
+export async function PUT(req: NextRequest) {
   try {
     const { question } = await req.json();
-    const { chatId } =await params;
+    
+    const url = new URL(req.url);
+    const chatId = url.pathname.split('/').pop();
+
+    if(!chatId){
+      return NextResponse.json({message:'chat id required'},{status:404});
+    }
 
     const encoder = new TextEncoder();
     let fullResponse = '';
@@ -76,8 +84,9 @@ export async function PUT(req: NextRequest, { params }: { params: { chatId: stri
     });
 
     return response;
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json(
+      //@ts-expect-error: unknown
       { message: 'Internal Server Error', error: error.message },
       { status: 500 }
     );

@@ -10,8 +10,12 @@ import AuthLink from '@/components/auth/AuthLink';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const router = useRouter();
   
   const togglePassword = () => setShowPassword(prev => !prev);
 
@@ -78,11 +82,33 @@ const SignupPage = () => {
   const handleSingup=async(InputData:SignupData)=>{
     try {
       const {data}=await axios.post('/api/auth/signup',InputData);
-      console.log(data)
       toast.success(data.message);
-    } catch (error:any) {
+      setIsSuccess(true);
+    } catch (error) {
+      //@ts-expect-error: unknown
       toast.error(error.response.data.message)
     }
+  }
+
+  if (isSuccess) {
+    return (
+      <AuthLayout>
+        <div className="p-8 md:p-10 text-center">
+          <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+            Registration Successful!
+          </h2>
+          <p className="text-lg mb-8 text-gray-600 dark:text-gray-300">
+            An email has been sent to your email address. Please verify your account and then login.
+          </p>
+          <button
+            onClick={() => router.push('/login')}
+            className="w-full px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+          >
+            Go to Login
+          </button>
+        </div>
+      </AuthLayout>
+    );
   }
 
   return (

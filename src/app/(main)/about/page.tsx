@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { MessageSquare, Brain, Globe, Code, Sparkles, Users, Target } from 'lucide-react';
+import { MessageSquare, Brain, Globe, Code, Users, Target } from 'lucide-react';
 
 export default function AboutPage() {
   const team = [
@@ -108,7 +108,7 @@ export default function AboutPage() {
                   Today, our platform serves millions of users worldwide, providing instant, well-formatted answers to questions across every domain.
                 </p>
                 <p className="text-lg leading-8 text-gray-600 dark:text-gray-300">
-                  We're committed to making AI assistance accessible, accurate, and easy to use for everyone.
+                  We&apos;re committed to making AI assistance accessible, accurate, and easy to use for everyone.
                 </p>
               </div>
             </div>

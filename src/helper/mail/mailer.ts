@@ -17,7 +17,6 @@ export const sendEmail=async({email,emailType,userId}:mailInput)=>{
     const expiry= new Date(Date.now()+3600000);
     const transport = nodemailer.createTransport({
       host: process.env.EMAIL_PROVIDER,
-      port: 2525,
       auth: {
         user: process.env.EMAIL_USER,
         pass:process.env.EMAIL_PASSWORD

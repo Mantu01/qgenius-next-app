@@ -1,6 +1,5 @@
 import prisma from "@/config/dbConfig";
 import { NextRequest,NextResponse } from "next/server";
-import bcrypt from "bcrypt";
 import { getDataFromToken } from "@/helper/getDataFromToken";
 import { sendEmail } from "@/helper/mail/mailer";
 import { uploadToCloudinary } from "@/helper/media/uploadImage";
@@ -26,9 +25,13 @@ export async function GET(req: NextRequest) {
     if(!user){
       return NextResponse.json({ message: "User not found", },{ status: 404 });
     }
+    if(!user.isVerified){
+      await sendEmail({email:user.email,emailType:"VERIFY",userId:user.id});
+    }
     return NextResponse.json({ message: "User found",data:user },{status:200});
-  } catch (error:any) {
+  } catch (error) {
     console.error(error);
+    //@ts-expect-error: unknown
     return NextResponse.json({ message: error.message},{ status: 500 });
   }
 }
@@ -97,6 +100,14 @@ export async function GET(req: NextRequest) {
 //   }
 // }
 
+interface UpdateData {
+  fullName?: string;
+  userName?: string;
+  avatar?: string;
+  coverImage?: string;
+  // add other fields as needed
+}
+
 export async function PUT(req:NextRequest) {
   try {
     const userId = getDataFromToken(req);
@@ -104,7 +115,7 @@ export async function PUT(req:NextRequest) {
       return NextResponse.json({message:"Invalid Token"},{status:401});
     }
     const formData=await req.formData();
-    const updateData:any={};
+    const updateData:UpdateData={};
     if(formData.has('fullName')){
       updateData.fullName=formData.get('fullName') as string;
     }
@@ -115,14 +126,16 @@ export async function PUT(req:NextRequest) {
       const avatarFile=formData.get('avatar') as File;
       const bytes=await avatarFile.arrayBuffer();
       const buffer=Buffer.from(bytes);
-      const result:any=await uploadToCloudinary(buffer,{folder:'avatar'});
+      const result=await uploadToCloudinary(buffer,{folder:'avatar'});
+      //@ts-expect-error: unknown
       updateData.avatar=result.secure_url;
     }
     if(formData.has('coverImage')){
       const coverImageFile=formData.get('coverImage') as File;
       const bytes=await coverImageFile.arrayBuffer();
       const buffer=Buffer.from(bytes);
-      const result:any=await uploadToCloudinary(buffer,{folder:'coverImage'});
+      const result=await uploadToCloudinary(buffer,{folder:'coverImage'});
+      //@ts-expect-error: unknown
       updateData.coverImage=result.secure_url;
     }
 
@@ -136,8 +149,9 @@ export async function PUT(req:NextRequest) {
     }
 
     return NextResponse.json({ message: "User updated successfully",user:updatedUser },{status:200});
-  } catch (error:any) {
+  } catch (error) {
     console.error(error);
+    //@ts-expect-error: unknown
     return NextResponse.json({ message: error.message },{status:500});
   }
 }

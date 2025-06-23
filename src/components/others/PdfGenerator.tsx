@@ -64,21 +64,22 @@ const PDFGenerator: React.FC<PDFGeneratorProps> = ({ note, className = '' }) => 
     html = html.replace(/^\d+\. (.*$)/gim, '<li style="margin: 8px 0; padding-left: 10px; list-style: decimal; list-style-position: outside; margin-left: 20px;">$1</li>');
     
     // Wrap consecutive list items
-    html = html.replace(/((?:<li[^>]*>.*?<\/li>\s*)+)/gims, '<ul style="padding: 15px 25px; margin: 15px 0; background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), rgba(220, 38, 38, 0.05)); border-radius: 10px; border-left: 4px solid #22c55e; list-style: none;">$1</ul>');
+    html = html.replace(/((?:<li[^>]*>.*?<\/li>\s*)+)/gim, '<ul style="padding: 15px 25px; margin: 15px 0; background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), rgba(220, 38, 38, 0.05)); border-radius: 10px; border-left: 4px solid #22c55e; list-style: none;">$1</ul>');
     
     // Tables
-    html = html.replace(/\|(.+)\|/gim, (match, content) => {
-      const cells = content.split('|').map(cell => cell.trim()).filter(cell => cell);
+    html = html.replace(/\|(.+)\|/gim, (_, content) => {
+      //@ts-expect-error: unknown
+      const cells = content.split('|').map((cell) => cell.trim()).filter((cell) => cell);
       const isHeader = content.includes('---');
       
       if (isHeader) return ''; // Skip separator rows
-      
-      return `<tr>${cells.map(cell => 
+      //@ts-expect-error: unknown
+      return `<tr>${cells.map((cell) => 
         `<td style="padding: 12px 15px; border: 1px solid #e5e7eb; background: ${cells.indexOf(cell) % 2 === 0 ? '#f8fafc' : 'white'};">${cell}</td>`
       ).join('')}</tr>`;
     });
     
-    html = html.replace(/((?:<tr>.*?<\/tr>\s*)+)/gims, '<table style="width: 100%; border-collapse: collapse; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;">$1</table>');
+    html = html.replace(/((?:<tr>.*?<\/tr>\s*)+)/gim, '<table style="width: 100%; border-collapse: collapse; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;">$1</table>');
     
     // Blockquotes
     html = html.replace(/^> (.*$)/gim, '<blockquote style="border-left: 5px solid #22c55e; background: linear-gradient(90deg, rgba(34, 197, 94, 0.1), transparent); padding: 20px 25px; margin: 20px 0; color: #374151; font-style: italic; border-radius: 0 10px 10px 0; position: relative;"><span style="color: #22c55e; font-size: 24px; position: absolute; top: 10px; left: 15px; opacity: 0.3;">"</span><div style="margin-left: 20px;">$1</div></blockquote>');
@@ -121,12 +122,15 @@ const PDFGenerator: React.FC<PDFGeneratorProps> = ({ note, className = '' }) => 
     pdfContainer.style.top = '0';
     pdfContainer.style.width = '210mm'; // A4 width
     pdfContainer.style.minHeight = '297mm'; // A4 height
-    pdfContainer.style.padding = '25mm 20mm 25mm 20mm';
+    pdfContainer.style.padding = '10mm 5mm 10mm 5mm';
     pdfContainer.style.backgroundColor = 'white';
     pdfContainer.style.color = '#1f2937';
     pdfContainer.style.fontFamily = '"Segoe UI", -apple-system, BlinkMacSystemFont, "Roboto", "Helvetica Neue", Arial, sans-serif';
     pdfContainer.style.fontSize = '12px';
     pdfContainer.style.lineHeight = '1.7';
+    pdfContainer.style.boxSizing = 'border-box';
+    pdfContainer.style.paddingTop = '40px';
+    pdfContainer.style.paddingBottom = '40px';
     pdfContainer.style.boxSizing = 'border-box';
 
     return pdfContainer;
@@ -147,7 +151,7 @@ const PDFGenerator: React.FC<PDFGeneratorProps> = ({ note, className = '' }) => 
                alt="QGenius Logo" 
                style="height: 60px; width: auto; margin-right: 15px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));" />
           <div>
-            <h1 style="font-size: 36px; margin: 0; background: linear-gradient(135deg, #dc2626, #22c55e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 800; letter-spacing: -0.5px;">
+            <h1 style="font-size: 36px; margin: 0; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 800; letter-spacing: -0.5px;">
               ${note.topic}
             </h1>
             <p style="margin: 5px 0 0 0; color: #6b7280; font-size: 14px; font-weight: 500;">
@@ -215,12 +219,12 @@ const PDFGenerator: React.FC<PDFGeneratorProps> = ({ note, className = '' }) => 
           <img src="https://res.cloudinary.com/dqznmhhtv/image/upload/v1745812881/image__1_-removebg-preview_cq7xid.png" 
                alt="QGenius Logo" 
                style="height: 24px; width: auto;" />
-          <span style="font-size: 14px; font-weight: 700; background: linear-gradient(135deg, #dc2626, #22c55e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+          <span style="font-size: 14px; font-weight: 700; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
             QGenius
           </span>
         </div>
         <p style="margin: 0; color: #6b7280; font-size: 11px; font-weight: 500;">
-          Empowering Learning Through Technology • www.qgenius.com
+          Empowering Learning Through Technology • ${process.env.APP_URL}
         </p>
       </div>
     `;
@@ -231,7 +235,7 @@ const PDFGenerator: React.FC<PDFGeneratorProps> = ({ note, className = '' }) => 
 
     try {
       setGeneratingPdf(true);
-      toast.info('🎨 Creating professional PDF...');
+      toast.info('🎨 Creating PDF...');
 
       // Create PDF container with professional styling
       const pdfContainer = createPDFContainer();
@@ -260,8 +264,6 @@ const PDFGenerator: React.FC<PDFGeneratorProps> = ({ note, className = '' }) => 
         });
       }));
 
-      toast.info('📄 Rendering PDF pages...');
-
       // Generate PDF with high quality settings
       const canvas = await html2canvas(pdfContainer, {
         scale: 2.5, // Higher quality
@@ -276,7 +278,6 @@ const PDFGenerator: React.FC<PDFGeneratorProps> = ({ note, className = '' }) => 
           const allElements = clonedDoc.querySelectorAll('*');
           allElements.forEach(el => {
             const element = el as HTMLElement;
-            element.style.webkitFontSmoothing = 'antialiased';
             element.style.textRendering = 'optimizeLegibility';
           });
 
@@ -339,8 +340,6 @@ const PDFGenerator: React.FC<PDFGeneratorProps> = ({ note, className = '' }) => 
       const fileName = `QGenius_${safeTopicName}_${timestamp}.pdf`;
       
       pdf.save(fileName);
-      
-      toast.success('✅ Professional PDF generated successfully!');
     } catch (error) {
       console.error('Error generating PDF:', error);
       toast.error('❌ Failed to generate PDF. Please try again.');

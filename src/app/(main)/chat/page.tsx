@@ -1,5 +1,6 @@
 'use client'
 
+import React, { useState } from 'react';
 import NotLoggedIn from '@/components/auth/notLoggedIn';
 import ChatInput from '@/components/chat/Input';
 import Image from 'next/image';
@@ -8,9 +9,12 @@ import { useSelector } from 'react-redux';
 export default function ChatInterface() {
 
   const { isAuthenticated } = useSelector((state: RootState) => state.user);
+  
+  // ✅ Add loading state
+  const [loading, setLoading] = useState<boolean>(false);
 
-  if(!isAuthenticated){
-    return <NotLoggedIn/>;
+  if (!isAuthenticated) {
+    return <NotLoggedIn />;
   }
 
   return (
@@ -26,17 +30,24 @@ export default function ChatInterface() {
                 className="object-contain"
               />
             </div>
-            
+
             <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">
               Welcome to QGenius
             </h1>
-            
+
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-              I'm your AI assistant that provides intelligent, well-structured answers. 
+              I&apos;m your AI assistant that provides intelligent, well-structured answers.
               <span className="block mt-2 text-green-600 dark:text-green-400">
                 Try asking me anything!
               </span>
             </p>
+
+            {/* Optional: Loading Indicator */}
+            {loading && (
+              <p className="text-blue-600 dark:text-blue-400 animate-pulse text-lg mt-4">
+                Generating answer...
+              </p>
+            )}
           </div>
         </div>
       </main>
@@ -44,7 +55,7 @@ export default function ChatInterface() {
       {/* Chat Input */}
       <div className="sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4">
         <div className="max-w-4xl mx-auto px-4">
-          <ChatInput setLoading={null} isOpening={true} />
+          <ChatInput setLoading={setLoading} isOpening={true} />
         </div>
       </div>
     </div>

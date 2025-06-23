@@ -22,7 +22,7 @@ export default function ChatWelcome() {
       </div>
       <h1 className="text-2xl font-bold mb-3">Welcome to QGenius</h1>
       <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-lg mx-auto">
-        I'm an AI assistant that provides intelligent, well-structured answers and allows you to download responses as PDFs. How can I assist you today?
+        I&apos;m an AI assistant that provides intelligent, well-structured answers and allows you to download responses as PDFs. How can I assist you today?
       </p>
       <div className="flex flex-wrap justify-center gap-2 max-w-xl mx-auto mb-6">
         {suggestedQuestions.map((question, index) => (

@@ -1,9 +1,9 @@
 import cloudinary from "@/config/cloudinaryConfig"
+import {Readable} from 'stream'
 
 type UploadOptions = {
   folder: string
   resource_type?: 'image' | 'video' | 'auto'
-  transformation?: any[]
 }
 
 export const uploadToCloudinary = async (buffer: Buffer,options: UploadOptions) => {
@@ -19,7 +19,6 @@ export const uploadToCloudinary = async (buffer: Buffer,options: UploadOptions) 
       }
     )
 
-    const { Readable } = require('stream')
     const stream = Readable.from(buffer)
     stream.pipe(uploadStream)
   })

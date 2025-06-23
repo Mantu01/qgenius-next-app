@@ -83,14 +83,16 @@ const EditPage = () => {
       });
       dispatch(setUser(data.user));
       toast.success(data.message);
-    } catch (error: any) {
+    } catch (error) {
       setError('userName', {
         type: 'manual',
+        //@ts-expect-error: unknown
         message: error.response?.data?.message || 'Failed to update profile. Please try again.'
       });
     }
   };
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: any) => {
+  //@ts-expect-error: unknown
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName) => {
     const file = e.target.files?.[0]
     if (!file) return
 

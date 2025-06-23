@@ -1,12 +1,15 @@
 import { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 
+
 export const getDataFromToken = (request: NextRequest) => {
     try {
-        const token = request.cookies.get("token")?.value || '';
-        const decodedToken:any = jwt.verify(token, process.env.JWT_SECRET!);
+        const token = request.cookies.get("token")?.value || 'a';
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET!);
+        //@ts-expect-error: unknown
         return decodedToken.userId;
-    } catch (error: any) {
+    } catch (error) {
+        console.log(error)
         return null;
     }
 }

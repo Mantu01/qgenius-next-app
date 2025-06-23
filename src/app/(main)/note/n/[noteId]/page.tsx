@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Loader2, Trash2, ArrowLeft } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -22,6 +22,7 @@ interface Note {
   topic: string;
   userId: string;
   contenets: NoteContent[];
+  createdAt: Date
 }
 
 function Page() {

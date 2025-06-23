@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/config/dbConfig";
 import { getDataFromToken } from "@/helper/getDataFromToken";
-import { prompt } from "@/app/_lib/constants/prompt";
 import { geminiAi } from "@/helper/ai/gemini";
 
 
@@ -19,7 +18,8 @@ export async function GET(req:NextRequest) {
       where:{userId},
     });
     return Response.json({chats:allChat},{status:200});
-  } catch (error:any) {
+  } catch (error) {
+    //@ts-expect-error: unknown
     return NextResponse.json({ message:'Internal Server Error' ,error:error.message},{ status: 500 });
   }
 }
@@ -61,8 +61,9 @@ export async function POST(req:NextRequest) {
       return Response.json({message:'Something went wrong'},{status:500});
     }
     return Response.json({id:newChat.id,header:newChat.header},{status:201});
-  } catch (error:any) {
+  } catch (error) {
     console.log(error)
+    //@ts-expect-error: unknown
     return NextResponse.json({ message:'Internal Server Error' ,error:error.message},{ status: 500 });
   }
 }

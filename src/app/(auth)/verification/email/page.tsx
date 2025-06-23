@@ -10,31 +10,33 @@ export default function VerifyEmailPage() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const verifyUserEmail = async () => {
-    try {
-      setLoading(true);
-      await axios.post("/api/auth/emailverification", { token });
-      setVerified(true);
-      setLoading(false);
-    } catch (error: any) {
-      setError(true);
-      setLoading(false);
-      console.error(error.response?.data);
-    }
-  };
-
   useEffect(() => {
     const urlToken = new URLSearchParams(window.location.search).get("token");
     setToken(urlToken || "");
-  }, []);
+  },[token]);
 
   useEffect(() => {
+
+    const verifyUserEmail = async () => {
+      try {
+        setLoading(true);
+        await axios.post("/api/auth/emailverification", { token });
+        setVerified(true);
+        setLoading(false);
+      } catch (error) {
+        setError(true);
+        setLoading(false);
+        //@ts-expect-error: unknown
+        console.error(error.response?.data);
+      }
+    };
+
     if (token.length > 0) {
       verifyUserEmail();
     } else {
       setLoading(false);
     }
-  }, [token]);
+  },[token,token.length]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-green-50 to-gray-100 px-4">
@@ -48,7 +50,7 @@ export default function VerifyEmailPage() {
         </div>
         
         <h1 className="text-2xl font-bold text-gray-800 mb-2">Email Verification</h1>
-        <p className="text-gray-600 mb-6">We're confirming your email address</p>
+        <p className="text-gray-600 mb-6">We&apos;re confirming your email address</p>
 
         {loading && (
           <div className="my-8">
@@ -83,7 +85,7 @@ export default function VerifyEmailPage() {
               </svg>
             </div>
             <h2 className="text-lg font-semibold text-red-700">Verification Failed</h2>
-            <p className="text-sm text-red-600 mb-4">We couldn't verify your email with the provided token.</p>
+            <p className="text-sm text-red-600 mb-4">We couldn&apos;t verify your email with the provided token.</p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 href="/resend-verification"

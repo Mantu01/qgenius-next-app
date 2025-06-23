@@ -13,7 +13,8 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: "No apis found" }, { status: 404 });
     }
     return NextResponse.json({ message: "Apis found", data: tokens }, { status: 200 });
-  } catch (error: any) {
+  } catch (error) {
+    //@ts-expect-error: unknown
     return NextResponse.json({ message: "Internal server error", error: error.message }, { status: 500 });
   }
 }
@@ -30,7 +31,8 @@ export async function POST(req: NextRequest) {
       data: { gemini, openAi, claude, grok },
     });
     return NextResponse.json({ message: "Apis updated", data: updatedTokens }, { status: 200 });
-  } catch (error: any) {
+  } catch (error) {
+    //@ts-expect-error: unknown
     return NextResponse.json({ message: "Internal server error", error: error.message }, { status: 500 });
   }
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Heart, Trash2, Clock, User, Tag, SortDesc, Filter, ArrowLeft } from 'lucide-react';
+import { Heart, Trash2, Clock, User, SortDesc, Filter, ArrowLeft } from 'lucide-react';
 
 type Difficulty = 'easy' | 'medium' | 'hard';
 

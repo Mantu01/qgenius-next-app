@@ -70,7 +70,8 @@ const MarkdownPreview: FC<MarkdownPreviewProps> = ({
   const syntaxTheme = isDarkMode ? oneDark : oneLight;
 
   const remarkPlugins = useMemo(() => {
-    const plugins:any = [remarkGfm];
+    const plugins = [remarkGfm];
+    //@ts-expect-error: unknown
     if (enableMath) plugins.push(remarkMath);
     return plugins;
   }, [enableMath]);
@@ -138,7 +139,7 @@ const MarkdownPreview: FC<MarkdownPreviewProps> = ({
               {children}
             </a>
           ),
-          code: ({ node, className, children, ...props }) => {
+          code: ({  className, children, ...props }) => {
             const match = /language-(\w+)/.exec(className || "");
             const codeString = String(children).replace(/\n$/, "");
             const key = `${match ? match[1] : "text"}-${codeString.substring(0, 20).replace(/\s/g, '')}`;
@@ -182,7 +183,8 @@ const MarkdownPreview: FC<MarkdownPreviewProps> = ({
                 </div>
                 <div className={`${isLongCode && !isExpanded ? 'max-h-96 overflow-y-auto' : ''}`}>
                   <SyntaxHighlighter
-                    style={syntaxTheme}
+                    //@ts-expect-error: unknown
+                    style={syntaxTheme || undefined}
                     language={match[1]}
                     PreTag="div"
                     {...props}
@@ -253,21 +255,6 @@ const MarkdownPreview: FC<MarkdownPreviewProps> = ({
           ),
           hr: () => (
             <hr className="my-8 border-t-2 border-gray-300 dark:border-gray-700" />
-          ),
-          img: ({ src, alt }) => (
-            <div className="my-4 w-full overflow-hidden flex flex-col items-center">
-              <img
-                src={src}
-                alt={alt || ""}
-                className="max-w-full h-auto rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-                loading="lazy"
-              />
-              {alt && (
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center italic">
-                  {alt}
-                </p>
-              )}
-            </div>
           ),
           strong: ({ children }) => (
             <strong className="font-bold text-gray-900 dark:text-gray-100">

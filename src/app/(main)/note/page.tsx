@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
-import { NotebookText, Send, Plus, Trash2, Loader2 } from 'lucide-react';
+import { NotebookText, Plus, Trash2, Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import InputField from '@/components/auth/InputField';
 import { useSelector } from 'react-redux';
@@ -18,7 +18,7 @@ type FormData = {
 };
 
 const QuestionsPage = () => {
-  const { register, handleSubmit, control, setValue, watch } = useForm<FormData>({
+  const { register, handleSubmit, setValue, watch } = useForm<FormData>({
     defaultValues: {
       questions: [{ text: '', level: 'medium' }],
       topic: ''
@@ -96,7 +96,7 @@ const QuestionsPage = () => {
                 Generating Your Study Notes
               </h3>
               <p className="text-gray-600 dark:text-gray-300 text-center">
-                This may take a moment. Please don't close this page.
+                This may take a moment. Please don&apos;t close this page.
               </p>
             </div>
           </div>

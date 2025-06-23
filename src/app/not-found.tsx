@@ -16,7 +16,7 @@ export default function NotFound() {
           Are sir, kahan jaa rhe ho? 🤔
         </h2>
         <p className="text-gray-600 dark:text-gray-300 mt-4 text-base">
-          The page you're looking for doesn't exist or has been moved.
+          The page you&apos;re looking for doesn&apos;t exist or has been moved.
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">

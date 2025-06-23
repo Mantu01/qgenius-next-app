@@ -18,7 +18,6 @@ export default function Navbar() {
   const router=useRouter();
 
   const { isAuthenticated } = useSelector((state:RootState) => state.user);
-  const { selectedChat } = useSelector((state:RootState) => state.chat);
 
   useEffect(() => {
     const savedMode = localStorage.getItem('theme');
@@ -51,7 +50,8 @@ export default function Navbar() {
       toast.success(data.message);
       dispatch(clearUser());
       router.push('/login');
-    } catch (error:any) {
+    } catch (error) {
+      //@ts-expect-error: unknown
       toast.error(error.response?.data?.message);
     }
   };

@@ -87,7 +87,7 @@ export default function Pricing() {
               </span>
               <span className="inline-flex items-center rounded-md bg-green-50 dark:bg-green-900/20 px-2 py-1 text-xs font-medium text-green-700 dark:text-green-400 ring-1 ring-inset ring-green-600/20">
                 <Zap className="h-3 w-3 mr-1" />
-                It's free now, you can do as much as you want
+                It&apos;s free now, you can do as much as you want
               </span>
             </div>
             <h1 className="mt-10 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
@@ -136,7 +136,7 @@ export default function Pricing() {
         </p>
 
         <div className="isolate mx-auto mt-16 grid max-w-md grid-cols-1 gap-y-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-          {tiers.map((tier, tierIdx) => (
+          {tiers.map((tier) => (
             <div
               key={tier.name}
               className={classNames(

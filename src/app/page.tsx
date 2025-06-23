@@ -156,7 +156,7 @@ export default function Home() {
               Loved by Users
             </p>
             <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-              Don't just take our word for it – see what our users have to say.
+              Don&apos;t just take our word for it – see what our users have to say.
             </p>
           </div>
 
@@ -171,7 +171,7 @@ export default function Home() {
                     strokeWidth={1.5}
                     aria-hidden="true" 
                 /> 
-                <p className="text-gray-700 dark:text-gray-300 italic text-lg mb-6 flex-grow">"{testimonial.quote}"</p>
+                <p className="text-gray-700 dark:text-gray-300 italic text-lg mb-6 flex-grow">&quot;{testimonial.quote}&quot;</p>
                 <div className="mt-auto pt-4 border-t border-gray-200 dark:border-gray-700">
                     <p className="font-semibold">{testimonial.author}</p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">{testimonial.role}</p>

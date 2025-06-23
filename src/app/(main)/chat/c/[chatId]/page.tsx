@@ -5,7 +5,7 @@ import ChatInput from '@/components/chat/Input';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Loader2 } from 'lucide-react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import axios from 'axios';
 import { initChat, setSelctedChat } from '@/app/store/chatSlice';
 

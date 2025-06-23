@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { BookTemplate, Search, Plus, Copy, Pencil, Trash2, Tag, Filter, Bookmark, BookOpen, ArrowLeft, Star } from 'lucide-react';
+import { BookTemplate, Search, Plus, Copy, Pencil, Trash2, Filter, Bookmark, BookOpen, ArrowLeft, Star } from 'lucide-react';
 
 type TemplateCategory = 'React Basics' | 'Hooks' | 'State Management' | 'Performance' | 'Architecture';
 
