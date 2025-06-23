@@ -7,6 +7,7 @@ import Footer from "@/components/layout/footer/Footer";
 import Sidebar from "@/components/layout/Sidebar";
 import {ToastContainer} from 'react-toastify'
 import GetUser from "@/hooks/useUser";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,24 +30,27 @@ export const metadata: Metadata = {
 export default function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ToastContainer position="top-center" draggable />
-        <StoreProvider>
-          <GetUser/>
-          <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <div className="flex flex-1 pt-16 relative">
-              <Sidebar />
-              <main className="flex-1 bg-gray-50 dark:bg-gray-900 transition-colors duration-200 w-full">
-                {children}
-              </main>
+      <Suspense>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <ToastContainer position="top-center" draggable />
+          <StoreProvider>
+            <GetUser/>
+            <div className="min-h-screen flex flex-col">
+              <Navbar />
+              <div className="flex flex-1 pt-16 relative">
+                <Sidebar />
+                <main className="flex-1 bg-gray-50 dark:bg-gray-900 transition-colors duration-200 w-full">
+                  {children}
+                </main>
+              </div>
+              <Footer />
             </div>
-            <Footer />
-          </div>
-        </StoreProvider>
-      </body>
+          </StoreProvider>
+        </body>
+      </Suspense>
+      
     </html>
   );
 }
