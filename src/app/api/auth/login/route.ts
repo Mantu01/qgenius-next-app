@@ -2,6 +2,7 @@ import prisma from "@/config/dbConfig";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { NextRequest,NextResponse } from "next/server";
+import { sendEmail } from "@/helper/mail/mailer";
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,6 +17,9 @@ export async function POST(req: NextRequest) {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return NextResponse.json({ message: "Invalid password", },{ status: 401 });
+    }
+    if(!user.isVerified){
+      await sendEmail({email:user.email,emailType:"VERIFY",userId:user.id});
     }
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: '7d' });
     const response = NextResponse.json({message: "Login successful",userId: user.id,});

@@ -1,7 +1,6 @@
 import prisma from "@/config/dbConfig";
 import { NextRequest,NextResponse } from "next/server";
 import { getDataFromToken } from "@/helper/getDataFromToken";
-import { sendEmail } from "@/helper/mail/mailer";
 import { uploadToCloudinary } from "@/helper/media/uploadImage";
 
 export async function GET(req: NextRequest) {
@@ -24,9 +23,6 @@ export async function GET(req: NextRequest) {
     });
     if(!user){
       return NextResponse.json({ message: "User not found", },{ status: 404 });
-    }
-    if(!user.isVerified){
-      await sendEmail({email:user.email,emailType:"VERIFY",userId:user.id});
     }
     return NextResponse.json({ message: "User found",data:user },{status:200});
   } catch (error) {

@@ -4,7 +4,10 @@ import jwt from "jsonwebtoken";
 
 export const getDataFromToken = (request: NextRequest) => {
     try {
-        const token = request.cookies.get("token")?.value || 'a';
+        const token = request.cookies.get("token")?.value || '';
+        if(!token){
+            return null;
+        }
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET!);
         //@ts-expect-error: unknown
         return decodedToken.userId;

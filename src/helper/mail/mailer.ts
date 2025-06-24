@@ -16,7 +16,7 @@ export const sendEmail=async({email,emailType,userId}:mailInput)=>{
     const hashedToken = await bcrypt.hash(userId.toString(), 10);
     const expiry= new Date(Date.now()+3600000);
     const transport = nodemailer.createTransport({
-      service: process.env.EMAIL_PROVIDER,
+      service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
         pass:process.env.EMAIL_PASSWORD
@@ -44,7 +44,7 @@ export const sendEmail=async({email,emailType,userId}:mailInput)=>{
     const info = await transport.sendMail({
       from: "mantu1@gmail.com",
       to: email,
-      subject: emailType === 'signup'? 'Confirm your email' : 'Reset Password',
+      subject: emailType === 'VERIFY'? 'Confirm your email' : 'Reset Password',
       html:templateMsg
     });
     return info;
