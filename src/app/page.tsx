@@ -74,7 +74,7 @@ export default function Home() {
               <div className="mt-10 flex flex-col sm:flex-row gap-4">
                 {isAuthenticated ? (
                   <Link 
-                    href="/chat" 
+                    href="/note" 
                     className="inline-flex items-center justify-center px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg shadow-md transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg"
                   >
                     Start Taking Notes

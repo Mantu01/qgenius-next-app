@@ -2,45 +2,49 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { MessageSquare, Brain, Globe, Code, Users, Target } from 'lucide-react';
+import { MessageSquare, Brain, Globe, Code, Users, Target, FileText } from 'lucide-react';
 
 export default function AboutPage() {
-  const team = [
-    {
-      name: "Alex Johnson",
-      role: "Lead AI Engineer",
-      bio: "Building intelligent systems that understand and respond to human needs with precision.",
-      image: "https://randomuser.me/api/portraits/men/24.jpg",
-      specialties: ["Natural Language Processing", "Machine Learning"]
-    },
-    {
-      name: "Sarah Chen",
-      role: "Frontend Developer",
-      bio: "Creating beautiful, responsive interfaces that make AI accessible to everyone.",
-      image: "https://randomuser.me/api/portraits/women/45.jpg",
-      specialties: ["React", "UX Design"]
-    },
-    {
-      name: "Michael Rodriguez",
-      role: "Backend Specialist",
-      bio: "Architecting robust systems that power our AI capabilities at scale.",
-      image: "https://randomuser.me/api/portraits/men/56.jpg",
-      specialties: ["Node.js", "API Design"]
-    },
-    {
-      name: "Priya Patel",
-      role: "AI Researcher",
-      bio: "Pushing the boundaries of what conversational AI can achieve.",
-      image: "https://randomuser.me/api/portraits/women/66.jpg",
-      specialties: ["Deep Learning", "Neural Networks"]
-    }
-  ];
+
+ const team = [
+  {
+    name: "Tony Stark",
+    role: "Lead AI Engineer",
+    bio: "Inventing cutting-edge AI solutions and pushing technological boundaries.",
+    image: "https://example.com/real-bruce-wayne.jpg",
+    specialties: ["Artificial Intelligence", "Quantum Computing"]
+  },
+  {
+    name: "Bruce Wayne",
+    role: "Backend Specialist",
+    bio: "Building ultra-secure, scalable backend systems with precision.",
+    image: "https://example.com/real-bruce-wayne.jpg",
+    specialties: ["Node.js", "Security Architecture"]
+  },
+  {
+    name: "Shuri",
+    role: "Frontend Developer",
+    bio: "Crafting advanced, intuitive user interfaces with Wakandan innovation.",
+    image: "https://example.com/real-shuri.jpg",
+    specialties: ["React", "UI/UX Design"]
+  },
+  {
+    name: "Dexter",
+    role: "AI Researcher",
+    bio: "Exploring the deepest layers of AI with endless curiosity from his secret lab.",
+    image: "https://example.com/real-dexter.jpg",
+    specialties: ["Deep Learning", "Neural Networks"]
+  }
+];
+
+
 
   const stats = [
     { value: "10M+", label: "Questions Answered", icon: <MessageSquare className="h-8 w-8" /> },
     { value: "24/7", label: "Availability", icon: <Globe className="h-8 w-8" /> },
     { value: "98%", label: "Accuracy Rate", icon: <Target className="h-8 w-8" /> },
-    { value: "50+", label: "Languages Supported", icon: <Code className="h-8 w-8" /> }
+    { value: "50+", label: "Languages Supported", icon: <Code className="h-8 w-8" /> },
+    { value: "1-Click", label: "PDF Note Generation", icon: <FileText className="h-8 w-8" /> }
   ];
 
   return (
@@ -51,10 +55,10 @@ export default function AboutPage() {
         <div className="relative max-w-7xl mx-auto px-6 py-32 sm:py-40 lg:px-8 text-center">
           <Brain className="mx-auto h-16 w-16 text-green-300 dark:text-green-200 mb-6" />
           <h1 className="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Welcome to <span className="text-green-300">AI Answers</span>
+            Welcome to <span className="text-green-300">QGenius</span>
           </h1>
           <p className="mt-6 text-xl leading-8 text-green-100 max-w-3xl mx-auto">
-            Your intelligent assistant for accurate, formatted responses to any question.
+            Your AI-powered platform for multi-question answering, PDF note generation, and in-depth learning.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <button className="rounded-md bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 transition-all">
@@ -72,13 +76,13 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-              AI by the numbers
+              QGenius by the numbers
             </h2>
             <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
-              Our impact in helping people find answers
+              Our impact in delivering intelligent answers worldwide
             </p>
           </div>
-          <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
             {stats.map((stat, statIdx) => (
               <div key={statIdx} className="flex flex-col items-center text-center bg-white dark:bg-gray-700 p-8 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
                 <div className="text-red-600 dark:text-red-400 mb-4">
@@ -101,21 +105,21 @@ export default function AboutPage() {
                 Our Story
               </h2>
               <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                Founded in 2022, we set out to create an AI that could understand and respond to questions with human-like accuracy and formatting.
+                Founded in 2024, QGenius was built to provide fast, accurate, and multi-layered answers with a seamless note generation experience.
               </p>
               <div className="mt-8 space-y-6">
                 <p className="text-lg leading-8 text-gray-600 dark:text-gray-300">
-                  Today, our platform serves millions of users worldwide, providing instant, well-formatted answers to questions across every domain.
+                  Today, QGenius serves users across the globe with instant, AI-powered answers and easy PDF export capabilities.
                 </p>
                 <p className="text-lg leading-8 text-gray-600 dark:text-gray-300">
-                  We&apos;re committed to making AI assistance accessible, accurate, and easy to use for everyone.
+                  We&apos;re committed to making intelligent question-answering accessible and efficient for all.
                 </p>
               </div>
             </div>
             <div className="relative rounded-2xl overflow-hidden shadow-xl">
               <Image
                 src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
-                alt="AI research team"
+                alt="QGenius research team"
                 width={800}
                 height={600}
                 className="w-full h-full object-cover"
@@ -136,7 +140,7 @@ export default function AboutPage() {
               Our Expert Team
             </h2>
             <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
-              Passionate professionals dedicated to advancing conversational AI
+              Dedicated professionals making QGenius smarter every day
             </p>
           </div>
           <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-4">
@@ -188,23 +192,23 @@ export default function AboutPage() {
               Our Mission
             </h2>
             <p className="mt-6 text-xl leading-8 text-gray-600 dark:text-gray-300">
-              To provide instant, accurate, and well-formatted answers to any question
+              To deliver fast, accurate, multi-question answers and exportable notes instantly
             </p>
             <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-3">
               <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl hover:shadow-md transition-all duration-300">
                 <div className="text-green-600 dark:text-green-400 text-2xl font-bold mb-2">01</div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Understand</h3>
-                <p className="text-gray-600 dark:text-gray-300">Interpret questions with human-like comprehension</p>
+                <p className="text-gray-600 dark:text-gray-300">Interpret complex questions accurately</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl hover:shadow-md transition-all duration-300">
                 <div className="text-green-600 dark:text-green-400 text-2xl font-bold mb-2">02</div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Process</h3>
-                <p className="text-gray-600 dark:text-gray-300">Analyze information from reliable sources</p>
+                <p className="text-gray-600 dark:text-gray-300">Retrieve precise answers using AI-powered models</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl hover:shadow-md transition-all duration-300">
                 <div className="text-green-600 dark:text-green-400 text-2xl font-bold mb-2">03</div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Deliver</h3>
-                <p className="text-gray-600 dark:text-gray-300">Provide clear, formatted responses instantly</p>
+                <p className="text-gray-600 dark:text-gray-300">Present answers in clean formats, ready for PDF export</p>
               </div>
             </div>
           </div>
@@ -224,14 +228,14 @@ export default function AboutPage() {
               Ready to get instant answers?
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-green-100">
-              Try our AI assistant today and experience the difference.
+              Try QGenius today and experience multi-question support with PDF note generation.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <button className="rounded-md bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 transition-all">
                 Start Asking Questions
               </button>
               <button className="text-sm font-semibold leading-6 text-white hover:text-green-100 transition-colors">
-                See examples <span aria-hidden="true">→</span>
+                See Examples <span aria-hidden="true">→</span>
               </button>
             </div>
           </div>

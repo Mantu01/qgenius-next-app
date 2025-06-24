@@ -23,7 +23,7 @@ const GetUser=()=>{
     if(user && !user.isVerified){
       router.push('/unverified')
     }
-  },[dispatch,isAuthenticated,user,router]);
+  },[dispatch,isAuthenticated,user,router,pathname]);
   return null
 }
 

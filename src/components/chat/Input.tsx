@@ -18,7 +18,7 @@ const ChatInput = ({isOpening,setLoading}:{isOpening:boolean,setLoading:React.Di
   const {selectedChat}=useSelector((state:RootState)=>state.chat)
 
   useEffect(()=>{
-    if(selectedChat && chatId!==selectedChat.id ){
+    if(selectedChat?.id && chatId!==selectedChat.id ){
       router.push(`/chat/c/${selectedChat.id}`);
     }
   },[selectedChat,chatId,router])

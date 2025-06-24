@@ -1,52 +1,53 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Zap, Code, BarChart3, BookOpen, Settings, MapPin, Shield, Users } from 'lucide-react';
+import { ArrowRight, Zap, Code, BookOpen, Settings, MapPin, Shield, Users, FileText } from 'lucide-react';
 import FeatureCard from '@/components/features/FeatureCard';
 
 export default function FeaturesPage() {
   const features = [
-    {
-      title: "Quantum Basics",
-      description: "Simple explanations of quantum topics.",
-      icon: <BookOpen className="w-10 h-10" />
-    },
-    {
-      title: "Code Builder",
-      description: "Generate code for quantum circuits.",
-      icon: <Code className="w-10 h-10" />
-    },
-    {
-      title: "Visual Tools",
-      description: "See how quantum algorithms work.",
-      icon: <BarChart3 className="w-10 h-10" />
-    },
-    {
-      title: "Circuit Design",
-      description: "Create and refine quantum circuits.",
-      icon: <Settings className="w-10 h-10" />
-    },
-    {
-      title: "Learning Paths",
-      description: "Step-by-step quantum lessons.",
-      icon: <MapPin className="w-10 h-10" />
-    },
-    {
-      title: "Error Fixing",
-      description: "Apply quantum error correction.",
-      icon: <Shield className="w-10 h-10" />
-    },
-    {
-      title: "Quantum Community",
-      description: "Join other quantum learners.",
-      icon: <Users className="w-10 h-10" />
-    },
-    {
-      title: "Research Help",
-      description: "Support for papers and findings.",
-      icon: <BookOpen className="w-10 h-10" />
-    }
-  ];
+  {
+    title: "Instant Answers",
+    description: "Get quick, AI-generated answers to your queries.",
+    icon: <BookOpen className="w-10 h-10" />
+  },
+  {
+    title: "Multi-Question Support",
+    description: "Ask multiple questions at once and get organized responses.",
+    icon: <Code className="w-10 h-10" />
+  },
+  {
+    title: "Interactive Q&A",
+    description: "Engage with step-by-step explanations and detailed breakdowns.",
+    icon: <Settings className="w-10 h-10" />
+  },
+  {
+    title: "Personalized Learning Paths",
+    description: "Get tailored learning suggestions based on your questions.",
+    icon: <MapPin className="w-10 h-10" />
+  },
+  {
+    title: "Error Handling Support",
+    description: "Identify and fix errors in your code and logic with AI assistance.",
+    icon: <Shield className="w-10 h-10" />
+  },
+  {
+    title: "QGenius Community",
+    description: "Join a growing network of learners and experts to collaborate.",
+    icon: <Users className="w-10 h-10" />
+  },
+  {
+    title: "Research Assistance",
+    description: "Get help in finding papers, references, and technical insights.",
+    icon: <BookOpen className="w-10 h-10" />
+  },
+  {
+    title: "PDF Note Generation",
+    description: "Export your AI-generated answers and learning notes as downloadable PDFs.",
+    icon: <FileText className="w-10 h-10" />
+  }
+];
+
   
 
   return (

@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, KeyRound, User, AtSign } from 'lucide-react';
 import AuthLayout from '@/components/auth/AuthLayout ';
-import SocialLogin from '@/components/auth/SocialLogin';
 import InputField from '@/components/auth/InputField';
 import SubmitButton from '@/components/auth/SubmitButton';
 import AuthLink from '@/components/auth/AuthLink';
@@ -117,8 +116,6 @@ const SignupPage = () => {
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-white">
           Create Your Account
         </h2>
-        
-        <SocialLogin />
         
         <form onSubmit={handleSubmit(handleSingup)} className="space-y-6">
           {signupFields.map((field) => (

@@ -84,10 +84,9 @@ export default function ChatHistoryPage() {
   };
 
   const handleChatClick = (chatId: string) => {
+    dispatch(removeChat())
     setSelectedChat(chatId);
-    setTimeout(() => {
-      router.push(`/chat/c/${chatId}`);
-    }, 150);
+    router.push(`/chat/c/${chatId}`);
   };
 
   const formatDate = (dateString: string) => {

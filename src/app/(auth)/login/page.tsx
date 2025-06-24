@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, KeyRound } from 'lucide-react';
 import Link from 'next/link';
-import SocialLogin from '@/components/auth/SocialLogin';
 import InputField from '@/components/auth/InputField';
 import SubmitButton from '@/components/auth/SubmitButton';
 import AuthLink from '@/components/auth/AuthLink';
@@ -76,9 +75,6 @@ const LoginPage = () => {
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-white">
           Sign In to Your Account
         </h2>
-
-        <SocialLogin />
-
         <form onSubmit={handleSubmit(handleLogin)} className="space-y-6">
           {loginFields.map((field) => (
             <div key={field.id}>
